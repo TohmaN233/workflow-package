@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "engine": {
+    "repository": "https://github.com/TohmaN233/codex-agents-workflow",
+    "qualified_release": "1.2"
+  },
+  "packages": [
+    {
+      "id": "answer-me-with-html-evidence",
+      "name": "answer-me-with-html",
+      "platform": "codex",
+      "package_version": "1.0.0",
+      "path": "codex/answer-me-with-html/answer-me-with-html.workflow-package.json",
+      "source_skill": "https://github.com/QingYunA/answer-me-with-html",
+      "workflow_revision_hash": "7f1a372c03a0ce70dbd4218da10d965feed74dcd139dda7e1f8412043b46c093",
+      "package_sha256": "f1ac754f593edf531331fb14745b15ee5edc5392839a311b19c5c056271aca92",
+      "file_sha256": "39e04313144c16700bd52d530ef8add1b0c87f13147bed80ee4581ff1180be34",
+      "node_count": 34,
+      "resource_count": 75,
+      "dependencies": {
+        "providers": [],
+        "tools": [
+          "am_batch_observe",
+          "am_batch_prepare",
+          "am_cleanup",
+          "am_configure",
+          "am_export_mp4",
+          "am_finalize",
+          "am_handoff",
+          "am_observe",
+          "am_preview_cleanup",
+          "am_reuse_video",
+          "am_route_check",
+          "am_snapshot",
+          "am_update_installation",
+          "am_video_prepare",
+          "am_worker_render",
+          "read_workflow_resource"
+        ],
+        "mcp_servers": [],
+        "executables": [
+          {
+            "name": "node",
+            "version": ">=20.0.0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "github-readme-generator",
+      "name": "github-readme-generator",
+      "platform": "codex",
+      "package_version": "1.0.0",
+      "path": "codex/github-readme-generator/github-readme-generator.workflow-package.json",
+      "source_skill": "https://github.com/pekral/github-readme-generator",
+      "workflow_revision_hash": "d7599ef74a7814b4bc7bdcb47915be72424ba7cd396fe208669cf667200f630a",
+      "package_sha256": "975372bb4c9ccc9a3ad6dbe5d251b9ee7146f9aa9143e7aa037d4d0bc2e14220",
+      "file_sha256": "c242b9357344711a8559b564476f5b9bc303a56b1122bb072f83b6ef7d574fdc",
+      "node_count": 10,
+      "resource_count": 4,
+      "dependencies": {
+        "providers": [
+          "native-luna"
+        ],
+        "tools": [
+          "read_workflow_resource"
+        ],
+        "mcp_servers": [],
+        "executables": []
+      }
+    }
+  ]
+}

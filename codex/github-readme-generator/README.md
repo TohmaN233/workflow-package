@@ -4,6 +4,8 @@
 
 Converted from [pekral/github-readme-generator](https://github.com/pekral/github-readme-generator) at commit [`d8bdac94d1a9488751d65e55e78eeabd47895bd0`](https://github.com/pekral/github-readme-generator/tree/d8bdac94d1a9488751d65e55e78eeabd47895bd0). The pinned Skill digest is `6c00ccb4afd7cd41fd005064a9c0ac63991d4b76bf4369480a3de98c2d7c7136`. [Original license](UPSTREAM-LICENSE.txt) and all three operational reference files are retained in the package; the primary conversion source Skill is not exported.
 
+[Pinned original Skill entrypoint](https://github.com/pekral/github-readme-generator/blob/d8bdac94d1a9488751d65e55e78eeabd47895bd0/skills/github-readme-generator/SKILL.md).
+
 Published revision: `d7599ef74a7814b4bc7bdcb47915be72424ba7cd396fe208669cf667200f630a`, with 10 nodes and 4 runtime resources. Independent scanning, writing/audit and translation use the configured `native-luna` Provider. The initiating Main chooses scope and languages, then performs semantic acceptance. No external service or new Host tool is added.
 
 Personal extensions to the original README task:

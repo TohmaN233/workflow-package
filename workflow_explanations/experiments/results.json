@@ -74,5 +74,143 @@
       }
     }
   },
-  "quality_notice": "Compare the Skill and Workflow HTML and videos to judge quality yourself. Both use LLMs with stochastic outputs."
+  "quality_notice": "Compare the Skill and Workflow HTML and videos to judge quality yourself. Both use LLMs with stochastic outputs.",
+  "single_html": {
+    "pricing_usd_per_million": {
+      "fresh_input_per_million": 2,
+      "cached_input_per_million": 0.1,
+      "output_per_million": 10,
+      "reasoning_already_in_output": true
+    },
+    "baseline": {
+      "tcp": {
+        "cost_usd": 0.13771879999999997,
+        "wall_ms": 70725,
+        "usage": {
+          "input_tokens": 258219,
+          "cached_input_tokens": 208768,
+          "output_tokens": 1794
+        }
+      },
+      "cache": {
+        "cost_usd": 0.1467356,
+        "wall_ms": 60315,
+        "usage": {
+          "input_tokens": 190193,
+          "cached_input_tokens": 134016,
+          "output_tokens": 2098
+        }
+      },
+      "git": {
+        "cost_usd": 0.110996,
+        "wall_ms": 79219,
+        "usage": {
+          "input_tokens": 148276,
+          "cached_input_tokens": 109440,
+          "output_tokens": 2238
+        }
+      }
+    },
+    "workflow_samples": [
+      {
+        "cost_usd": 0.0801288,
+        "wall_ms": 85858,
+        "usage": {
+          "input_tokens": 176604,
+          "cached_input_tokens": 154368,
+          "output_tokens": 2022
+        },
+        "topic": "tcp",
+        "repetition": 1
+      },
+      {
+        "cost_usd": 0.12635079999999999,
+        "wall_ms": 87701,
+        "usage": {
+          "input_tokens": 180187,
+          "cached_input_tokens": 134528,
+          "output_tokens": 2158
+        },
+        "topic": "tcp",
+        "repetition": 2
+      },
+      {
+        "cost_usd": 0.1606536,
+        "wall_ms": 102761,
+        "usage": {
+          "input_tokens": 180354,
+          "cached_input_tokens": 117376,
+          "output_tokens": 2296
+        },
+        "topic": "tcp",
+        "repetition": 3
+      },
+      {
+        "cost_usd": 0.11723839999999999,
+        "wall_ms": 74281,
+        "usage": {
+          "input_tokens": 155948,
+          "cached_input_tokens": 111104,
+          "output_tokens": 1644
+        },
+        "topic": "cache",
+        "repetition": 1
+      },
+      {
+        "cost_usd": 0.12370840000000001,
+        "wall_ms": 81041,
+        "usage": {
+          "input_tokens": 180060,
+          "cached_input_tokens": 136064,
+          "output_tokens": 2211
+        },
+        "topic": "cache",
+        "repetition": 2
+      },
+      {
+        "cost_usd": 0.09943279999999999,
+        "wall_ms": 78560,
+        "usage": {
+          "input_tokens": 155836,
+          "cached_input_tokens": 119168,
+          "output_tokens": 1418
+        },
+        "topic": "cache",
+        "repetition": 3
+      },
+      {
+        "cost_usd": 0.151822,
+        "wall_ms": 77853,
+        "usage": {
+          "input_tokens": 156377,
+          "cached_input_tokens": 94080,
+          "output_tokens": 1782
+        },
+        "topic": "git",
+        "repetition": 1
+      },
+      {
+        "cost_usd": 0.149536,
+        "wall_ms": 70404,
+        "usage": {
+          "input_tokens": 158575,
+          "cached_input_tokens": 95360,
+          "output_tokens": 1357
+        },
+        "topic": "git",
+        "repetition": 2
+      },
+      {
+        "cost_usd": 0.1475052,
+        "wall_ms": 85629,
+        "usage": {
+          "input_tokens": 155727,
+          "cached_input_tokens": 93952,
+          "output_tokens": 1456
+        },
+        "topic": "git",
+        "repetition": 3
+      }
+    ]
+  }
 }

@@ -4,6 +4,18 @@
 
 Compare the HTML and video outputs below to judge quality yourself. Both methods use LLMs, whose outputs are stochastic.
 
+## Pages run separately
+
+Workflow values are means of three runs per topic. Input includes cached tokens.
+
+| Topic | Skill input | Workflow input | Skill cost | Workflow cost | Skill seconds | Workflow seconds |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| TCP | 258,219 | 179,048 | $0.137719 | $0.122378 | 70.725 | 92.107 |
+| Redis / Memcached | 190,193 | 163,948 | $0.146736 | $0.113460 | 60.315 | 77.961 |
+| Git merge / rebase | 148,276 | 156,893 | $0.110996 | $0.149621 | 79.219 | 77.962 |
+
+Single-page runs show no consistent advantage across token use, cost and time. TCP and caching take longer with Workflow.
+
 ## Three pages in one conversation
 
 Each method produces TCP, Redis / Memcached, and Git merge / rebase explainers in one conversation. Both use `gpt-6.1-sol/high` and renderer 0.4.7.
@@ -36,4 +48,4 @@ Watch the [independently produced Skill / Workflow videos](../examples/video/com
 
 ## Measurement
 
-Costs include Main, shared-context preparation, all workers and corrections; time covers complete delivery. These are API-equivalent costs, not subscription bills. The per-million-token rates for fresh input / cached input / output are $2 / $0.10 / $10 for HTML and $2 / $0.20 / $12 for video and text. Each row reports one measured task per method.
+Costs include Main, shared-context preparation, all workers and corrections; time covers complete delivery. These are API-equivalent costs, not subscription bills. The per-million-token rates for fresh input / cached input / output are $2 / $0.10 / $10 for HTML and $2 / $0.20 / $12 for video and text. The three-page batch and video stages each report one task per method.

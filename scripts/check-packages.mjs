@@ -59,6 +59,8 @@ function cost(arm,pricing){
   +u.output_tokens*(pricing.output??pricing.output_per_million))/1e6;
 }
 const metrics=await json(resolve(root,'workflow_explanations/experiments/results.json'));
+if(metrics.single_html)for(const arm of [...Object.values(metrics.single_html.baseline),...metrics.single_html.workflow_samples])
+ assert(Math.abs(cost(arm,metrics.single_html.pricing_usd_per_million)-arm.cost_usd)<1e-9,'Single-page HTML cost');
 for(const arm of [metrics.three_html_one_conversation.skill,metrics.three_html_one_conversation.workflow])
  assert(Math.abs(cost(arm,metrics.three_html_one_conversation.pricing_usd_per_million)-arm.cost_usd)<1e-9,'Batch HTML cost');
 for(const stage of ['reuse','text'])for(const side of ['skill','workflow']){

@@ -2,6 +2,8 @@
 
 [中文](results.zh-CN.md) · [Workflow package](../answer-me-with-html.md) · [Data](results.json) · [Original Skill](https://github.com/QingYunA/answer-me-with-html)
 
+**[Open the live comparison gallery](https://tohman233.github.io/workflow-package/)** to view the HTML outputs, video examples and these metrics directly in your browser.
+
 Compare the HTML and video outputs below to judge quality yourself. Both methods use LLMs, whose outputs are stochastic.
 
 ## Pages run separately
@@ -29,9 +31,9 @@ Workflow uses **52.10% fewer input tokens**, costs **14.67% less**, and takes **
 
 | Topic | Skill | Workflow |
 | --- | --- | --- |
-| TCP | [HTML](../examples/html/tcp-skill.html) | [HTML](../examples/html/tcp-workflow.html) |
-| Redis / Memcached | [HTML](../examples/html/cache-skill.html) | [HTML](../examples/html/cache-workflow.html) |
-| Git merge / rebase | [HTML](../examples/html/git-skill.html) | [HTML](../examples/html/git-workflow.html) |
+| TCP | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-workflow.html) |
+| Redis / Memcached | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-workflow.html) |
+| Git merge / rebase | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-workflow.html) |
 
 ## Video asset reuse and manuscript rewriting
 
@@ -44,7 +46,7 @@ The task explains Workflow internals and their relationship to ordinary AI workf
 
 Reuse costs **38.63% less** and takes **7.15% less time**; manuscript rewriting costs **12.81% less** and takes **9.95% less time**.
 
-Watch the [independently produced Skill / Workflow videos](../examples/video/comparison.html), with English audio and English/Chinese subtitles. A is Skill; B is Workflow.
+Watch the [independently produced Skill / Workflow videos](https://tohman233.github.io/workflow-package/workflow_explanations/examples/video/comparison.html), with English audio and English/Chinese subtitles. A is Skill; B is Workflow. These are illustrative outputs from independent video production, not outputs of the measured asset-reuse or manuscript-only stages above.
 
 ## Measurement
 

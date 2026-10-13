@@ -2,6 +2,8 @@
 
 [English](results.md) · [Workflow 安装包](../answer-me-with-html.zh-CN.md) · [数据](results.json) · [原 Skill](https://github.com/QingYunA/answer-me-with-html)
 
+**[打开在线对照展示](https://tohman233.github.io/workflow-package/)**，直接查看 HTML 产物、视频样例与这些实验数据。
+
 质量请自行对比下方 Skill 和 Workflow 产出的 HTML 与视频。两者均使用 LLM，输出具有随机性。
 
 ## 分别运行单个网页
@@ -29,9 +31,9 @@ Workflow 数据为每种网页三次运行的均值，输入包含缓存 token�
 
 | 主题 | Skill | Workflow |
 | --- | --- | --- |
-| TCP | [HTML](../examples/html/tcp-skill.html) | [HTML](../examples/html/tcp-workflow.html) |
-| Redis／Memcached | [HTML](../examples/html/cache-skill.html) | [HTML](../examples/html/cache-workflow.html) |
-| Git merge／rebase | [HTML](../examples/html/git-skill.html) | [HTML](../examples/html/git-workflow.html) |
+| TCP | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-workflow.html) |
+| Redis／Memcached | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-workflow.html) |
+| Git merge／rebase | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-workflow.html) |
 
 ## 视频资产复用与稿件重写
 
@@ -44,7 +46,7 @@ Workflow 数据为每种网页三次运行的均值，输入包含缓存 token�
 
 资产复用成本降低 **38.63%**、耗时降低 **7.15%**；稿件重写成本降低 **12.81%**、耗时降低 **9.95%**。
 
-可观看[两种方法独立制作的视频](../examples/video/comparison.html)，包含英文配音和英中双语字幕。A 为 Skill，B 为 Workflow。
+可观看[两种方法独立制作的视频](https://tohman233.github.io/workflow-package/workflow_explanations/examples/video/comparison.html)，包含英文配音和英中双语字幕。A 为 Skill，B 为 Workflow。这些是独立制作阶段的展示产物，不是上表资产复用或仅重写稿件阶段的产物。
 
 ## 统计口径
 

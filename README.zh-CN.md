@@ -4,6 +4,8 @@
 
 可复用的 Workflow 安装包，与执行引擎和默认配置分开维护。
 
+**[直接打开 Skill／Workflow 对照展示 →](https://tohman233.github.io/workflow-package/)** 并排查看六份可交互的 HTML，播放视频样例，并查看实验记录的耗时、token 与 API 等价成本。展示也保留了 Workflow 没有一致优势的单页结果。
+
 **Workflow 本体是 `*.workflow-package.json` 文件。** 使用说明、对照结果和产物样例统一放在 [workflow_explanations](workflow_explanations/README.zh-CN.md)。
 
 | 平台 | Workflow | 下载 | 说明 |

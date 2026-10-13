@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f0e8">
+  <meta name="description" content="A bilingual, data-backed comparison of Skill and Workflow experiment artifacts.">
+  <title>Skill × Workflow — experiment gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-en="Skip to content" data-zh="跳到正文">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Skill versus Workflow experiment gallery">
+      <span class="wordmark-mark" aria-hidden="true">S/W</span>
+      <span>FIELD NOTES <span class="wordmark-dot">·</span> 01</span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a href="#batch" data-en="Batch" data-zh="批量">Batch</a>
+      <a href="#single" data-en="Single page" data-zh="单页">Single page</a>
+      <a href="#video" data-en="Video & text" data-zh="视频与文本">Video &amp; text</a>
+      <a href="#method" data-en="Method" data-zh="统计口径">Method</a>
+    </nav>
+    <button class="language-toggle" id="language-toggle" type="button" aria-label="Switch language to Chinese">
+      <span data-en="中文" data-zh="English">中文</span>
+    </button>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span><span data-en="A small, measured comparison" data-zh="一组小规模实测对照">A small, measured comparison</span></p>
+        <h1 id="page-title"><span data-en="Skill × Workflow" data-zh="Skill × Workflow">Skill × Workflow</span><br><span class="title-subline" data-en="outputs, side by side." data-zh="并排看结果。">outputs, side by side.</span></h1>
+        <p class="hero-deck" data-en="One conversation made three explainers. Other runs made one page, reused video assets, or rewrote a manuscript. Explore the artifacts and the measurements behind them." data-zh="一次对话制作了三份讲解页；其他运行则分别制作单页、复用视频素材或重写稿件。这里可以查看产物与对应测量数据。">One conversation made three explainers. Other runs made one page, reused video assets, or rewrote a manuscript. Explore the artifacts and the measurements behind them.</p>
+        <p class="hero-caveat" data-en="These are specific experiment samples. They do not establish a universal performance advantage." data-zh="这些是特定实验样本，不能据此推断普遍的性能优势。">These are specific experiment samples. They do not establish a universal performance advantage.</p>
+      </div>
+      <div class="hero-index" aria-label="Experiment overview">
+        <div class="index-cell"><span class="index-value">03</span><span data-en="HTML topics" data-zh="个网页主题">HTML topics</span></div>
+        <div class="index-cell"><span class="index-value">02</span><span data-en="methods" data-zh="种方法">methods</span></div>
+        <div class="index-cell"><span class="index-value">01</span><span data-en="conversation / batch" data-zh="次对话 / 批量任务">conversation / batch</span></div>
+        <p data-en="The six HTML files below are one three-page, one-conversation experiment—not six standalone output trials." data-zh="下方六份 HTML 属于同一项“一次对话制作三页”的实验，不代表六次独立产出。">The six HTML files below are one three-page, one-conversation experiment—not six standalone output trials.</p>
+      </div>
+    </section>
+
+    <section class="section batch-section" id="batch" aria-labelledby="batch-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span class="section-number">01</span><span data-en="One conversation · three pages" data-zh="一次对话 · 三个页面">One conversation · three pages</span></p>
+          <h2 id="batch-title" data-en="The batch experiment" data-zh="批量实验">The batch experiment</h2>
+        </div>
+        <p class="section-intro" data-en="Each method produced TCP, Redis / Memcached, and Git merge / rebase explainers in one conversation. One trial per method; both used gpt-6.1-sol/high and renderer 0.4.7." data-zh="两种方法分别在一次对话中制作 TCP、Redis / Memcached、Git merge / rebase 三份讲解页。每种方法各运行一次；均使用 gpt-6.1-sol/high 与渲染器 0.4.7。">Each method produced TCP, Redis / Memcached, and Git merge / rebase explainers in one conversation. One trial per method; both used gpt-6.1-sol/high and renderer 0.4.7.</p>
+      </div>
+
+      <p class="sample-note" data-en="One three-page delivery per method. The six linked files are the pages from these two batch runs." data-zh="每种方法各交付一组三页。六个链接对应这两次批量运行产出的页面。">One three-page delivery per method. The six linked files are the pages from these two batch runs.</p>
+      <div class="table-wrap">
+        <table class="metrics-table">
+          <caption data-en="Batch run measurements" data-zh="批量运行测量值">Batch run measurements</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-en="Method · sample" data-zh="方法 · 样本数">Method · sample</th>
+              <th scope="col" data-en="Total input tokens (cached included)" data-zh="输入 token 总量（含缓存）">Total input tokens (cached included)</th>
+              <th scope="col" data-en="Cached input" data-zh="缓存输入">Cached input</th>
+              <th scope="col" data-en="Output" data-zh="输出">Output</th>
+              <th scope="col" data-en="API-equivalent USD" data-zh="API 等价美元">API-equivalent USD</th>
+              <th scope="col" data-en="Full delivery · seconds" data-zh="完整交付 · 秒">Full delivery · seconds</th>
+            </tr>
+          </thead>
+          <tbody id="batch-rows">
+            <tr><td colspan="6" data-en="Loading measurements…" data-zh="正在读取测量数据…">Loading measurements…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="delta-note" id="batch-delta" aria-live="polite"></p>
+
+      <div class="artifact-explorer">
+        <div class="artifact-toolbar">
+          <div>
+            <p class="eyebrow" data-en="Browse the six batch artifacts" data-zh="浏览六份批量产物">Browse the six batch artifacts</p>
+            <p class="toolbar-help" data-en="Choose a topic to load its Skill and Workflow pages below." data-zh="选择主题，在下方并排查看对应的 Skill 与 Workflow 页面。">Choose a topic to load its Skill and Workflow pages below.</p>
+          </div>
+          <div class="topic-picker" id="batch-topic-picker" role="group" aria-label="Choose an experiment topic">
+            <button type="button" class="topic-button" data-topic="tcp" aria-pressed="true"><span data-en="TCP" data-zh="TCP">TCP</span></button>
+            <button type="button" class="topic-button" data-topic="cache" aria-pressed="false"><span data-en="Redis / Memcached" data-zh="Redis / Memcached">Redis / Memcached</span></button>
+            <button type="button" class="topic-button" data-topic="git" aria-pressed="false"><span data-en="Git merge / rebase" data-zh="Git merge / rebase">Git merge / rebase</span></button>
+          </div>
+        </div>
+        <p class="artifact-caption" id="artifact-caption" aria-live="polite"><span data-en="TCP · from the three-page batch conversation" data-zh="TCP · 来自三页批量对话">TCP · from the three-page batch conversation</span></p>
+        <div class="preview-grid" id="previews">
+          <article class="preview-card" aria-labelledby="skill-preview-title">
+            <div class="preview-heading">
+              <div><p class="preview-kicker">A <span aria-hidden="true">/</span> Skill</p><h3 id="skill-preview-title" data-en="Skill artifact" data-zh="Skill 产物">Skill artifact</h3></div>
+              <a class="artifact-link" id="skill-artifact-link" href="../examples/html/tcp-skill.html" target="_blank" rel="noopener" data-en="Open full page ↗" data-zh="打开完整页面 ↗">Open full page ↗</a>
+            </div>
+            <iframe id="skill-preview" src="../examples/html/tcp-skill.html" title="Skill TCP explainer from the three-page batch experiment" sandbox="allow-scripts" loading="lazy"></iframe>
+          </article>
+          <article class="preview-card" aria-labelledby="workflow-preview-title">
+            <div class="preview-heading">
+              <div><p class="preview-kicker">B <span aria-hidden="true">/</span> Workflow</p><h3 id="workflow-preview-title" data-en="Workflow artifact" data-zh="Workflow 产物">Workflow artifact</h3></div>
+              <a class="artifact-link" id="workflow-artifact-link" href="../examples/html/tcp-workflow.html" target="_blank" rel="noopener" data-en="Open full page ↗" data-zh="打开完整页面 ↗">Open full page ↗</a>
+            </div>
+            <iframe id="workflow-preview" src="../examples/html/tcp-workflow.html" title="Workflow TCP explainer from the three-page batch experiment" sandbox="allow-scripts" loading="lazy"></iframe>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section single-section" id="single" aria-labelledby="single-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span class="section-number">02</span><span data-en="Separate page runs" data-zh="单独运行页面">Separate page runs</span></p>
+          <h2 id="single-title" data-en="One page at a time" data-zh="一次制作一个页面">One page at a time</h2>
+        </div>
+        <p class="section-intro" data-en="For each topic, the Skill baseline is one fixed trial and Workflow has three runs. The table compares that baseline with the Workflow mean; details below retain every run." data-zh="每个主题的 Skill 基线是一次固定运行，Workflow 运行三次。上表将该基线与 Workflow 均值比较；下方保留每次运行的数据。">For each topic, the Skill baseline is one fixed trial and Workflow has three runs. The table compares that baseline with the Workflow mean; details below retain every run.</p>
+      </div>
+      <div class="single-controls">
+        <div>
+          <p class="control-label" id="single-topic-label" data-en="Selected topic" data-zh="当前主题">Selected topic</p>
+          <div class="topic-picker" id="single-topic-picker" role="group" aria-labelledby="single-topic-label">
+            <button type="button" class="topic-button" data-topic="tcp" aria-pressed="true"><span data-en="TCP" data-zh="TCP">TCP</span></button>
+            <button type="button" class="topic-button" data-topic="cache" aria-pressed="false"><span data-en="Redis / Memcached" data-zh="Redis / Memcached">Redis / Memcached</span></button>
+            <button type="button" class="topic-button" data-topic="git" aria-pressed="false"><span data-en="Git merge / rebase" data-zh="Git merge / rebase">Git merge / rebase</span></button>
+          </div>
+        </div>
+        <p class="single-condition" id="single-condition" aria-live="polite"><span data-en="TCP · Skill 1 fixed trial vs Workflow 3-run mean" data-zh="TCP · Skill 固定样本 1 次，对比 Workflow 3 次均值">TCP · Skill 1 fixed trial vs Workflow 3-run mean</span></p>
+      </div>
+      <div class="table-wrap">
+        <table class="metrics-table">
+          <caption data-en="Selected topic · baseline and mean" data-zh="所选主题 · 基线与均值">Selected topic · baseline and mean</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-en="Method · sample condition" data-zh="方法 · 样本条件">Method · sample condition</th>
+              <th scope="col" data-en="Total input tokens (cached included)" data-zh="输入 token 总量（含缓存）">Total input tokens (cached included)</th>
+              <th scope="col" data-en="Cached input" data-zh="缓存输入">Cached input</th>
+              <th scope="col" data-en="Output" data-zh="输出">Output</th>
+              <th scope="col" data-en="API-equivalent USD" data-zh="API 等价美元">API-equivalent USD</th>
+              <th scope="col" data-en="Full delivery · seconds" data-zh="完整交付 · 秒">Full delivery · seconds</th>
+            </tr>
+          </thead>
+          <tbody id="single-summary-rows">
+            <tr><td colspan="6" data-en="Loading measurements…" data-zh="正在读取测量数据…">Loading measurements…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="delta-note" id="single-delta" aria-live="polite"></p>
+      <details class="run-details" open>
+        <summary><span data-en="Per-run measurements" data-zh="每次运行的测量值">Per-run measurements</span><span class="summary-count" id="run-count">—</span></summary>
+        <div class="table-wrap">
+          <table class="metrics-table compact-table">
+            <caption id="run-caption" data-en="One fixed Skill baseline and three Workflow runs for the selected topic." data-zh="所选主题的 Skill 固定基线一次，Workflow 运行三次。">One fixed Skill baseline and three Workflow runs for the selected topic.</caption>
+            <thead>
+              <tr>
+                <th scope="col" data-en="Run" data-zh="运行">Run</th>
+                <th scope="col" data-en="Total input tokens" data-zh="输入 token 总量">Total input tokens</th>
+                <th scope="col" data-en="Cached input" data-zh="缓存输入">Cached input</th>
+                <th scope="col" data-en="Output" data-zh="输出">Output</th>
+                <th scope="col" data-en="API-equivalent USD" data-zh="API 等价美元">API-equivalent USD</th>
+                <th scope="col" data-en="Full delivery · seconds" data-zh="完整交付 · 秒">Full delivery · seconds</th>
+              </tr>
+            </thead>
+            <tbody id="single-run-rows">
+              <tr><td colspan="6" data-en="Loading measurements…" data-zh="正在读取测量数据…">Loading measurements…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="section video-section" id="video" aria-labelledby="video-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span class="section-number">03</span><span data-en="Video asset reuse · manuscript only" data-zh="复用视频素材 · 仅重写稿件">Video asset reuse · manuscript only</span></p>
+          <h2 id="video-title" data-en="Two more task shapes" data-zh="另外两类任务">Two more task shapes</h2>
+        </div>
+        <p class="section-intro" data-en="Each stage is one trial per method. Reuse means the same supplied video assets; manuscript-only means rewriting the text without producing video." data-zh="每个阶段中两种方法各运行一次。素材复用指使用相同的已有视频素材；仅重写稿件指改写文本，不制作视频。">Each stage is one trial per method. Reuse means the same supplied video assets; manuscript-only means rewriting the text without producing video.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="metrics-table">
+          <caption data-en="One trial per method for each task stage" data-zh="每个任务阶段中每种方法各一次">One trial per method for each task stage</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-en="Task stage · sample" data-zh="任务阶段 · 样本数">Task stage · sample</th>
+              <th scope="col" data-en="Method" data-zh="方法">Method</th>
+              <th scope="col" data-en="Total input tokens (cached included)" data-zh="输入 token 总量（含缓存）">Total input tokens (cached included)</th>
+              <th scope="col" data-en="Cached input" data-zh="缓存输入">Cached input</th>
+              <th scope="col" data-en="Output" data-zh="输出">Output</th>
+              <th scope="col" data-en="API-equivalent USD" data-zh="API 等价美元">API-equivalent USD</th>
+              <th scope="col" data-en="Full delivery · seconds" data-zh="完整交付 · 秒">Full delivery · seconds</th>
+            </tr>
+          </thead>
+          <tbody id="video-rows">
+            <tr><td colspan="7" data-en="Loading measurements…" data-zh="正在读取测量数据…">Loading measurements…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="delta-note" id="video-delta" aria-live="polite"></p>
+      <aside class="watch-note">
+        <span class="watch-icon" aria-hidden="true">↗</span>
+        <p><strong data-en="Watch the illustrative videos" data-zh="观看示例视频">Watch the illustrative videos</strong><br><span data-en="These independently produced, older videos are illustrative outputs. They are not the videos measured in the reuse task, and they are not the measured text artifacts." data-zh="这些独立制作的较早视频仅供示例。它们不是素材复用任务中测量的视频，也不是该任务测量的文本产物。">These independently produced, older videos are illustrative outputs. They are not the videos measured in the reuse task, and they are not the measured text artifacts.</span></p>
+        <a href="../examples/video/comparison.html" target="_blank" rel="noopener" data-en="Open comparison ↗" data-zh="打开视频对照 ↗">Open comparison ↗</a>
+      </aside>
+    </section>
+
+    <section class="section method-section" id="method" aria-labelledby="method-title">
+      <div class="section-heading method-heading">
+        <div>
+          <p class="eyebrow"><span class="section-number">04</span><span data-en="Read the numbers carefully" data-zh="如何理解这些数字">Read the numbers carefully</span></p>
+          <h2 id="method-title" data-en="Measurement notes" data-zh="统计口径">Measurement notes</h2>
+        </div>
+      </div>
+      <div class="method-grid">
+        <article>
+          <h3 data-en="Token and cost basis" data-zh="Token 与成本口径">Token and cost basis</h3>
+          <p data-en="Input tokens include cached input; the cached column is a subset of input, not an extra amount. Costs are API-equivalent USD, not subscription bills. They include Main, workers, and corrections." data-zh="输入 token 已包含缓存输入；缓存列是输入的一部分，不应再相加。成本为 API 等价美元，不是订阅账单，包含 Main、worker 与修正。">Input tokens include cached input; the cached column is a subset of input, not an extra amount. Costs are API-equivalent USD, not subscription bills. They include Main, workers, and corrections.</p>
+        </article>
+        <article>
+          <h3 data-en="Pricing per million tokens" data-zh="每百万 token 价格">Pricing per million tokens</h3>
+          <p id="pricing-note" data-en="Loading pricing…" data-zh="正在读取价格…">Loading pricing…</p>
+        </article>
+        <article>
+          <h3 data-en="Delivery time" data-zh="交付耗时">Delivery time</h3>
+          <p data-en="Seconds cover full delivery, including work by Main and workers and corrections. The batch section has one three-page delivery per method." data-zh="秒数覆盖完整交付，包括 Main、worker 与修正。批量部分每种方法各有一次三页交付。">Seconds cover full delivery, including work by Main and workers and corrections. The batch section has one three-page delivery per method.</p>
+        </article>
+        <article>
+          <h3 data-en="Limits" data-zh="结果边界">Limits</h3>
+          <p data-en="Model outputs are stochastic. Single-page Workflow figures are means of three runs against one fixed Skill trial per topic. The displayed measurements describe these samples only; no quality score was measured." data-zh="模型输出具有随机性。单页 Workflow 数据是三次运行的均值，每个主题仅与一次固定 Skill 样本比较。页面数据只描述这些样本；实验未测量质量评分。">Model outputs are stochastic. Single-page Workflow figures are means of three runs against one fixed Skill trial per topic. The displayed measurements describe these samples only; no quality score was measured.</p>
+        </article>
+      </div>
+      <div class="source-links">
+        <p class="source-label" data-en="Source documents and repositories" data-zh="结果文档与代码仓库">Source documents and repositories</p>
+        <a href="https://github.com/TohmaN233/workflow-package/blob/main/workflow_explanations/experiments/results.md" target="_blank" rel="noopener" data-en="Results · English on GitHub ↗" data-zh="实验结果 · GitHub 英文版 ↗">Results · English on GitHub ↗</a>
+        <a href="https://github.com/TohmaN233/workflow-package/blob/main/workflow_explanations/experiments/results.zh-CN.md" target="_blank" rel="noopener" data-en="Results · Chinese on GitHub ↗" data-zh="实验结果 · GitHub 中文版 ↗">Results · Chinese on GitHub ↗</a>
+        <a href="https://github.com/TohmaN233/workflow-package" target="_blank" rel="noopener" data-en="Experiment source repository ↗" data-zh="实验源代码仓库 ↗">Experiment source repository ↗</a>
+        <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener" data-en="Original Skill ↗" data-zh="原始 Skill ↗">Original Skill ↗</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <span>FIELD NOTES · 01</span>
+    <span data-en="Artifacts and measurements are linked to their sources." data-zh="产物与测量数据均链接到来源。">Artifacts and measurements are linked to their sources.</span>
+    <a href="#top" data-en="Back to top ↑" data-zh="返回顶部 ↑">Back to top ↑</a>
+  </footer>
+  <div class="data-error" id="data-error" role="alert" hidden>
+    <strong data-en="Experiment data could not be loaded." data-zh="无法读取实验数据。">Experiment data could not be loaded.</strong>
+    <span data-en="The gallery reads ../experiments/results.json. Check that the file is published and reload the page." data-zh="页面从 ../experiments/results.json 读取数据。请检查该文件是否已发布，然后重新加载。">The gallery reads ../experiments/results.json. Check that the file is published and reload the page.</span>
+  </div>
+</body>
+</html>

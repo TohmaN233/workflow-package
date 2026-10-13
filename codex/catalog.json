@@ -12,9 +12,9 @@
       "package_version": "1.0.0",
       "path": "codex/answer-me-with-html/answer-me-with-html.workflow-package.json",
       "source_skill": "https://github.com/QingYunA/answer-me-with-html",
-      "workflow_revision_hash": "7f1a372c03a0ce70dbd4218da10d965feed74dcd139dda7e1f8412043b46c093",
-      "package_sha256": "f1ac754f593edf531331fb14745b15ee5edc5392839a311b19c5c056271aca92",
-      "file_sha256": "39e04313144c16700bd52d530ef8add1b0c87f13147bed80ee4581ff1180be34",
+      "workflow_revision_hash": "6d6093341d9cb174df0ef17e8eb01deaebf5cc1f16768254d5067c7e78d2fe58",
+      "package_sha256": "3153e6e9b058a3334f72b4cdda4e090bf1ea66549541c687aa4d809a61f0be74",
+      "file_sha256": "ec446cb0a008368652f53e2e5f158f47bde4452dbeae1a5dde45bd608479681e",
       "node_count": 34,
       "resource_count": 75,
       "dependencies": {

@@ -4,6 +4,7 @@
 
 This is the common home for package instructions, comparisons and examples. Import the JSON linked from the repository homepage; the files here are documentation and produced examples.
 
+- [Installation procedure for an LLM: dependencies, import and verification](install.md)
 - [Installation and platforms](platforms.md)
 - [Answer me with HTML](answer-me-with-html.md)
 - [GitHub README generator](github-readme-generator.md)

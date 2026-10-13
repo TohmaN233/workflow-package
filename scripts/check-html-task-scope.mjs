@@ -21,3 +21,20 @@ for (const id of ['activity_011', 'batch_pages']) {
   assert(node?.resources.includes(reference), `${id}: research boundary must reach the actual writer`);
 }
 console.log('PASS persistent HTML task scope: both writers receive the boundary; genuine research and original production remain available');
+
+const sourceText = name => Buffer.from(bundle.objects.find(item => item.path === name).content_base64, 'base64').toString('utf8');
+const moduleFrom = text => import('data:text/javascript;base64,' + Buffer.from(text).toString('base64'));
+const {declaredPageRoute} = await moduleFrom(sourceText('workflow-assets/host-adapter/declared-page-route.mjs'));
+const {validateRouteDecision} = await moduleFrom(sourceText('workflow-assets/host-adapter/render-contract.mjs'));
+const plan = {pages:[{request:'Explain one concept',output:'one.html'},{request:'Explain another concept',output:'two.html'}],batch_context:'Write in English'};
+assert.equal(declaredPageRoute(plan,validateRouteDecision).resolved,true);
+assert.equal(declaredPageRoute({...plan,mp4:true},validateRouteDecision).resolved,false);
+assert.equal(declaredPageRoute({request:'Make two pages'},validateRouteDecision).resolved,false);
+assert.equal(declaredPageRoute({pages:plan.pages},validateRouteDecision).resolved,false);
+assert.throws(() => declaredPageRoute({...plan,pages:[]},validateRouteDecision));
+const main = bundle.snapshot.workflow.nodes.find(item => item.id === 'main_acceptance');
+assert(!main.resources.includes(reference),'Semantic acceptance must not replay the producer rendering guide');
+assert.deepEqual(main.input_bindings.mode.coalesce,['/nodes/declared_page_route/output/decision/mode','/nodes/activity_001/output/mode']);
+assert.deepEqual(bundle.snapshot.workflow.nodes.find(item => item.id === 'final').input_bindings.route_decision.coalesce,
+  ['/nodes/declared_page_route/output/decision','/nodes/activity_001/output']);
+console.log('PASS explicit plan binding and free-form Main route; acceptance retains full content without producer guide replay');

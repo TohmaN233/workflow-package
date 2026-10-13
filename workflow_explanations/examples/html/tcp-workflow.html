@@ -441,201 +441,239 @@ html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var
 <button class="am-btn" type="button" data-am="copy" data-done="Copied ✓">Copy source</button>
 </div>
 <main class="am-sheet">
-<header class="am-head"><h1>TCP connection setup and teardown</h1><p class="am-sub">Three messages open a connection; four messages usually close it</p><div class="am-intro am-md"><div class="am-md"><p>TCP synchronizes two byte streams during setup. During teardown, each endpoint closes its sending direction separately.</p>
+<header class="am-head"><h1>TCP connection setup and teardown</h1><p class="am-sub">Three messages establish a connection; each direction closes separately.</p><div class="am-intro am-md"><div class="am-md"><p>TCP uses a three-way handshake to exchange starting sequence numbers and confirm communication in both directions. A normal four-way teardown closes each direction separately. The four messages can sometimes combine into three segments.</p>
 </div></div></header>
 <div class="am-frame">
 <div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
 <div class="am-grid" style="--cols: 3">
 <section class="am-panel am-span-wide" id="panel-A" style="grid-column: span 2">
 <header class="am-panel-head"><span class="am-panel-id">A</span><h2>How does the three-way handshake work?</h2></header>
-<div class="am-panel-body"><div class="am-md"><p>The client starts an active open. The server listens for incoming connections.</p>
+<div class="am-panel-body"><div class="am-md"><p>The client starts an active open. The server listens for connection requests. Here, <code>x</code> and <code>y</code> represent their initial sequence numbers.</p>
 </div>
-<figure class="am-diagram am-seq"><svg viewBox="0 0 328 190" width="328" height="190" role="img" aria-label="时序图：Client、Server" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><line class="am-lifeline" x1="54" y1="42" x2="54" y2="186"/><g data-key="Client"><rect class="am-actor" x="12" y="8" width="84" height="34" rx="2"/><text x="54" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Client</text></g><line class="am-lifeline" x1="273.6" y1="42" x2="273.6" y2="186"/><g data-key="Server"><rect class="am-actor" x="231.6" y="8" width="84" height="34" rx="2"/><text x="273.6" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Server</text></g><g data-step="0"><text x="163.8" y="70" text-anchor="middle">SYN · seq=x</text><path class="am-edge" d="M54,80 L271.6,80" marker-end="url(#am1-arrow)"/><text class="am-step" x="60" y="74" text-anchor="start">1</text></g><g data-step="1"><text x="163.8" y="110" text-anchor="middle">SYN + ACK · seq=y · ack=x+1</text><path class="am-edge" d="M273.6,120 L56,120" marker-end="url(#am1-arrow)"/><text class="am-step" x="267.6" y="114" text-anchor="end">2</text></g><g data-step="2"><text x="163.8" y="150" text-anchor="middle">ACK · seq=x+1 · ack=y+1</text><path class="am-edge" d="M54,160 L271.6,160" marker-end="url(#am1-arrow)"/><text class="am-step" x="60" y="154" text-anchor="start">3</text></g></svg></figure>
+<figure class="am-diagram am-seq"><svg viewBox="0 0 306 190" width="306" height="190" role="img" aria-label="时序图：Client、Server" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><line class="am-lifeline" x1="54" y1="42" x2="54" y2="186"/><g data-key="Client"><rect class="am-actor" x="12" y="8" width="84" height="34" rx="2"/><text x="54" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Client</text></g><line class="am-lifeline" x1="251.8" y1="42" x2="251.8" y2="186"/><g data-key="Server"><rect class="am-actor" x="209.8" y="8" width="84" height="34" rx="2"/><text x="251.8" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Server</text></g><g data-step="0"><text x="152.9" y="70" text-anchor="middle">SYN, seq=x</text><path class="am-edge" d="M54,80 L249.8,80" marker-end="url(#am1-arrow)"/><text class="am-step" x="60" y="74" text-anchor="start">1</text></g><g data-step="1"><text x="152.9" y="110" text-anchor="middle">SYN+ACK, seq=y, ack=x+1</text><path class="am-edge am-edge--dashed" d="M251.8,120 L56,120" marker-end="url(#am1-arrow)"/><text class="am-step" x="245.8" y="114" text-anchor="end">2</text></g><g data-step="2"><text x="152.9" y="150" text-anchor="middle">ACK, seq=x+1, ack=y+1</text><path class="am-edge" d="M54,160 L249.8,160" marker-end="url(#am1-arrow)"/><text class="am-step" x="60" y="154" text-anchor="start">3</text></g></svg></figure>
 <div class="am-md"><ol>
-<li>The client sends SYN and enters SYN-SENT.</li>
-<li>The server acknowledges the client&#39;s SYN, sends its own SYN, and enters SYN-RECEIVED.</li>
-<li>The client acknowledges the server&#39;s SYN and enters ESTABLISHED.</li>
-<li>The server enters ESTABLISHED when it receives that ACK.</li>
+<li>The client sends SYN and enters <code>SYN-SENT</code>.</li>
+<li>The server acknowledges the client&#39;s SYN, sends its own SYN, and enters <code>SYN-RECEIVED</code>.</li>
+<li>The client acknowledges the server&#39;s SYN and enters <code>ESTABLISHED</code>.</li>
+<li>The server enters <code>ESTABLISHED</code> when it receives that ACK.</li>
 </ol>
-<p>These four steps describe three messages. The final ACK can also carry application data.</p>
+<p>The server&#39;s reply combines SYN and ACK in one segment. The third segment can also carry application data.</p>
+<p>The final ACK confirms that the client received the server&#39;s starting sequence number. Without it, the server cannot confirm receipt of its SYN.</p>
 </div></div>
 </section>
 <section class="am-panel" id="panel-B">
-<header class="am-panel-head"><span class="am-panel-id">B</span><h2>What do the sequence numbers mean?</h2></header>
-<div class="am-panel-body"><div class="am-md"><p>Here, <code>x</code> and <code>y</code> represent each endpoint&#39;s initial sequence number.</p>
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>What do sequence numbers and ACKs mean?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>TCP numbers bytes independently in each direction. An acknowledgment identifies the next sequence number the receiver expects.</p>
 <div class="am-table-wrap"><table>
 <thead>
 <tr>
-<th>Field or flag</th>
-<th>Meaning</th>
+<th>Item</th>
+<th>Sequence space consumed</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Sequence number</td>
-<td>Identifies a position in the sender&#39;s byte stream</td>
-</tr>
-<tr>
-<td>ACK number</td>
-<td>Gives the next sequence number the receiver expects</td>
-</tr>
-<tr>
 <td>SYN</td>
-<td>Consumes one sequence number</td>
+<td>One sequence number</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>One sequence number per byte</td>
 </tr>
 <tr>
 <td>FIN</td>
-<td>Consumes one sequence number</td>
+<td>One sequence number</td>
 </tr>
 <tr>
-<td>ACK without data</td>
-<td>Consumes no sequence numbers</td>
+<td>ACK without data, SYN, or FIN</td>
+<td>None</td>
 </tr>
 </tbody></table></div>
-<p>Each direction has its own sequence space. Acknowledging both SYNs confirms receipt of both starting sequence numbers.</p>
+<p>An ACK of <code>x+1</code> acknowledges the SYN at <code>x</code>. If data starts at <code>x+1</code> and contains <code>n</code> bytes, the next expected number becomes <code>x+1+n</code>.</p>
+<p>An ACK confirms receipt by TCP. It does not prove that the receiving application processed the data.</p>
 </div></div>
 </section>
 <section class="am-panel am-span-wide" id="panel-C" style="grid-column: span 2">
 <header class="am-panel-head"><span class="am-panel-id">C</span><h2>How does the four-way teardown work?</h2></header>
-<div class="am-panel-body"><div class="am-md"><p>Either endpoint can start closing. This example uses the client as the active closer.</p>
-<p>Here, <code>u</code> and <code>v</code> are the next unused sequence numbers. Neither endpoint sends more application data during this example.</p>
+<div class="am-panel-body"><div class="am-md"><p>Either endpoint can start closure. Here, the client closes first. The values <code>u</code> and <code>v</code> identify each endpoint&#39;s FIN sequence number.</p>
 </div>
-<figure class="am-diagram am-seq"><svg viewBox="0 0 323 230" width="323" height="230" role="img" aria-label="时序图：Client、Server" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><line class="am-lifeline" x1="54" y1="42" x2="54" y2="226"/><g data-key="Client"><rect class="am-actor" x="12" y="8" width="84" height="34" rx="2"/><text x="54" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Client</text></g><line class="am-lifeline" x1="269" y1="42" x2="269" y2="226"/><g data-key="Server"><rect class="am-actor" x="227" y="8" width="84" height="34" rx="2"/><text x="269" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Server</text></g><g data-step="0"><text x="161.5" y="70" text-anchor="middle">FIN + ACK · seq=u · ack=v</text><path class="am-edge" d="M54,80 L267,80" marker-end="url(#am2-arrow)"/><text class="am-step" x="60" y="74" text-anchor="start">1</text></g><g data-step="1"><text x="161.5" y="110" text-anchor="middle">ACK · ack=u+1</text><path class="am-edge" d="M269,120 L56,120" marker-end="url(#am2-arrow)"/><text class="am-step" x="263" y="114" text-anchor="end">2</text></g><g data-step="2"><text x="161.5" y="150" text-anchor="middle">FIN + ACK · seq=v · ack=u+1</text><path class="am-edge" d="M269,160 L56,160" marker-end="url(#am2-arrow)"/><text class="am-step" x="263" y="154" text-anchor="end">3</text></g><g data-step="3"><text x="161.5" y="190" text-anchor="middle">ACK · ack=v+1</text><path class="am-edge" d="M54,200 L267,200" marker-end="url(#am2-arrow)"/><text class="am-step" x="60" y="194" text-anchor="start">4</text></g></svg></figure>
+<figure class="am-diagram am-seq"><svg viewBox="0 0 243 274" width="243" height="274" role="img" aria-label="时序图：Client、Server" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><line class="am-lifeline" x1="54" y1="42" x2="54" y2="270"/><g data-key="Client"><rect class="am-actor" x="12" y="8" width="84" height="34" rx="2"/><text x="54" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Client</text></g><line class="am-lifeline" x1="188.1" y1="42" x2="188.1" y2="270"/><g data-key="Server"><rect class="am-actor" x="146.1" y="8" width="84" height="34" rx="2"/><text x="188.1" y="25" text-anchor="middle" dominant-baseline="central" font-weight="600">Server</text></g><g data-step="0"><text x="121.1" y="70" text-anchor="middle">FIN+ACK, seq=u</text><path class="am-edge" d="M54,80 L186.1,80" marker-end="url(#am2-arrow)"/><text class="am-step" x="60" y="74" text-anchor="start">1</text></g><g data-step="1"><text x="121.1" y="110" text-anchor="middle">ACK, ack=u+1</text><path class="am-edge am-edge--dashed" d="M188.1,120 L56,120" marker-end="url(#am2-arrow)"/><text class="am-step" x="182.1" y="114" text-anchor="end">2</text></g><g data-step="2"><rect class="am-note" x="3.9" y="144" width="234.3" height="28" rx="2"/><text x="121.1" y="158" text-anchor="middle" dominant-baseline="central" font-size="12">The server can continue sending data.</text></g><g data-step="3"><text x="121.1" y="194" text-anchor="middle">FIN+ACK, seq=v</text><path class="am-edge am-edge--dashed" d="M188.1,204 L56,204" marker-end="url(#am2-arrow)"/><text class="am-step" x="182.1" y="198" text-anchor="end">3</text></g><g data-step="4"><text x="121.1" y="234" text-anchor="middle">ACK, ack=v+1</text><path class="am-edge" d="M54,244 L186.1,244" marker-end="url(#am2-arrow)"/><text class="am-step" x="60" y="238" text-anchor="start">4</text></g></svg></figure>
 <div class="am-md"><ol>
-<li>The client sends FIN and enters FIN-WAIT-1.</li>
-<li>The server acknowledges FIN and enters CLOSE-WAIT. The client enters FIN-WAIT-2 after receiving that ACK.</li>
-<li>The server application closes its sending direction. The server sends FIN and enters LAST-ACK.</li>
-<li>The client acknowledges that FIN and enters TIME-WAIT. The server enters CLOSED after receiving the final ACK.</li>
+<li>The client sends FIN and enters <code>FIN-WAIT-1</code>.</li>
+<li>The server acknowledges FIN and enters <code>CLOSE-WAIT</code>.</li>
+<li>The client receives that ACK and enters <code>FIN-WAIT-2</code>.</li>
+<li>The server sends FIN when its application finishes sending and enters <code>LAST-ACK</code>.</li>
+<li>The client acknowledges the server&#39;s FIN and enters <code>TIME-WAIT</code>.</li>
+<li>The server receives the final ACK and enters <code>CLOSED</code>.</li>
 </ol>
-<p>The client enters CLOSED when TIME-WAIT expires.</p>
+<p>FIN means that its sender has finished sending data. It does not immediately close the opposite direction.</p>
+<p>These steps describe the normal path with a separate ACK before the server&#39;s FIN. Combined messages produce a shorter path.</p>
 </div></div>
 </section>
 <section class="am-panel" id="panel-D">
-<header class="am-panel-head"><span class="am-panel-id">D</span><h2>Why are there usually four messages?</h2></header>
-<div class="am-panel-body"><div class="am-md"><p>TCP supports communication in both directions. Receiving FIN closes only the peer&#39;s sending direction.</p>
-<p>After receiving the client&#39;s FIN, the server can still send remaining data. Its application decides when to send its own FIN.</p>
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>Why does closure need two FINs?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>TCP supports two independent byte streams. Each endpoint must announce the end of its own stream.</p>
+<p>After receiving the client&#39;s FIN, the server can still send remaining data. The client can still receive that data during this half-closed state.</p>
+<p>The server&#39;s ACK confirms receipt of the client&#39;s FIN. The server&#39;s later FIN announces the end of the server&#39;s stream.</p>
 </div>
-<div class="am-callout am-callout--info" role="note"><div class="am-callout-title">Half-close</div><div class="am-callout-body am-md"><p>A FIN means “I have no more bytes to send.” The endpoint can still receive bytes from its peer.</p>
+<div class="am-callout am-callout--info" role="note"><div class="am-callout-title">Three segments are possible</div><div class="am-callout-body am-md"><p>If the server is ready to close immediately, it can combine its ACK and FIN in one segment. Closure then uses three segments.</p>
 </div></div>
-<div class="am-md"><p>The server can combine its ACK and FIN when it is ready to close immediately. That reduces this exchange to three messages.</p>
+<div class="am-md"><p>An orderly FIN follows any earlier data in that direction. The receiver delivers end-of-stream after receiving the preceding bytes.</p>
 </div></div>
 </section>
-<section class="am-panel am-span-wide" id="panel-E" style="grid-column: span 3">
+<section class="am-panel am-span-wide" id="panel-E" style="grid-column: span 2">
 <header class="am-panel-head"><span class="am-panel-id">E</span><h2>Why does TIME-WAIT exist?</h2></header>
-<div class="am-panel-body"><div class="am-md"><p>The endpoint sending the final ACK normally waits for twice the maximum segment lifetime, called <code>2 × MSL</code>.</p>
-<div class="am-table-wrap"><table>
+<div class="am-panel-body"><div class="am-md"><p>In the normal teardown, the endpoint that sends the final ACK enters <code>TIME-WAIT</code>. This is usually the endpoint that initiated closure.</p>
+<ul>
+<li>It can acknowledge a repeated FIN if the final ACK was lost.</li>
+<li>It gives delayed segments from the old connection time to expire.</li>
+</ul>
+<p><code>TIME-WAIT</code> lasts twice the maximum segment lifetime, commonly written as <code>2 × MSL</code>. The duration depends on the implementation.</p>
+<p>After the timer expires, the endpoint enters <code>CLOSED</code>.</p>
+</div>
+<div class="am-callout am-callout--info" role="note"><div class="am-callout-title">Lost final ACK</div><div class="am-callout-body am-md"><p>The server retransmits its FIN if it receives no ACK. The endpoint in TIME-WAIT can send the ACK again.</p>
+</div></div></div>
+</section>
+<section class="am-panel" id="panel-F">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>What can change the message pattern?</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
 <thead>
 <tr>
-<th>Purpose</th>
-<th>What TIME-WAIT provides</th>
+<th>Situation</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Handle a lost final ACK</td>
-<td>The closer can acknowledge a retransmitted FIN</td>
+<td>Lost SYN or FIN</td>
+<td>TCP retransmits; captures may show more messages.</td>
 </tr>
 <tr>
-<td>Let old segments expire</td>
-<td>Delayed segments have time to leave the network before a new connection uses the same connection identifiers</td>
+<td>Lost handshake ACK</td>
+<td>A repeated SYN+ACK can trigger another ACK.</td>
+</tr>
+<tr>
+<td>Simultaneous close</td>
+<td>Both endpoints send FIN; states and message order differ.</td>
+</tr>
+<tr>
+<td>Connection reset</td>
+<td>RST aborts the connection instead of completing orderly FIN closure.</td>
 </tr>
 </tbody></table></div>
-<p>The exact duration depends on the TCP implementation.</p>
-</div>
-<div class="am-callout am-callout--warn" role="note"><div class="am-callout-title">These are normal exchanges</div><div class="am-callout-body am-md"><p>Packets can be lost and retransmitted. Simultaneous closes can change the state sequence. An RST aborts a connection without this orderly FIN exchange.</p>
-</div></div></div>
+<p>Three-way handshake and four-way teardown describe the usual logical exchanges. They do not guarantee exactly three or four packets in every capture.</p>
+</div></div>
 </section>
 </div>
 </div>
 </main>
-<footer class="am-colophon">Generated by Answer me with HTML 0.4.7 · 2026-10-12 22:40</footer>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.7 · 2026-10-13 00:35</footer>
 <textarea id="am-source" hidden readonly aria-hidden="true">---
 title: TCP connection setup and teardown
-subtitle: Three messages open a connection; four messages usually close it
- template: sheet
+subtitle: Three messages establish a connection; each direction closes separately.
+template: sheet
 theme: blueprint
 cols: 3
 lang: en
 style: 80
 ---
 
-TCP synchronizes two byte streams during setup. During teardown, each endpoint closes its sending direction separately.
+TCP uses a three-way handshake to exchange starting sequence numbers and confirm communication in both directions. A normal four-way teardown closes each direction separately. The four messages can sometimes combine into three segments.
 
 ## How does the three-way handshake work? {span=2}
 
-The client starts an active open. The server listens for incoming connections.
+The client starts an active open. The server listens for connection requests. Here, `x` and `y` represent their initial sequence numbers.
 
 ```sequence num
-Client -&gt; Server: SYN · seq=x
-Server -&gt; Client: SYN + ACK · seq=y · ack=x+1
-Client -&gt; Server: ACK · seq=x+1 · ack=y+1
+Client -&gt; Server: SYN, seq=x
+Server --&gt; Client: SYN+ACK, seq=y, ack=x+1
+Client -&gt; Server: ACK, seq=x+1, ack=y+1
 ```
 
-1. The client sends SYN and enters SYN-SENT.
-2. The server acknowledges the client&#39;s SYN, sends its own SYN, and enters SYN-RECEIVED.
-3. The client acknowledges the server&#39;s SYN and enters ESTABLISHED.
-4. The server enters ESTABLISHED when it receives that ACK.
+1. The client sends SYN and enters `SYN-SENT`.
+2. The server acknowledges the client&#39;s SYN, sends its own SYN, and enters `SYN-RECEIVED`.
+3. The client acknowledges the server&#39;s SYN and enters `ESTABLISHED`.
+4. The server enters `ESTABLISHED` when it receives that ACK.
 
-These four steps describe three messages. The final ACK can also carry application data.
+The server&#39;s reply combines SYN and ACK in one segment. The third segment can also carry application data.
 
-## What do the sequence numbers mean? {span=1}
+The final ACK confirms that the client received the server&#39;s starting sequence number. Without it, the server cannot confirm receipt of its SYN.
 
-Here, `x` and `y` represent each endpoint&#39;s initial sequence number.
+## What do sequence numbers and ACKs mean?
 
-| Field or flag | Meaning |
+TCP numbers bytes independently in each direction. An acknowledgment identifies the next sequence number the receiver expects.
+
+| Item | Sequence space consumed |
 | --- | --- |
-| Sequence number | Identifies a position in the sender&#39;s byte stream |
-| ACK number | Gives the next sequence number the receiver expects |
-| SYN | Consumes one sequence number |
-| FIN | Consumes one sequence number |
-| ACK without data | Consumes no sequence numbers |
+| SYN | One sequence number |
+| Data | One sequence number per byte |
+| FIN | One sequence number |
+| ACK without data, SYN, or FIN | None |
 
-Each direction has its own sequence space. Acknowledging both SYNs confirms receipt of both starting sequence numbers.
+An ACK of `x+1` acknowledges the SYN at `x`. If data starts at `x+1` and contains `n` bytes, the next expected number becomes `x+1+n`.
+
+An ACK confirms receipt by TCP. It does not prove that the receiving application processed the data.
 
 ## How does the four-way teardown work? {span=2}
 
-Either endpoint can start closing. This example uses the client as the active closer.
-
-Here, `u` and `v` are the next unused sequence numbers. Neither endpoint sends more application data during this example.
+Either endpoint can start closure. Here, the client closes first. The values `u` and `v` identify each endpoint&#39;s FIN sequence number.
 
 ```sequence num
-Client -&gt; Server: FIN + ACK · seq=u · ack=v
-Server -&gt; Client: ACK · ack=u+1
-Server -&gt; Client: FIN + ACK · seq=v · ack=u+1
-Client -&gt; Server: ACK · ack=v+1
+Client -&gt; Server: FIN+ACK, seq=u
+Server --&gt; Client: ACK, ack=u+1
+note Client, Server: The server can continue sending data.
+Server --&gt; Client: FIN+ACK, seq=v
+Client -&gt; Server: ACK, ack=v+1
 ```
 
-1. The client sends FIN and enters FIN-WAIT-1.
-2. The server acknowledges FIN and enters CLOSE-WAIT. The client enters FIN-WAIT-2 after receiving that ACK.
-3. The server application closes its sending direction. The server sends FIN and enters LAST-ACK.
-4. The client acknowledges that FIN and enters TIME-WAIT. The server enters CLOSED after receiving the final ACK.
+1. The client sends FIN and enters `FIN-WAIT-1`.
+2. The server acknowledges FIN and enters `CLOSE-WAIT`.
+3. The client receives that ACK and enters `FIN-WAIT-2`.
+4. The server sends FIN when its application finishes sending and enters `LAST-ACK`.
+5. The client acknowledges the server&#39;s FIN and enters `TIME-WAIT`.
+6. The server receives the final ACK and enters `CLOSED`.
 
-The client enters CLOSED when TIME-WAIT expires.
+FIN means that its sender has finished sending data. It does not immediately close the opposite direction.
 
-## Why are there usually four messages? {span=1}
+These steps describe the normal path with a separate ACK before the server&#39;s FIN. Combined messages produce a shorter path.
 
-TCP supports communication in both directions. Receiving FIN closes only the peer&#39;s sending direction.
+## Why does closure need two FINs?
 
-After receiving the client&#39;s FIN, the server can still send remaining data. Its application decides when to send its own FIN.
+TCP supports two independent byte streams. Each endpoint must announce the end of its own stream.
 
-```callout info Half-close
-A FIN means “I have no more bytes to send.” The endpoint can still receive bytes from its peer.
+After receiving the client&#39;s FIN, the server can still send remaining data. The client can still receive that data during this half-closed state.
+
+The server&#39;s ACK confirms receipt of the client&#39;s FIN. The server&#39;s later FIN announces the end of the server&#39;s stream.
+
+```callout info Three segments are possible
+If the server is ready to close immediately, it can combine its ACK and FIN in one segment. Closure then uses three segments.
 ```
 
-The server can combine its ACK and FIN when it is ready to close immediately. That reduces this exchange to three messages.
+An orderly FIN follows any earlier data in that direction. The receiver delivers end-of-stream after receiving the preceding bytes.
 
-## Why does TIME-WAIT exist? {span=3}
+## Why does TIME-WAIT exist? {span=2}
 
-The endpoint sending the final ACK normally waits for twice the maximum segment lifetime, called `2 × MSL`.
+In the normal teardown, the endpoint that sends the final ACK enters `TIME-WAIT`. This is usually the endpoint that initiated closure.
 
-| Purpose | What TIME-WAIT provides |
+- It can acknowledge a repeated FIN if the final ACK was lost.
+- It gives delayed segments from the old connection time to expire.
+
+`TIME-WAIT` lasts twice the maximum segment lifetime, commonly written as `2 × MSL`. The duration depends on the implementation.
+
+After the timer expires, the endpoint enters `CLOSED`.
+
+```callout info Lost final ACK
+The server retransmits its FIN if it receives no ACK. The endpoint in TIME-WAIT can send the ACK again.
+```
+
+## What can change the message pattern?
+
+| Situation | Effect |
 | --- | --- |
-| Handle a lost final ACK | The closer can acknowledge a retransmitted FIN |
-| Let old segments expire | Delayed segments have time to leave the network before a new connection uses the same connection identifiers |
+| Lost SYN or FIN | TCP retransmits; captures may show more messages. |
+| Lost handshake ACK | A repeated SYN+ACK can trigger another ACK. |
+| Simultaneous close | Both endpoints send FIN; states and message order differ. |
+| Connection reset | RST aborts the connection instead of completing orderly FIN closure. |
 
-The exact duration depends on the TCP implementation.
-
-```callout warn These are normal exchanges
-Packets can be lost and retransmitted. Simultaneous closes can change the state sequence. An RST aborts a connection without this orderly FIN exchange.
-```
+Three-way handshake and four-way teardown describe the usual logical exchanges. They do not guarantee exactly three or four packets in every capture.
 </textarea>
 <script>
 (() => {

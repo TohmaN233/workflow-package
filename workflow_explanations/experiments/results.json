@@ -2,7 +2,6 @@
   "format": "workflow.comparison.summary",
   "schema_version": 1,
   "cost_basis": "API-equivalent USD, including Main and all workers; not the subscription bill.",
-  "score_notice": "Scores are the agents’ own assessments and may not be reasonable or objective.",
   "three_html_one_conversation": {
     "pricing_usd_per_million": {
       "input": 2,
@@ -19,20 +18,13 @@
       }
     },
     "workflow": {
-      "cost_usd": 0.208762,
-      "wall_ms": 148940,
+      "cost_usd": 0.1648984,
+      "wall_ms": 144049,
       "usage": {
-        "input_tokens": 376374,
-        "cached_input_tokens": 314240,
-        "output_tokens": 5307
+        "input_tokens": 208283,
+        "cached_input_tokens": 162304,
+        "output_tokens": 5671
       }
-    },
-    "quality": {
-      "kind": "agent_content_review",
-      "notice": "Agent assessment; not an objective quality standard.",
-      "tcp": "Both explain opening and closing sequence numbers, normal states, half-close, TIME-WAIT and RST. Skill has additional security context.",
-      "cache": "Both compare capabilities, choice, cache-aside and miss handling. Workflow adds a workload checklist; Skill is more explicit about asynchronous replication loss and stale-cache remedies.",
-      "git": "Both show graphs, moved references, new commit IDs, fast-forward, conflict commands and shared-history caution. Skill additionally explains squash, rebase-merges, skipped or empty commits and reflog recovery."
     }
   },
   "video": {
@@ -59,8 +51,7 @@
           "cached_input_tokens": 87040,
           "output_tokens": 595
         }
-      },
-      "quality": "HTML and MP4 bytes and decoded audio are identical."
+      }
     },
     "text": {
       "skill": {
@@ -70,8 +61,7 @@
           "input_tokens": 235222,
           "cached_input_tokens": 192000,
           "output_tokens": 3677
-        },
-        "quality": 96
+        }
       },
       "workflow": {
         "cost_usd": 0.1473212,
@@ -80,9 +70,9 @@
           "input_tokens": 323143,
           "cached_input_tokens": 295936,
           "output_tokens": 2810
-        },
-        "quality": 98
+        }
       }
     }
-  }
+  },
+  "quality_notice": "Compare the Skill and Workflow HTML and videos to judge quality yourself. Both use LLMs with stochastic outputs."
 }

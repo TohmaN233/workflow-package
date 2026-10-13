@@ -4,7 +4,7 @@
 
 转化自 [QingYunA/answer-me-with-html](https://github.com/QingYunA/answer-me-with-html)，保留[原 Skill](https://github.com/QingYunA/answer-me-with-html/blob/main/skills/answer-me-with-html/SKILL.md)及 [MIT 许可证](../codex/answer-me-with-html/UPSTREAM-LICENSE.txt)来源。保留结构化 Markdown、单文件 HTML、配音视频、配置、清理和更新路线，以及原有运行工具。
 
-Main 选择请求路线并做语义验收；Host 工具执行原有渲染／写作检查与产物交付。独立网页支持批量路线。此包的已测制作路线使用临时 Main worker，这是这个包的编辑选择，不代表生成工作流的默认设置。
+Main 选择请求路线并做语义验收；Host 工具执行原有渲染／写作检查与产物交付。独立网页支持并行批量路线，制作使用临时 Main worker。
 
 HTML 写作节点用已有材料和知识完成一般概念讲解。只有用户要求来源、内容依赖当前或特定版本信息，或存在影响结论的事实不确定性时，才进行外部调查。这一任务边界写在单页和批量制作共用的写作参考中，不移除工具，也不限制内容深度。
 
@@ -14,4 +14,4 @@ HTML 写作节点用已有材料和知识完成一般概念讲解。只有用户
 
 请求示例：用 HTML 图解 TCP；一次制作三个独立讲解网页；用已有稿件和英文配音制作视频；仅重写稿件。可查看[六个 HTML 成品](examples/html/index.html)和[带双语字幕的视频 A/B](examples/video/comparison.html)。
 
-包内含 36 个节点、76 个运行资源和 CLI 0.4.7。对照结果来自此前制作样本，不代表新付费配音或后续每项包改动都已得到性能验证。
+包内含 36 个节点、76 个运行资源和 CLI 0.4.7。

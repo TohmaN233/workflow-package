@@ -9,15 +9,22 @@
       "id": "answer-me-with-html-evidence",
       "name": "answer-me-with-html",
       "platform": "codex",
-      "package_version": "1.0.0",
+      "package_version": "1.1.0",
       "path": "codex/answer-me-with-html/answer-me-with-html.workflow-package.json",
       "source_skill": "https://github.com/QingYunA/answer-me-with-html",
-      "workflow_revision_hash": "cc9ff08f9015a02664a96ae5685da1c2875a1247b033ba6ba672530629dfb6a8",
-      "package_sha256": "3e37eafe91941882285d619955112351c78b150a9450c7c594a8c12218d9ae70",
-      "file_sha256": "f1d4934807c53cfb913cdbb19f5824442b3b58efcc74ec18cb0399fb551ca2c1",
-      "node_count": 36,
-      "resource_count": 76,
+      "workflow_revision_hash": "89c0a01f3021872597ab7ad2474f2fb6baae18e33607d23f0f65376ab0647f22",
+      "package_sha256": "ca40905fc9b4c6ad2d8f670c2d3f519fdfe2da270b04c38acdd5a344fb354d4a",
+      "file_sha256": "3b4693d1244feab7f1f92bc9cc2d40d4d9cd068f290f756010ebc8c6c682fc67",
+      "node_count": 41,
+      "resource_count": 130,
       "dependencies": {
+        "executables": [
+          {
+            "name": "node",
+            "version": ">=20.0.0"
+          }
+        ],
+        "mcp_servers": [],
         "providers": [],
         "tools": [
           "am_batch_observe",
@@ -25,26 +32,23 @@
           "am_cleanup",
           "am_configure",
           "am_export_mp4",
+          "am_export_webm",
           "am_finalize",
           "am_handoff",
           "am_observe",
           "am_preview_cleanup",
           "am_reuse_video",
+          "am_reuse_video_webm",
           "am_route_check",
           "am_snapshot",
           "am_update_installation",
           "am_video_prepare",
           "am_worker_render",
           "read_workflow_resource"
-        ],
-        "mcp_servers": [],
-        "executables": [
-          {
-            "name": "node",
-            "version": ">=20.0.0"
-          }
         ]
-      }
+      },
+      "source_release": "v0.5.2",
+      "source_commit": "4da5ae89ac435683110aa1b8707d9d4170184c55"
     },
     {
       "id": "github-readme-generator",

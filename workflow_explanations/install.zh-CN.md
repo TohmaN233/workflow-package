@@ -30,18 +30,21 @@
 
 同时检查全局依赖与所选节点的 `runtime_requirements`。条件依赖不一定出现在全局清单。
 
+导入上游 0.5.2 HTML 包前，先从当前 `main` 更新引擎。它明确声明的 WebM 操作需要 Host 长任务期限支持；旧构建即使仍标为 1.2，也可能拒绝该契约。使用正常引擎安装器并检查当前连接，无需重装应用或试跑业务 Run。
+
 | 路线 | 额外要求 |
 | --- | --- |
 | HTML、图解、批量网页 | Node.js **20+** |
-| 新视频或已有资产组装（`export_mp4`、`reuse_video`） | Node.js **22+**、FFmpeg、兼容 Chrome 的浏览器 |
-| 新配音 | 接收端 TTS 配置；ElevenLabs 使用 `ELEVENLABS_API_KEY`，可选 `ELEVENLABS_VOICE_ID` |
+| MP4 导出或已有播放器复用（`export_mp4`、`reuse_video`） | Node.js **22+**、FFmpeg、兼容 Chrome 的浏览器 |
+| WebM 导出或已有播放器复用（`export_webm`、`reuse_video_webm`） | Node.js **22+**、兼容 Chrome 的浏览器；不要求 FFmpeg |
+| 新配音 | 接收端 TTS 配置；ElevenLabs 使用 `ELEVENLABS_API_KEY` 及可选语音／模型 ID；明确选中的本地 TTS 使用 `AM_TTS_URL` 及已有 `AM_TTS_*` 选项 |
 | 复用已有配音/文本 | 提供的本地音频、对应文本/字幕及路线输入；不发起新 TTS 请求 |
-| 原 Skill 更新路线，仅选中时需要 | `update_npx_skills`：`npx`；`update_git`：`git`、`npm`；`update_claude_plugin`：`claude` |
+| 原 Skill 更新路线，仅选中时需要 | `update_npx_skills`：`npx`；`update_git`：`git`、`npm`；`update_claude_plugin`：`claude`；`update_dsh`：`dsh` 及已有 profile/package |
 | README/说明文档 | 已启用的配置 Provider **`native-luna`**；无需媒体软件 |
 
 Provider ID 指向接收端配置，不是要下载的模型文件。可选账号和凭据在接收端配置，不包含在包中。
 
-需要 Node/Git 时使用[引擎安装步骤](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.zh-CN.md)。视频优先复用已有浏览器和 FFmpeg，缺失时使用现有包管理器安装：
+需要 Node/Git 时使用[引擎安装步骤](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.zh-CN.md)。视频文件导出先复用已有浏览器，只有 MP4 需要安装 FFmpeg。所选路线缺少工具时，使用现有包管理器安装：
 
 | 系统 | FFmpeg | 没有可用浏览器时 |
 | --- | --- | --- |

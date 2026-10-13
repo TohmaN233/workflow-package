@@ -4,6 +4,8 @@
 
 Reusable Workflow packages, kept separate from their execution engines and default configuration.
 
+**[See Skill vs Workflow in your browser →](https://tohman233.github.io/workflow-package/)** Compare six interactive HTML outputs side by side, play the video examples, and explore the recorded time, token use and API-equivalent cost. The gallery includes single-page results where Workflow has no consistent advantage.
+
 **The Workflow itself is a `*.workflow-package.json` file.** All usage notes, comparisons and output examples live in [workflow_explanations](workflow_explanations/README.md).
 
 | Platform | Workflow | Download | Explanation |

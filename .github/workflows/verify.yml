@@ -11,3 +11,4 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/check-packages.mjs
+      - run: node scripts/check-html-task-scope.mjs

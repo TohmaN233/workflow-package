@@ -6,6 +6,8 @@ Converted from [QingYunA/answer-me-with-html](https://github.com/QingYunA/answer
 
 Main selects the requested route and checks the meaning of the result. Host tools perform the original rendering/writing checks and artifact delivery. Independent pages have a batch route. The edited package uses temporary Main workers on its tested production paths; this is a package choice, not the generated Workflow default.
 
+HTML writers use the supplied material and established knowledge for general explanations. External research is reserved for requested sources, current or version-specific facts, and material uncertainty. This task boundary is included in the shared writing reference for both single-page and batch production; it does not remove tools or limit content depth.
+
 Video supports a new manuscript, supplied narration/player assets, MP4 export and text-only rewriting. Existing audio can be reused without a speech request. Fresh narration uses the receiving host's configured provider and credentials. Node.js 20+ and the selected media route's dependencies are required.
 
 Example requests: explain TCP with an HTML diagram; produce three independent explainers in one request; reuse a supplied script and English narration for a video; rewrite only the manuscript. See [six produced HTML examples](examples/html/index.html) and the [video A/B with bilingual subtitles](examples/video/comparison.html).

@@ -3,156 +3,6 @@
   "schema_version": 1,
   "cost_basis": "API-equivalent USD, including Main and all workers; not the subscription bill.",
   "score_notice": "Scores are the agents’ own assessments and may not be reasonable or objective.",
-  "single_html": {
-    "pricing_usd_per_million": {
-      "fresh_input_per_million": 2,
-      "cached_input_per_million": 0.1,
-      "output_per_million": 10,
-      "reasoning_already_in_output": true
-    },
-    "baseline": {
-      "tcp": {
-        "cost_usd": 0.13771879999999997,
-        "wall_ms": 70725,
-        "usage": {
-          "input_tokens": 258219,
-          "cached_input_tokens": 208768,
-          "output_tokens": 1794
-        },
-        "quality": 98
-      },
-      "cache": {
-        "cost_usd": 0.1467356,
-        "wall_ms": 60315,
-        "usage": {
-          "input_tokens": 190193,
-          "cached_input_tokens": 134016,
-          "output_tokens": 2098
-        },
-        "quality": 97
-      },
-      "git": {
-        "cost_usd": 0.110996,
-        "wall_ms": 79219,
-        "usage": {
-          "input_tokens": 148276,
-          "cached_input_tokens": 109440,
-          "output_tokens": 2238
-        },
-        "quality": 97
-      }
-    },
-    "workflow_samples": [
-      {
-        "cost_usd": 0.0801288,
-        "wall_ms": 85858,
-        "usage": {
-          "input_tokens": 176604,
-          "cached_input_tokens": 154368,
-          "output_tokens": 2022
-        },
-        "quality": 100,
-        "topic": "tcp",
-        "repetition": 1
-      },
-      {
-        "cost_usd": 0.12635079999999999,
-        "wall_ms": 87701,
-        "usage": {
-          "input_tokens": 180187,
-          "cached_input_tokens": 134528,
-          "output_tokens": 2158
-        },
-        "quality": 100,
-        "topic": "tcp",
-        "repetition": 2
-      },
-      {
-        "cost_usd": 0.1606536,
-        "wall_ms": 102761,
-        "usage": {
-          "input_tokens": 180354,
-          "cached_input_tokens": 117376,
-          "output_tokens": 2296
-        },
-        "quality": 100,
-        "topic": "tcp",
-        "repetition": 3
-      },
-      {
-        "cost_usd": 0.11723839999999999,
-        "wall_ms": 74281,
-        "usage": {
-          "input_tokens": 155948,
-          "cached_input_tokens": 111104,
-          "output_tokens": 1644
-        },
-        "quality": 99,
-        "topic": "cache",
-        "repetition": 1
-      },
-      {
-        "cost_usd": 0.12370840000000001,
-        "wall_ms": 81041,
-        "usage": {
-          "input_tokens": 180060,
-          "cached_input_tokens": 136064,
-          "output_tokens": 2211
-        },
-        "quality": 99,
-        "topic": "cache",
-        "repetition": 2
-      },
-      {
-        "cost_usd": 0.09943279999999999,
-        "wall_ms": 78560,
-        "usage": {
-          "input_tokens": 155836,
-          "cached_input_tokens": 119168,
-          "output_tokens": 1418
-        },
-        "quality": 98,
-        "topic": "cache",
-        "repetition": 3
-      },
-      {
-        "cost_usd": 0.151822,
-        "wall_ms": 77853,
-        "usage": {
-          "input_tokens": 156377,
-          "cached_input_tokens": 94080,
-          "output_tokens": 1782
-        },
-        "quality": 99,
-        "topic": "git",
-        "repetition": 1
-      },
-      {
-        "cost_usd": 0.149536,
-        "wall_ms": 70404,
-        "usage": {
-          "input_tokens": 158575,
-          "cached_input_tokens": 95360,
-          "output_tokens": 1357
-        },
-        "quality": 100,
-        "topic": "git",
-        "repetition": 2
-      },
-      {
-        "cost_usd": 0.1475052,
-        "wall_ms": 85629,
-        "usage": {
-          "input_tokens": 155727,
-          "cached_input_tokens": 93952,
-          "output_tokens": 1456
-        },
-        "quality": 99,
-        "topic": "git",
-        "repetition": 3
-      }
-    ]
-  },
   "three_html_one_conversation": {
     "pricing_usd_per_million": {
       "input": 2,
@@ -169,27 +19,20 @@
       }
     },
     "workflow": {
-      "cost_usd": 0.12352880000000001,
-      "wall_ms": 101188,
+      "cost_usd": 0.208762,
+      "wall_ms": 148940,
       "usage": {
-        "input_tokens": 200112,
-        "cached_input_tokens": 171008,
-        "output_tokens": 4822
+        "input_tokens": 376374,
+        "cached_input_tokens": 314240,
+        "output_tokens": 5307
       }
     },
     "quality": {
-      "tcp": {
-        "skill": 93,
-        "workflow": 98
-      },
-      "cache": {
-        "skill": 95,
-        "workflow": 98
-      },
-      "git": {
-        "skill": 96,
-        "workflow": 100
-      }
+      "kind": "agent_content_review",
+      "notice": "Agent assessment; not an objective quality standard.",
+      "tcp": "Both explain opening and closing sequence numbers, normal states, half-close, TIME-WAIT and RST. Skill has additional security context.",
+      "cache": "Both compare capabilities, choice, cache-aside and miss handling. Workflow adds a workload checklist; Skill is more explicit about asynchronous replication loss and stale-cache remedies.",
+      "git": "Both show graphs, moved references, new commit IDs, fast-forward, conflict commands and shared-history caution. Skill additionally explains squash, rebase-merges, skipped or empty commits and reflog recovery."
     }
   },
   "video": {

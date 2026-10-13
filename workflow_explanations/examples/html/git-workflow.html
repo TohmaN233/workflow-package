@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Answer me with HTML 0.4.7">
-<title>Git merge vs. git rebase</title>
+<title>Git merge vs git rebase</title>
 <style>
 html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -441,67 +441,130 @@ html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var
 <button class="am-btn" type="button" data-am="copy" data-done="Copied ✓">Copy source</button>
 </div>
 <main class="am-sheet">
-<header class="am-head"><h1>Git merge vs. git rebase</h1><p class="am-sub">Two ways to join work, with different histories</p><div class="am-intro am-md"><div class="am-md"><p>Merge joins histories and keeps existing commits. Rebase replays commits on a new base, usually giving them new IDs.</p>
+<header class="am-head"><h1>Git merge vs git rebase</h1><p class="am-sub">How each operation changes commit history</p><div class="am-intro am-md"><div class="am-md"><p>Merge joins histories and keeps existing commits. Rebase replays commits on a new base and creates new commit IDs.</p>
 </div></div></header>
 <div class="am-frame">
 <div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
 <div class="am-grid" style="--cols: 3">
 <section class="am-panel" id="panel-A">
-<header class="am-panel-head"><span class="am-panel-id">A</span><h2>What history do we start with?</h2><span class="am-panel-meta">Illustrative commits</span></header>
-<div class="am-panel-body"><div class="am-md"><p>Both branches share commit B. Then main adds C, while feature adds D and E.</p>
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>What is the starting history?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>Both examples start with the same branches. Each arrow runs from parent to child.</p>
 </div>
 <figure class="am-diagram am-flow"><svg viewBox="0 0 192 306" width="192" height="306" role="img" aria-label="流程图：A、B、C、D、E" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M96,49 L96,60.5 Q96,72 96,83.5 L96,95" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge" d="M117.6,130 L131.8,141.5 Q146,153 146,164.5 L146,176" marker-end="url(#am1-arrow)"/></g><g data-step="2"><path class="am-edge" d="M74.4,130 L60.2,141.5 Q46,153 46,164.5 L46,176" marker-end="url(#am1-arrow)"/></g><g data-step="3"><path class="am-edge" d="M46,211 L46,222.5 Q46,234 46,245.5 L46,257" marker-end="url(#am1-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="A" data-step="0"><rect class="am-node-shape" x="64" y="14" width="64" height="35" rx="3"/><text x="96" y="31.5" text-anchor="middle" dominant-baseline="central">A</text></g><g class="am-node am-node--rect" data-key="B" data-step="0"><rect class="am-node-shape" x="64" y="95" width="64" height="35" rx="3"/><text x="96" y="112.5" text-anchor="middle" dominant-baseline="central">B</text></g><g class="am-node am-node--rect" data-key="C" data-step="1"><rect class="am-node-shape" x="114" y="176" width="64" height="35" rx="3"/><text x="146" y="193.5" text-anchor="middle" dominant-baseline="central">C</text></g><g class="am-node am-node--rect" data-key="D" data-step="2"><rect class="am-node-shape" x="14" y="176" width="64" height="35" rx="3"/><text x="46" y="193.5" text-anchor="middle" dominant-baseline="central">D</text></g><g class="am-node am-node--rect" data-key="E" data-step="3"><rect class="am-node-shape" x="14" y="257" width="64" height="35" rx="3"/><text x="46" y="274.5" text-anchor="middle" dominant-baseline="central">E</text></g></g></svg></figure>
-<div class="am-md"><div class="am-table-wrap"><table>
-<thead>
-<tr>
-<th>Branch</th>
-<th>Tip</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>main</td>
-<td>C</td>
-</tr>
-<tr>
-<td>feature</td>
-<td>E</td>
-</tr>
-</tbody></table></div>
-<p>The arrows point from older commits to newer commits. Each letter represents a commit ID.</p>
+<div class="am-md"><p><code>main</code> points to C. <code>feature</code> points to E. B is their common ancestor.</p>
+<p>C belongs to <code>main</code>. D and E belong to <code>feature</code>.</p>
 </div></div>
 </section>
 <section class="am-panel" id="panel-B">
-<header class="am-panel-head"><span class="am-panel-id">B</span><h2>How does merge change history?</h2><span class="am-panel-meta">Keep both paths</span></header>
-<div class="am-panel-body"><div class="am-md"><p>Run these commands to merge feature into main:</p>
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>How does merge change history?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>Run <code>git merge main</code> while on <code>feature</code>.</p>
 </div>
-<pre class="am-code"><code data-lang="sh">git switch main
-git merge feature</code></pre>
 <figure class="am-diagram am-flow"><svg viewBox="0 0 192 387" width="192" height="387" role="img" aria-label="流程图：A、B、C、D、E、M" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M96,49 L96,60.5 Q96,72 96,83.5 L96,95" marker-end="url(#am2-arrow)"/></g><g data-step="1"><path class="am-edge" d="M117.6,130 L131.8,141.5 Q146,153 146,173.3 Q146,193.5 146,213.8 Q146,234 146,245.5 L146,257" marker-end="url(#am2-arrow)"/></g><g data-step="2"><path class="am-edge" d="M74.4,130 L60.2,141.5 Q46,153 46,164.5 L46,176" marker-end="url(#am2-arrow)"/></g><g data-step="3"><path class="am-edge" d="M46,211 L46,222.5 Q46,234 46,245.5 L46,257" marker-end="url(#am2-arrow)"/></g><g data-step="4"><path class="am-edge" d="M146,292 L146,303.5 Q146,315 131.8,326.5 L117.6,338" marker-end="url(#am2-arrow)"/></g><g data-step="5"><path class="am-edge" d="M46,292 L46,303.5 Q46,315 60.2,326.5 L74.4,338" marker-end="url(#am2-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="A" data-step="0"><rect class="am-node-shape" x="64" y="14" width="64" height="35" rx="3"/><text x="96" y="31.5" text-anchor="middle" dominant-baseline="central">A</text></g><g class="am-node am-node--rect" data-key="B" data-step="0"><rect class="am-node-shape" x="64" y="95" width="64" height="35" rx="3"/><text x="96" y="112.5" text-anchor="middle" dominant-baseline="central">B</text></g><g class="am-node am-node--rect" data-key="C" data-step="1"><rect class="am-node-shape" x="114" y="257" width="64" height="35" rx="3"/><text x="146" y="274.5" text-anchor="middle" dominant-baseline="central">C</text></g><g class="am-node am-node--rect" data-key="D" data-step="2"><rect class="am-node-shape" x="14" y="176" width="64" height="35" rx="3"/><text x="46" y="193.5" text-anchor="middle" dominant-baseline="central">D</text></g><g class="am-node am-node--rect" data-key="E" data-step="3"><rect class="am-node-shape" x="14" y="257" width="64" height="35" rx="3"/><text x="46" y="274.5" text-anchor="middle" dominant-baseline="central">E</text></g><g class="am-node am-node--rect" data-key="M" data-step="4"><rect class="am-node-shape" x="64" y="338" width="64" height="35" rx="3"/><text x="96" y="355.5" text-anchor="middle" dominant-baseline="central">M</text></g></g></svg></figure>
-<div class="am-md"><p>Git creates merge commit M with two parents: C and E. Main moves to M; feature stays at E. Existing commit IDs stay the same.</p>
-<p>M records the combined result. Both development paths remain visible.</p>
-<p>If main is already an ancestor of feature, Git can fast-forward main without creating a merge commit.</p>
+<div class="am-md"><p>Git creates merge commit M with two parents: C and E. Existing commits keep their IDs and parent links.</p>
+<p><code>feature</code> moves to M. <code>main</code> stays at C. The branch paths remain visible in history.</p>
 </div></div>
 </section>
 <section class="am-panel" id="panel-C">
-<header class="am-panel-head"><span class="am-panel-id">C</span><h2>How does rebase change history?</h2><span class="am-panel-meta">Replay on a new base</span></header>
-<div class="am-panel-body"><div class="am-md"><p>Run these commands to rebase feature onto main:</p>
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>How does rebase change history?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>Run <code>git rebase main</code> while on <code>feature</code>.</p>
 </div>
-<pre class="am-code"><code data-lang="sh">git switch feature
-git rebase main</code></pre>
 <figure class="am-diagram am-flow"><svg viewBox="0 0 92 387" width="92" height="387" role="img" aria-label="流程图：A、B、C、D′、E′" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M46,49 L46,60.5 Q46,72 46,83.5 L46,95" marker-end="url(#am3-arrow)"/></g><g data-step="1"><path class="am-edge" d="M46,130 L46,141.5 Q46,153 46,164.5 L46,176" marker-end="url(#am3-arrow)"/></g><g data-step="2"><path class="am-edge" d="M46,211 L46,222.5 Q46,234 46,245.5 L46,257" marker-end="url(#am3-arrow)"/></g><g data-step="3"><path class="am-edge" d="M46,292 L46,303.5 Q46,315 46,326.5 L46,338" marker-end="url(#am3-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="A" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">A</text></g><g class="am-node am-node--rect" data-key="B" data-step="0"><rect class="am-node-shape" x="14" y="95" width="64" height="35" rx="3"/><text x="46" y="112.5" text-anchor="middle" dominant-baseline="central">B</text></g><g class="am-node am-node--rect" data-key="C" data-step="1"><rect class="am-node-shape" x="14" y="176" width="64" height="35" rx="3"/><text x="46" y="193.5" text-anchor="middle" dominant-baseline="central">C</text></g><g class="am-node am-node--rect" data-key="D′" data-step="2"><rect class="am-node-shape" x="14" y="257" width="64" height="35" rx="3"/><text x="46" y="274.5" text-anchor="middle" dominant-baseline="central">D′</text></g><g class="am-node am-node--rect" data-key="E′" data-step="3"><rect class="am-node-shape" x="14" y="338" width="64" height="35" rx="3"/><text x="46" y="355.5" text-anchor="middle" dominant-baseline="central">E′</text></g></g></svg></figure>
-<div class="am-md"><p>Git replays the changes from D and E after C. Their new parents produce new commit IDs: D′ and E′.</p>
-<p>Feature moves to E′; main stays at C. The feature history now follows one straight path.</p>
+<div class="am-md"><p>Git replays the changes from D and E after C. D′ and E′ have new commit IDs and parent links.</p>
+<p><code>feature</code> moves to E′. <code>main</code> stays at C.</p>
+<p>The old commits may remain accessible through other references or the reflog. Rebase does not immediately erase them.</p>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-D" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>Which history do you want?</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Merge</th>
+<th>Rebase</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>What happens to existing commits?</td>
+<td>Their IDs and parent links stay unchanged.</td>
+<td>Replayed commits get new IDs and parent links.</td>
+</tr>
+<tr>
+<td>What does this example add?</td>
+<td>One merge commit with two parents.</td>
+<td>Two replayed commits on the new base.</td>
+</tr>
+<tr>
+<td>How does history look?</td>
+<td>Both branch paths join at M.</td>
+<td>The feature commits follow C in one line.</td>
+</tr>
+<tr>
+<td>When is it useful?</td>
+<td>Preserve branch history when integrating shared work.</td>
+<td>Update a local feature branch before sharing it.</td>
+</tr>
+<tr>
+<td>Can conflicts occur?</td>
+<td>Yes, during the merge.</td>
+<td>Yes, during any replayed commit.</td>
+</tr>
+</tbody></table></div>
 </div>
-<div class="am-callout am-callout--warn" role="note"><div class="am-callout-title">Shared commits</div><div class="am-callout-body am-md"><p>Use merge to preserve shared history. Rebase local commits for a linear history. Coordinate before rebasing commits that others already use.</p>
+<div class="am-callout am-callout--info" role="note"><div class="am-callout-title">Fast-forward is a special case</div><div class="am-callout-body am-md"><p>If the current tip is an ancestor of the incoming tip, merge can move the branch pointer without creating a commit.
+Use <code>git merge --no-ff main</code> to create a merge commit even when a fast-forward is possible.</p>
+</div></div></div>
+</section>
+<section class="am-panel" id="panel-E">
+<header class="am-panel-head"><span class="am-panel-id">E</span><h2>What commands should I run?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>First, commit or stash uncommitted changes. These commands use your local <code>main</code> branch.</p>
+<p>Choose one path for this example.</p>
+<p><strong>Merge path</strong></p>
+</div>
+<pre class="am-code"><code data-lang="bash">git switch feature
+git merge main</code></pre>
+<div class="am-md"><p><strong>Rebase path</strong></p>
+</div>
+<pre class="am-code"><code data-lang="bash">git switch feature
+git rebase main</code></pre>
+<div class="am-md"><p>Inspect either result:</p>
+</div>
+<pre class="am-code"><code data-lang="bash">git log --graph --oneline --decorate --all</code></pre></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-F" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>How do I handle conflicts and shared work?</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Resolve conflicts</th>
+<th>Cancel the operation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Merge</td>
+<td>Edit conflicted files, stage them with <code>git add</code>, then run <code>git merge --continue</code>.</td>
+<td><code>git merge --abort</code></td>
+</tr>
+<tr>
+<td>Rebase</td>
+<td>Edit conflicted files, stage them with <code>git add</code>, then run <code>git rebase --continue</code>. Repeat if needed.</td>
+<td><code>git rebase --abort</code></td>
+</tr>
+</tbody></table></div>
+</div>
+<div class="am-callout am-callout--warn" role="note"><div class="am-callout-title">Coordinate before rewriting shared history</div><div class="am-callout-body am-md"><p>Prefer merge when others already depend on the feature commits. Rebase changes their identities and can disrupt collaborators&#39; work.
+If your team agrees to rewrite a published branch, review remote changes before pushing with <code>--force-with-lease</code>.
+That option rejects the push when the remote branch differs from the expected value.</p>
 </div></div></div>
 </section>
 </div>
 </div>
 </main>
-<footer class="am-colophon">Generated by Answer me with HTML 0.4.7 · 2026-10-11 01:40</footer>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.7 · 2026-10-12 22:40</footer>
 <textarea id="am-source" hidden readonly aria-hidden="true">---
-title: Git merge vs. git rebase
-subtitle: Two ways to join work, with different histories
+title: Git merge vs git rebase
+subtitle: How each operation changes commit history
 template: sheet
 theme: blueprint
 cols: 3
@@ -509,11 +572,11 @@ lang: en
 style: 80
 ---
 
-Merge joins histories and keeps existing commits. Rebase replays commits on a new base, usually giving them new IDs.
+Merge joins histories and keeps existing commits. Rebase replays commits on a new base and creates new commit IDs.
 
-## What history do we start with? {span=1 meta=&quot;Illustrative commits&quot;}
+## What is the starting history? {span=1}
 
-Both branches share commit B. Then main adds C, while feature adds D and E.
+Both examples start with the same branches. Each arrow runs from parent to child.
 
 ```flow TB
 A -&gt; B
@@ -522,21 +585,13 @@ B -&gt; D
 D -&gt; E
 ```
 
-| Branch | Tip |
-| --- | --- |
-| main | C |
-| feature | E |
+`main` points to C. `feature` points to E. B is their common ancestor.
 
-The arrows point from older commits to newer commits. Each letter represents a commit ID.
+C belongs to `main`. D and E belong to `feature`.
 
-## How does merge change history? {span=1 meta=&quot;Keep both paths&quot;}
+## How does merge change history? {span=1}
 
-Run these commands to merge feature into main:
-
-```sh
-git switch main
-git merge feature
-```
+Run `git merge main` while on `feature`.
 
 ```flow TB
 A -&gt; B
@@ -547,20 +602,13 @@ C -&gt; M
 E -&gt; M
 ```
 
-Git creates merge commit M with two parents: C and E. Main moves to M; feature stays at E. Existing commit IDs stay the same.
+Git creates merge commit M with two parents: C and E. Existing commits keep their IDs and parent links.
 
-M records the combined result. Both development paths remain visible.
+`feature` moves to M. `main` stays at C. The branch paths remain visible in history.
 
-If main is already an ancestor of feature, Git can fast-forward main without creating a merge commit.
+## How does rebase change history? {span=1}
 
-## How does rebase change history? {span=1 meta=&quot;Replay on a new base&quot;}
-
-Run these commands to rebase feature onto main:
-
-```sh
-git switch feature
-git rebase main
-```
+Run `git rebase main` while on `feature`.
 
 ```flow TB
 A -&gt; B
@@ -569,12 +617,64 @@ C -&gt; D′
 D′ -&gt; E′
 ```
 
-Git replays the changes from D and E after C. Their new parents produce new commit IDs: D′ and E′.
+Git replays the changes from D and E after C. D′ and E′ have new commit IDs and parent links.
 
-Feature moves to E′; main stays at C. The feature history now follows one straight path.
+`feature` moves to E′. `main` stays at C.
 
-```callout warn Shared commits
-Use merge to preserve shared history. Rebase local commits for a linear history. Coordinate before rebasing commits that others already use.
+The old commits may remain accessible through other references or the reflog. Rebase does not immediately erase them.
+
+## Which history do you want? {span=2}
+
+| Question | Merge | Rebase |
+| --- | --- | --- |
+| What happens to existing commits? | Their IDs and parent links stay unchanged. | Replayed commits get new IDs and parent links. |
+| What does this example add? | One merge commit with two parents. | Two replayed commits on the new base. |
+| How does history look? | Both branch paths join at M. | The feature commits follow C in one line. |
+| When is it useful? | Preserve branch history when integrating shared work. | Update a local feature branch before sharing it. |
+| Can conflicts occur? | Yes, during the merge. | Yes, during any replayed commit. |
+
+```callout info Fast-forward is a special case
+If the current tip is an ancestor of the incoming tip, merge can move the branch pointer without creating a commit.
+Use `git merge --no-ff main` to create a merge commit even when a fast-forward is possible.
+```
+
+## What commands should I run? {span=1}
+
+First, commit or stash uncommitted changes. These commands use your local `main` branch.
+
+Choose one path for this example.
+
+**Merge path**
+
+```bash
+git switch feature
+git merge main
+```
+
+**Rebase path**
+
+```bash
+git switch feature
+git rebase main
+```
+
+Inspect either result:
+
+```bash
+git log --graph --oneline --decorate --all
+```
+
+## How do I handle conflicts and shared work? {span=3}
+
+| Operation | Resolve conflicts | Cancel the operation |
+| --- | --- | --- |
+| Merge | Edit conflicted files, stage them with `git add`, then run `git merge --continue`. | `git merge --abort` |
+| Rebase | Edit conflicted files, stage them with `git add`, then run `git rebase --continue`. Repeat if needed. | `git rebase --abort` |
+
+```callout warn Coordinate before rewriting shared history
+Prefer merge when others already depend on the feature commits. Rebase changes their identities and can disrupt collaborators&#39; work.
+If your team agrees to rewrite a published branch, review remote changes before pushing with `--force-with-lease`.
+That option rejects the push when the remote branch differs from the expected value.
 ```
 </textarea>
 <script>

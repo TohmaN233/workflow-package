@@ -4,26 +4,28 @@
 
 **评分为 agent 自主的评分，不一定合理。** 它不是人工评审或客观质量标准。成本为包含 Main 与全部 worker 的 API 等价美元成本，耗时为完整交付耗时；不是订阅账单。
 
-## 单个网页
-
-每种网页有三次 Workflow 结果，对照一次固定 Skill 结果。
-
-| 主题 | Skill 成本 | Workflow 平均成本 | Skill 秒数 | Workflow 平均秒数 | Skill 分数 | Workflow 分数 |
-| --- | ---: | ---: | ---: | ---: | ---: | --- |
-| TCP | $0.137719 | $0.122378 | 70.725 | 92.107 | 98 | 100 / 100 / 100 |
-| Redis／Memcached | $0.146736 | $0.113460 | 60.315 | 77.961 | 97 | 99 / 99 / 98 |
-| Git merge／rebase | $0.110996 | $0.149621 | 79.219 | 77.962 | 97 | 99 / 100 / 99 |
-
-Git 成本较高，TCP／缓存网页较慢。原单页 Skill 成品没有保留，因此下方 Skill 展示选自三页任务，不沿用单页分数。
-
 ## 一个对话制作三个网页
+
+两种方法均完成 TCP、Redis／Memcached、Git merge／rebase 三页任务。
 
 | 方法 | 输入（含缓存） | 缓存输入 | 输出 | API 等价成本 | 秒数 |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Skill | 434,835 | 389,120 | 6,291 | $0.193252 | 158.577 |
-| Workflow | 200,112 | 171,008 | 4,822 | $0.123529 | 101.188 |
+| Workflow | 376,374 | 314,240 | 5,307 | $0.208762 | 148.940 |
 
-本次成本降低 36.08%，耗时降低 36.19%。同批产物的 agent 匿名评分为 Workflow／Skill：TCP 98／93、缓存 98／95、Git 100／96。
+Workflow 耗时降低 **6.08%**，成本增加 **8.03%**。输入总量减少，但未缓存输入从 45,715 增至 62,134；因此输入更少不等于成本更低。本次未实现成本与耗时同时降低。
+
+## 内容对比
+
+以下是 agent 对实际稿件的判断，不是客观质量证明，也没有给新产物沿用旧分数。
+
+| 主题 | 两者覆盖的核心内容 | 差异 |
+| --- | --- | --- |
+| TCP | 三次握手、序号与确认号、关闭状态、半关闭、TIME-WAIT、RST | Skill 另外说明握手不提供加密或身份认证；Workflow 明确区分四个状态步骤与三个消息。 |
+| Redis／Memcached | 功能与选型、cache-aside、失效、并发 miss 与故障处理 | Workflow 给出具体负载测量清单；Skill 更明确说明异步复制可能丢失近期写入，以及版本化 key 等一致性措施。 |
+| Git merge／rebase | 提交图、分支指针、提交 ID、fast-forward、冲突继续／取消、共享历史注意事项 | Skill 另有 squash、rebase-merges、跳过或空提交、reflog 恢复说明；Workflow 的两种操作均从同一 feature 分支视角讲解。 |
+
+两组均覆盖题目的主要机制；Skill 的高级边界说明仍更丰富，不能据此宣称 Workflow 质量完全等价。
 
 ## 视频资产复用与稿件重写
 
@@ -38,16 +40,16 @@ Git 成本较高，TCP／缓存网页较慢。原单页 Skill 成品没有保留
 
 ## 可自行查看的例子
 
-[HTML 样例页](../examples/html/index.html)提供 TCP、缓存、Git 各一份 Skill 与 Workflow 成品。Workflow 选可用产物中的最高分，同分选首次；Skill 选仍保留的真实成品。展示选样不用于推断平均质量。
+[HTML 样例页](../examples/html/index.html)展示上述三页实验的六份实际产物。
 
-| 主题 | Workflow 示例 | Skill 示例 |
+| 主题 | Workflow | Skill |
 | --- | --- | --- |
-| TCP | [100 分](../examples/html/tcp-workflow.html) | [93 分](../examples/html/tcp-skill.html) |
-| Redis／Memcached | [99 分](../examples/html/cache-workflow.html) | [95 分](../examples/html/cache-skill.html) |
-| Git merge／rebase | [100 分](../examples/html/git-workflow.html) | [96 分](../examples/html/git-skill.html) |
+| TCP | [页面](../examples/html/tcp-workflow.html) | [页面](../examples/html/tcp-skill.html) |
+| Redis／Memcached | [页面](../examples/html/cache-workflow.html) | [页面](../examples/html/cache-skill.html) |
+| Git merge／rebase | [页面](../examples/html/git-workflow.html) | [页面](../examples/html/git-skill.html) |
 
 [视频 A/B 展示](../examples/video/comparison.html)使用此前独立制作的两份视频，复用英文配音，新增完整英中双语字幕。A 为 Skill、B 为 Workflow，原 agent 分数为 94／93；A 的因果讲解更完整，B 的依赖关系、角色与节点、并行汇合图解更清楚。它们供观众直接比较，不作为最终“相同资产复用”实验的质量差异。字幕发布处理没有新生成配音，也不计入原制作耗时。
 
 ## 比较条件
 
-HTML 使用 `gpt-6.1-sol/high`；每百万 token 的未缓存输入／缓存输入／输出价格为 $2／$0.10／$10，视频与文本为 $2／$0.20／$12。HTML 的 Skill／Workflow 渲染器分别是 0.4.7／0.4.9。批量网页与两个视频阶段各一对样本；新配音全线没有达到最终性能要求。小样本与缓存命中不能保证其他任务同样节约。README 生成器没有性能对照。
+HTML 使用 `gpt-6.1-sol/high`；每百万 token 的未缓存输入／缓存输入／输出价格为 $2／$0.10／$10，视频与文本为 $2／$0.20／$12。两组 HTML 渲染器均为 0.4.7。批量网页与两个视频阶段各一对样本；小样本与缓存命中不能保证其他任务同样节约。README 生成器没有性能对照。

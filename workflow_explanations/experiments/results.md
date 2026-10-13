@@ -4,26 +4,28 @@
 
 **Scores are the agents’ own assessments and may not be reasonable.** They are not human reviews or objective quality standards. Costs are API-equivalent USD including Main and all workers; time covers complete delivery. These are not subscription bills.
 
-## Individual pages
-
-Three Workflow results per topic, compared with one fixed Skill result.
-
-| Topic | Skill cost | Workflow mean cost | Skill seconds | Workflow mean seconds | Skill score | Workflow scores |
-| --- | ---: | ---: | ---: | ---: | ---: | --- |
-| TCP | $0.137719 | $0.122378 | 70.725 | 92.107 | 98 | 100 / 100 / 100 |
-| Redis / Memcached | $0.146736 | $0.113460 | 60.315 | 77.961 | 97 | 99 / 99 / 98 |
-| Git merge / rebase | $0.110996 | $0.149621 | 79.219 | 77.962 | 97 | 99 / 100 / 99 |
-
-Git costs more; TCP and cache pages take longer. The original individual Skill pages are unavailable. The displayed Skill pages below come from the three-page task and retain those scores.
-
 ## Three pages in one conversation
+
+Both methods complete the same three-page task: TCP, Redis / Memcached, and Git merge / rebase.
 
 | Method | Input, including cached | Cached input | Output | API-equivalent cost | Seconds |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Skill | 434,835 | 389,120 | 6,291 | $0.193252 | 158.577 |
-| Workflow | 200,112 | 171,008 | 4,822 | $0.123529 | 101.188 |
+| Workflow | 376,374 | 314,240 | 5,307 | $0.208762 | 148.940 |
 
-Cost fell 36.08% and time 36.19% in this comparison. Anonymous agent scores for Workflow / Skill: TCP 98 / 93, cache 98 / 95, Git 100 / 96.
+Workflow takes **6.08% less time** and costs **8.03% more**. Total input falls, but uncached input rises from 45,715 to 62,134 tokens. Fewer input tokens therefore do not mean lower cost. This pair does not establish simultaneous cost and time savings.
+
+## Content comparison
+
+This is an agent's assessment of the actual manuscripts, not objective proof of quality. New outputs do not inherit earlier scores.
+
+| Topic | Core content covered by both | Differences |
+| --- | --- | --- |
+| TCP | Handshake, sequence and ACK numbers, close states, half-close, TIME-WAIT, RST | Skill also explains the absence of encryption or authentication; Workflow explicitly separates four state steps from three messages. |
+| Redis / Memcached | Capabilities and choice, cache-aside, invalidation, concurrent misses, failure handling | Workflow adds a workload measurement checklist; Skill is more explicit about asynchronous replication loss and consistency remedies such as versioned keys. |
+| Git merge / rebase | Commit graphs, branch references, IDs, fast-forward, conflict continuation / cancellation, shared-history caution | Skill additionally covers squash, rebase-merges, skipped or empty commits and reflog recovery; Workflow explains both operations from the same feature-branch perspective. |
+
+Both cover the main mechanisms requested. Skill retains more advanced edge cases; this review does not establish full quality equivalence.
 
 ## Video asset reuse and manuscript rewriting
 
@@ -38,16 +40,16 @@ Reuse reduced cost 38.63% and time 7.15%; rewriting reduced cost 12.81% and time
 
 ## Inspect the examples
 
-The [HTML gallery](../examples/html/index.html) contains one real output from each method for TCP, cache and Git. Workflow selects the highest available score, taking the first tied sample; Skill uses the retained originals. This selection is for display, not an estimate of average quality.
+The [HTML gallery](../examples/html/index.html) contains the six actual outputs from the three-page comparison above.
 
-| Topic | Workflow example | Skill example |
+| Topic | Workflow | Skill |
 | --- | --- | --- |
-| TCP | [100](../examples/html/tcp-workflow.html) | [93](../examples/html/tcp-skill.html) |
-| Redis / Memcached | [99](../examples/html/cache-workflow.html) | [95](../examples/html/cache-skill.html) |
-| Git merge / rebase | [100](../examples/html/git-workflow.html) | [96](../examples/html/git-skill.html) |
+| TCP | [Page](../examples/html/tcp-workflow.html) | [Page](../examples/html/tcp-skill.html) |
+| Redis / Memcached | [Page](../examples/html/cache-workflow.html) | [Page](../examples/html/cache-skill.html) |
+| Git merge / rebase | [Page](../examples/html/git-workflow.html) | [Page](../examples/html/git-skill.html) |
 
 The [video A/B presentation](../examples/video/comparison.html) uses two previously produced independent videos, their existing English narration, and complete new English/Chinese subtitles. A is Skill, B is Workflow; prior agent scores are 94 / 93. A explains the causal benefits more fully; B illustrates dependencies, role versus node and parallel joins more clearly. This presentation is separate from the final identical-asset reuse comparison. Subtitle preparation generated no new speech and is excluded from the original production timings.
 
 ## Comparison conditions
 
-HTML uses `gpt-6.1-sol/high`, priced per million fresh-input/cached-input/output tokens at $2 / $0.10 / $10; video and text use $2 / $0.20 / $12. HTML Skill / Workflow renderer versions were 0.4.7 / 0.4.9. The batch and each video stage have one pair of results; fresh narration did not meet the final performance requirements. Small samples and observed cache hits do not guarantee savings on other tasks. The README generator has no performance comparison.
+HTML uses `gpt-6.1-sol/high`, priced per million fresh-input/cached-input/output tokens at $2 / $0.10 / $10; video and text use $2 / $0.20 / $12. Both HTML renderer versions are 0.4.7. The batch and each video stage have one pair of results. Small samples and observed cache hits do not guarantee savings on other tasks. The README generator has no performance comparison.

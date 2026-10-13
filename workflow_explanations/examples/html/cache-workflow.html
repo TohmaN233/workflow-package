@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-theme="shadcn" data-mode="auto" data-style="80">
+<html lang="en" data-theme="blueprint" data-mode="auto" data-style="80">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Answer me with HTML 0.4.7">
-<title>Redis vs Memcached</title>
+<title>Redis vs Memcached for caching</title>
 <style>
 html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -436,145 +436,263 @@ html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var
 </head>
 <body>
 <div class="am-toolbar">
-<button class="am-btn" type="button" data-am="theme" data-labels="{&quot;blueprint&quot;:&quot;Theme: Blueprint&quot;,&quot;shadcn&quot;:&quot;Theme: Cards&quot;}">Theme: Cards</button>
+<button class="am-btn" type="button" data-am="theme" data-labels="{&quot;blueprint&quot;:&quot;Theme: Blueprint&quot;,&quot;shadcn&quot;:&quot;Theme: Cards&quot;}">Theme: Blueprint</button>
 <button class="am-btn" type="button" data-am="mode" data-labels="{&quot;auto&quot;:&quot;Mode: Auto&quot;,&quot;light&quot;:&quot;Mode: Light&quot;,&quot;dark&quot;:&quot;Mode: Dark&quot;}">Mode: Auto</button>
 <button class="am-btn" type="button" data-am="copy" data-done="Copied ✓">Copy source</button>
 </div>
 <main class="am-sheet">
-<header class="am-head"><h1>Redis vs Memcached</h1><p class="am-sub">Pick a cache by its data needs and operating costs</p><div class="am-intro am-md"><div class="am-md"><p>For a new cache, Redis is a useful default. Choose Memcached when you only need disposable values and prefer a smaller feature set.</p>
+<header class="am-head"><h1>Redis vs Memcached for caching</h1><p class="am-sub">Choose by cache needs, failure behavior, and measured cost</p><div class="am-intro am-md"><div class="am-md"><p>Choose <strong>Redis</strong> when you need richer data types, atomic operations, or replication. Choose <strong>Memcached</strong> for a simple, disposable object cache. Both support ordinary caching with expiration.</p>
 </div></div></header>
 <div class="am-frame">
 <div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
 <div class="am-grid" style="--cols: 3">
-<section class="am-panel" id="panel-A">
-<header class="am-panel-head"><span class="am-panel-id">A</span><h2>Which should I choose?</h2></header>
-<div class="am-panel-body"><div class="am-callout am-callout--ok" role="note"><div class="am-callout-title">Choose by need</div><div class="am-callout-body am-md"><p>Use Redis for counters, sets, sorted sets, or atomic updates across several operations.</p>
-<p>Use Memcached for plain objects that your application can fetch again from a database.</p>
+<section class="am-panel am-span-wide" id="panel-A" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>Which one should I choose?</h2></header>
+<div class="am-panel-body"><div class="am-callout am-callout--info" role="note"><div class="am-callout-title">Practical default</div><div class="am-callout-body am-md"><p>For a new application, Redis is a useful default when future cache needs are uncertain. Memcached is a strong choice when simple object caching covers your requirements.</p>
 </div></div>
-<div class="am-md"><p>If both fit, choose the service your team already runs well. Test your own workload before claiming either is faster.</p>
+<div class="am-md"><p>Choose <strong>Redis</strong> when you need:</p>
+<ul>
+<li>Hashes, sets, sorted sets, or lists alongside cached strings.</li>
+<li>Atomic operations across several steps through server-side logic.</li>
+<li>Replication, optional persistence, or Redis Cluster.</li>
+</ul>
+<p>Choose <strong>Memcached</strong> when you need:</p>
+<ul>
+<li>A shared cache of serialized objects or rendered responses.</li>
+<li>Disposable entries that the application can rebuild.</li>
+<li>Client-managed distribution across independent cache servers.</li>
+</ul>
+<p>If your current cache meets your needs, keep it. A feature checklist alone does not justify migration.</p>
 </div></div>
 </section>
-<section class="am-panel am-span-wide" id="panel-B" style="grid-column: span 2">
-<header class="am-panel-head"><span class="am-panel-id">B</span><h2>What differs?</h2></header>
+<section class="am-panel am-span-wide" id="panel-B" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>What changes between them?</h2></header>
 <div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
 <thead>
 <tr>
-<th>Need</th>
+<th>Capability</th>
 <th>Redis</th>
 <th>Memcached</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Data model</td>
-<td>Strings, hashes, lists, sets, and sorted sets</td>
-<td>Key-value items with opaque values</td>
+<td>Basic model</td>
+<td>Keys with strings and richer data types</td>
+<td>Keys with opaque values</td>
 </tr>
 <tr>
-<td>Expiry</td>
-<td>TTL support</td>
-<td>TTL support</td>
+<td>Expiration</td>
+<td>Per-key expiration</td>
+<td>Per-item expiration</td>
 </tr>
 <tr>
-<td>Memory pressure</td>
-<td>Configurable eviction; some policies reject writes</td>
-<td>Usually evicts items to make room</td>
+<td>Concurrent updates</td>
+<td>Atomic commands, transactions, and scripts</td>
+<td>Atomic counters and compare-and-set</td>
 </tr>
 <tr>
 <td>Persistence</td>
-<td>Optional snapshots and append-only logs</td>
-<td>No built-in disk persistence</td>
+<td>Optional</td>
+<td>No built-in persistence</td>
 </tr>
 <tr>
-<td>Atomic work</td>
-<td>Counters, transactions, and scripts</td>
-<td>Per-item operations, counters, and compare-and-swap</td>
+<td>Replication</td>
+<td>Built-in support</td>
+<td>No built-in replication</td>
 </tr>
 <tr>
 <td>Distribution</td>
-<td>Redis Cluster partitions keys; replicas support failover</td>
-<td>Clients commonly distribute keys across servers</td>
+<td>Redis Cluster or client-side sharding</td>
+<td>Usually client-side routing</td>
+</tr>
+<tr>
+<td>Memory pressure</td>
+<td>Configurable eviction policies</td>
+<td>Eviction based on item classes and recency</td>
+</tr>
+<tr>
+<td>Common fit</td>
+<td>Caching plus structured shared state</td>
+<td>Simple object and response caching</td>
 </tr>
 </tbody></table></div>
-<p>Redis Cluster limits operations across keys in different hash slots. Persistence and replication add work; enable them only when their benefits fit your needs.</p>
+<p>Both usually keep cached values in memory. Persistence and replication add options, but also add operational work.</p>
 </div></div>
 </section>
-<section class="am-panel am-span-wide" id="panel-C" style="grid-column: span 2">
-<header class="am-panel-head"><span class="am-panel-id">C</span><h2>How does either cache work?</h2></header>
-<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 354 426" width="354" height="426" role="img" aria-label="流程图：Request、Cache hit?、Return cached value、Read database、Store value with TTL、Return value" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M178.4,49 L178.4,60.5 Q178.4,72 178.4,83.5 L178.4,95" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge" d="M203.7,140.8 L233.7,161.9 Q263.7,183 263.7,199 L263.7,215" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="248.4" y="174" width="30.7" height="18" rx="3"/><text x="263.7" y="183" text-anchor="middle" dominant-baseline="central">Yes</text></g></g><g data-step="2"><path class="am-edge" d="M153,140.8 L123,161.9 Q93,183 93,199 L93,215" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="80.9" y="174" width="24.3" height="18" rx="3"/><text x="93" y="183" text-anchor="middle" dominant-baseline="central">No</text></g></g><g data-step="3"><path class="am-edge" d="M93,250 L93,261.5 Q93,273 93,284.5 L93,296" marker-end="url(#am1-arrow)"/></g><g data-step="4"><path class="am-edge" d="M93,331 L93,342.5 Q93,354 93,365.5 L93,377" marker-end="url(#am1-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="Request" data-step="0"><rect class="am-node-shape" x="139.7" y="14" width="77.4" height="35" rx="3"/><text x="178.4" y="31.5" text-anchor="middle" dominant-baseline="central">Request</text></g><g class="am-node am-node--diamond" data-key="Cache hit?" data-step="0"><polygon class="am-node-shape" points="178.4,95 247.9,123 178.4,151 108.8,123"/><text x="178.4" y="123" text-anchor="middle" dominant-baseline="central">Cache hit?</text></g><g class="am-node am-node--rect" data-key="Return cached value" data-step="1"><rect class="am-node-shape" x="187.9" y="215" width="151.8" height="35" rx="3"/><text x="263.7" y="232.5" text-anchor="middle" dominant-baseline="central">Return cached value</text></g><g class="am-node am-node--rect" data-key="Read database" data-step="2"><rect class="am-node-shape" x="34.2" y="215" width="117.7" height="35" rx="3"/><text x="93" y="232.5" text-anchor="middle" dominant-baseline="central">Read database</text></g><g class="am-node am-node--rect" data-key="Store value with TTL" data-step="3"><rect class="am-node-shape" x="14" y="296" width="158" height="35" rx="3"/><text x="93" y="313.5" text-anchor="middle" dominant-baseline="central">Store value with TTL</text></g><g class="am-node am-node--rect" data-key="Return value" data-step="4"><rect class="am-node-shape" x="40.9" y="377" width="104.2" height="35" rx="3"/><text x="93" y="394.5" text-anchor="middle" dominant-baseline="central">Return value</text></g></g></svg></figure>
-<div class="am-md"><p>This cache-aside pattern works with either product. Keep the database as the source of truth.</p>
-<p>After a database update, invalidate or refresh the cached value. A TTL bounds stale data but does not guarantee fresh reads.</p>
-<p>Protect the database from bursts of cache misses. Combine duplicate fetches and spread expiry times when many keys could expire together.</p>
+<section class="am-panel" id="panel-C">
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>How does either cache fit into an application?</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 231 525" width="231" height="525" role="img" aria-label="流程图：Request、Read cache、Hit?、Return value、Read database、Store value with TTL" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M146.5,49 L146.5,60.5 Q146.5,72 146.5,83.5 L146.5,95" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge" d="M146.5,130 L146.5,141.5 Q146.5,153 146.5,164.5 L146.5,176" marker-end="url(#am1-arrow)"/></g><g data-step="2"><path class="am-edge" d="M161.8,221.1 L180.9,242.6 Q200,264 200,288.8 Q200,313.5 200,338.3 Q200,363 200,387.8 Q200,412.5 200,432.8 Q200,453 184.8,464.5 L169.6,476" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="184.7" y="354" width="30.7" height="18" rx="3"/><text x="200" y="363" text-anchor="middle" dominant-baseline="central">Yes</text></g></g><g data-step="3"><path class="am-edge" d="M131.2,221.1 L112.1,242.6 Q93,264 93,280 L93,296" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="80.9" y="255" width="24.3" height="18" rx="3"/><text x="93" y="264" text-anchor="middle" dominant-baseline="central">No</text></g></g><g data-step="4"><path class="am-edge" d="M93,331 L93,347 Q93,363 93,379 L93,395" marker-end="url(#am1-arrow)"/></g><g data-step="5"><path class="am-edge" d="M93,430 L93,441.5 Q93,453 108.2,464.5 L123.4,476" marker-end="url(#am1-arrow)"/></g></g><g><g class="am-node am-node--round" data-key="Request" data-step="0"><rect class="am-node-shape" x="101.8" y="14" width="89.4" height="35" rx="17.5"/><text x="146.5" y="31.5" text-anchor="middle" dominant-baseline="central">Request</text></g><g class="am-node am-node--rect" data-key="Read cache" data-step="0"><rect class="am-node-shape" x="97" y="95" width="99" height="35" rx="3"/><text x="146.5" y="112.5" text-anchor="middle" dominant-baseline="central">Read cache</text></g><g class="am-node am-node--diamond" data-key="Hit?" data-step="1"><polygon class="am-node-shape" points="146.5,176 185.8,204 146.5,232 107.2,204"/><text x="146.5" y="204" text-anchor="middle" dominant-baseline="central">Hit?</text></g><g class="am-node am-node--rect" data-key="Return value" data-step="2"><rect class="am-node-shape" x="94.4" y="476" width="104.2" height="35" rx="3"/><text x="146.5" y="493.5" text-anchor="middle" dominant-baseline="central">Return value</text></g><g class="am-node am-node--rect" data-key="Read database" data-step="3"><rect class="am-node-shape" x="34.2" y="296" width="117.7" height="35" rx="3"/><text x="93" y="313.5" text-anchor="middle" dominant-baseline="central">Read database</text></g><g class="am-node am-node--rect" data-key="Store value with TTL" data-step="4"><rect class="am-node-shape" x="14" y="395" width="158" height="35" rx="3"/><text x="93" y="412.5" text-anchor="middle" dominant-baseline="central">Store value with TTL</text></g></g></svg></figure>
+<div class="am-md"><p>This is the <strong>cache-aside</strong> pattern. The database remains the source of truth.</p>
+<p>After a database update, invalidate or refresh the affected cache entry. Concurrent requests can still create stale entries, so design for your freshness requirement.</p>
 </div></div>
 </section>
-<section class="am-panel" id="panel-D">
-<header class="am-panel-head"><span class="am-panel-id">D</span><h2>What must I operate?</h2></header>
-<div class="am-panel-body"><div class="am-md"><p>Watch cache hit rate, latency, memory use, evictions, and database load. Set memory limits and define what happens when the cache fails.</p>
-<p>Treat cached data as replaceable unless you explicitly design for durability. Redis persistence alone does not make every acknowledged write safe from loss.</p>
-<p>Compare both with your actual value sizes, traffic, and deployment. Include cache misses, restart recovery, and maintenance in the decision.</p>
+<section class="am-panel am-span-wide" id="panel-D" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>Which one is faster or cheaper?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>There is no universal winner. Network latency, payload size, hit rate, memory use, and workload shape can dominate the result.</p>
+<p>Memcached handles requests across multiple threads. Redis execution varies by feature and version; benchmark the commands your application actually uses.</p>
+<p>Compare both with the same workload:</p>
+<ol>
+<li>Use realistic value sizes and read/write ratios.</li>
+<li>Measure throughput and tail latency under expected concurrency.</li>
+<li>Record hit rate, evictions, CPU use, and total memory.</li>
+<li>Include client, hosting, replication, and operating costs.</li>
+</ol>
+<p>Benchmark the complete request path. A fast cache offers little benefit if most requests miss it.</p>
 </div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-E" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">E</span><h2>What must work when the cache fails?</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>A cache outage must not overwhelm the database.</p>
+<ul>
+<li>Set short cache connection and request timeouts.</li>
+<li>Bound fallback traffic to the database.</li>
+<li>Combine concurrent requests for the same missing key.</li>
+<li>Add TTL jitter to spread expirations.</li>
+<li>Monitor misses, evictions, errors, and latency.</li>
+</ul>
+<p>Redis replication can improve availability. It does not remove the need to handle stale data or lost cache entries.</p>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-F" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>What is the final decision rule?</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Your requirement</th>
+<th>Choose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Basic object caching with an established Memcached setup</td>
+<td>Memcached</td>
+</tr>
+<tr>
+<td>Structured data or several atomic operations</td>
+<td>Redis</td>
+</tr>
+<tr>
+<td>Built-in replication or optional persistence</td>
+<td>Redis</td>
+</tr>
+<tr>
+<td>Simple disposable caching with client-side distribution</td>
+<td>Memcached</td>
+</tr>
+<tr>
+<td>Either meets the requirements</td>
+<td>Use measured cost and operational familiarity</td>
+</tr>
+</tbody></table></div>
+</div>
+<div class="am-callout am-callout--warn" role="note"><div class="am-callout-title">Separate caching from durable state</div><div class="am-callout-body am-md"><p>Eviction can remove cache entries before their TTL expires. If correctness depends on retaining a value, design its durability separately from the disposable cache.</p>
+</div></div></div>
 </section>
 </div>
 </div>
 </main>
-<footer class="am-colophon">Generated by Answer me with HTML 0.4.7 · 2026-10-11 01:17</footer>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.7 · 2026-10-12 22:41</footer>
 <textarea id="am-source" hidden readonly aria-hidden="true">---
-title: Redis vs Memcached
-subtitle: Pick a cache by its data needs and operating costs
+title: Redis vs Memcached for caching
+subtitle: Choose by cache needs, failure behavior, and measured cost
 template: sheet
-theme: shadcn
+theme: blueprint
 cols: 3
 lang: en
 style: 80
 ---
 
-For a new cache, Redis is a useful default. Choose Memcached when you only need disposable values and prefer a smaller feature set.
+Choose **Redis** when you need richer data types, atomic operations, or replication. Choose **Memcached** for a simple, disposable object cache. Both support ordinary caching with expiration.
 
-## Which should I choose? {span=1}
+## Which one should I choose? {span=2}
 
-```callout ok Choose by need
-Use Redis for counters, sets, sorted sets, or atomic updates across several operations.
-
-Use Memcached for plain objects that your application can fetch again from a database.
+```callout info Practical default
+For a new application, Redis is a useful default when future cache needs are uncertain. Memcached is a strong choice when simple object caching covers your requirements.
 ```
 
-If both fit, choose the service your team already runs well. Test your own workload before claiming either is faster.
+Choose **Redis** when you need:
 
-## What differs? {span=2}
+- Hashes, sets, sorted sets, or lists alongside cached strings.
+- Atomic operations across several steps through server-side logic.
+- Replication, optional persistence, or Redis Cluster.
 
-| Need | Redis | Memcached |
+Choose **Memcached** when you need:
+
+- A shared cache of serialized objects or rendered responses.
+- Disposable entries that the application can rebuild.
+- Client-managed distribution across independent cache servers.
+
+If your current cache meets your needs, keep it. A feature checklist alone does not justify migration.
+
+## What changes between them? {span=3}
+
+| Capability | Redis | Memcached |
 | --- | --- | --- |
-| Data model | Strings, hashes, lists, sets, and sorted sets | Key-value items with opaque values |
-| Expiry | TTL support | TTL support |
-| Memory pressure | Configurable eviction; some policies reject writes | Usually evicts items to make room |
-| Persistence | Optional snapshots and append-only logs | No built-in disk persistence |
-| Atomic work | Counters, transactions, and scripts | Per-item operations, counters, and compare-and-swap |
-| Distribution | Redis Cluster partitions keys; replicas support failover | Clients commonly distribute keys across servers |
+| Basic model | Keys with strings and richer data types | Keys with opaque values |
+| Expiration | Per-key expiration | Per-item expiration |
+| Concurrent updates | Atomic commands, transactions, and scripts | Atomic counters and compare-and-set |
+| Persistence | Optional | No built-in persistence |
+| Replication | Built-in support | No built-in replication |
+| Distribution | Redis Cluster or client-side sharding | Usually client-side routing |
+| Memory pressure | Configurable eviction policies | Eviction based on item classes and recency |
+| Common fit | Caching plus structured shared state | Simple object and response caching |
 
-Redis Cluster limits operations across keys in different hash slots. Persistence and replication add work; enable them only when their benefits fit your needs.
+Both usually keep cached values in memory. Persistence and replication add options, but also add operational work.
 
-## How does either cache work? {span=2}
+## How does either cache fit into an application? {span=1}
 
 ```flow TB
-Request -&gt; {Cache hit?}
-Cache hit? -&gt; Return cached value: Yes
-Cache hit? -&gt; Read database: No
+(Request) -&gt; Read cache
+Read cache -&gt; {Hit?}
+Hit? -&gt; Return value: Yes
+Hit? -&gt; Read database: No
 Read database -&gt; Store value with TTL
 Store value with TTL -&gt; Return value
 ```
 
-This cache-aside pattern works with either product. Keep the database as the source of truth.
+This is the **cache-aside** pattern. The database remains the source of truth.
 
-After a database update, invalidate or refresh the cached value. A TTL bounds stale data but does not guarantee fresh reads.
+After a database update, invalidate or refresh the affected cache entry. Concurrent requests can still create stale entries, so design for your freshness requirement.
 
-Protect the database from bursts of cache misses. Combine duplicate fetches and spread expiry times when many keys could expire together.
+## Which one is faster or cheaper? {span=2}
 
-## What must I operate? {span=1}
+There is no universal winner. Network latency, payload size, hit rate, memory use, and workload shape can dominate the result.
 
-Watch cache hit rate, latency, memory use, evictions, and database load. Set memory limits and define what happens when the cache fails.
+Memcached handles requests across multiple threads. Redis execution varies by feature and version; benchmark the commands your application actually uses.
 
-Treat cached data as replaceable unless you explicitly design for durability. Redis persistence alone does not make every acknowledged write safe from loss.
+Compare both with the same workload:
 
-Compare both with your actual value sizes, traffic, and deployment. Include cache misses, restart recovery, and maintenance in the decision.
+1. Use realistic value sizes and read/write ratios.
+2. Measure throughput and tail latency under expected concurrency.
+3. Record hit rate, evictions, CPU use, and total memory.
+4. Include client, hosting, replication, and operating costs.
+
+Benchmark the complete request path. A fast cache offers little benefit if most requests miss it.
+
+## What must work when the cache fails? {span=1}
+
+A cache outage must not overwhelm the database.
+
+- Set short cache connection and request timeouts.
+- Bound fallback traffic to the database.
+- Combine concurrent requests for the same missing key.
+- Add TTL jitter to spread expirations.
+- Monitor misses, evictions, errors, and latency.
+
+Redis replication can improve availability. It does not remove the need to handle stale data or lost cache entries.
+
+## What is the final decision rule? {span=3}
+
+| Your requirement | Choose |
+| --- | --- |
+| Basic object caching with an established Memcached setup | Memcached |
+| Structured data or several atomic operations | Redis |
+| Built-in replication or optional persistence | Redis |
+| Simple disposable caching with client-side distribution | Memcached |
+| Either meets the requirements | Use measured cost and operational familiarity |
+
+```callout warn Separate caching from durable state
+Eviction can remove cache entries before their TTL expires. If correctness depends on retaining a value, design its durability separately from the disposable cache.
+```
 </textarea>
 <script>
 (() => {

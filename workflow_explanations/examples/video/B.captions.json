@@ -1,0 +1,158 @@
+[
+  {
+    "start": 0.0,
+    "end": 3.821,
+    "en": "Workflow gives AI work a process. Here's how ours works.",
+    "zh": "Workflow 为 AI 工作提供流程。下面看看我们的实现。"
+  },
+  {
+    "start": 5.071,
+    "end": 8.599,
+    "en": "AI workflows define stages, dependencies, and branches.",
+    "zh": "AI 工作流定义阶段、依赖关系与分支。"
+  },
+  {
+    "start": 8.949,
+    "end": 11.354,
+    "en": "Plan decides whether we need outside data.",
+    "zh": "Plan 决定是否需要外部数据。"
+  },
+  {
+    "start": 11.704,
+    "end": 14.849,
+    "en": "If so, Lookup fetches it with a deterministic tool.",
+    "zh": "如果需要，Lookup 使用确定性工具获取数据。"
+  },
+  {
+    "start": 15.199,
+    "end": 18.396,
+    "en": "Otherwise, Draft starts immediately, using model judgment.",
+    "zh": "否则，Draft 立即开始，通过模型判断来写作。"
+  },
+  {
+    "start": 18.746,
+    "end": 21.236,
+    "en": "If the task needs lookup, drafting waits.",
+    "zh": "任务需要查询时，写作阶段就要等待。"
+  },
+  {
+    "start": 22.936,
+    "end": 29.523,
+    "en": "Our Host owns authoritative Run state, dependencies, routing, execution records, and mechanical checks.",
+    "zh": "Host 掌握 Run 的权威状态，负责依赖、路由、执行记录与机械检查。"
+  },
+  {
+    "start": 29.873,
+    "end": 35.051,
+    "en": "Main, the initiating conversation, makes semantic decisions and assigns stages through Host.",
+    "zh": "Main 就是发起任务的会话，负责语义决策，并通过 Host 分配阶段。"
+  },
+  {
+    "start": 35.401,
+    "end": 39.665,
+    "en": "Host creates a Main worker: an isolated, temporary stage context.",
+    "zh": "Host 创建 Main worker：一个隔离的临时阶段上下文。"
+  },
+  {
+    "start": 40.015,
+    "end": 44.38,
+    "en": "The worker returns results. Host records execution and checks delivery.",
+    "zh": "Worker 返回结果；Host 记录执行并检查交付。"
+  },
+  {
+    "start": 44.73,
+    "end": 49.044,
+    "en": "Main accepts delivery, combining its judgment with Host's execution authority.",
+    "zh": "Main 结合自身判断与 Host 的执行权威，验收交付结果。"
+  },
+  {
+    "start": 50.744,
+    "end": 55.385,
+    "en": "A Harness connects models, tools, the environment, and the execution lifecycle.",
+    "zh": "Harness 连接模型、工具、环境与执行生命周期。"
+  },
+  {
+    "start": 55.735,
+    "end": 59.007,
+    "en": "A Workflow supplies the task process that the harness runs.",
+    "zh": "Workflow 提供由 Harness 执行的任务流程。"
+  },
+  {
+    "start": 59.357,
+    "end": 62.52,
+    "en": "A Skill supplies reusable instructions and tool assets.",
+    "zh": "Skill 提供可复用的指令与工具资源。"
+  },
+  {
+    "start": 62.87,
+    "end": 67.201,
+    "en": "Converting a Skill to a Workflow must preserve its tools and operating boundaries.",
+    "zh": "将 Skill 转成 Workflow，必须保留其工具与操作边界。"
+  },
+  {
+    "start": 68.901,
+    "end": 71.994,
+    "en": "Host routes Stage A into an isolated context.",
+    "zh": "Host 将阶段 A 路由到隔离上下文。"
+  },
+  {
+    "start": 72.344,
+    "end": 74.634,
+    "en": "Stage B gets its own relevant history.",
+    "zh": "阶段 B 得到与自己有关的历史信息。"
+  },
+  {
+    "start": 74.984,
+    "end": 77.18,
+    "en": "A Reviewer role can serve Stage A.",
+    "zh": "Reviewer 角色可以服务于阶段 A。"
+  },
+  {
+    "start": 77.53,
+    "end": 81.752,
+    "en": "The same role can serve Stage B. Roles and node identities differ.",
+    "zh": "同一个角色也可以服务于阶段 B。角色与节点身份不同。"
+  },
+  {
+    "start": 83.452,
+    "end": 87.209,
+    "en": "Stage A and Stage B share input, without depending on each other.",
+    "zh": "阶段 A 与阶段 B 共享输入，但彼此没有依赖。"
+  },
+  {
+    "start": 87.559,
+    "end": 93.164,
+    "en": "Reusable common context, or caching where supported, can reduce repeated setup for Stage B.",
+    "zh": "复用公共上下文，或在支持时使用缓存，可以减少阶段 B 的重复准备。"
+  },
+  {
+    "start": 93.51400000000001,
+    "end": 95.672,
+    "en": "Independent stages can run in parallel.",
+    "zh": "独立阶段可以并行执行。"
+  },
+  {
+    "start": 96.02199999999999,
+    "end": 99.2,
+    "en": "Join waits for both results before dependent work starts.",
+    "zh": "Join 等待两份结果到齐后，再启动依赖它们的工作。"
+  },
+  {
+    "start": 100.9,
+    "end": 104.78399999999999,
+    "en": "Bounded context, caching, and parallel work may bring Gains.",
+    "zh": "限定上下文、缓存与并行，可能带来收益。"
+  },
+  {
+    "start": 105.134,
+    "end": 109.691,
+    "en": "Overhead from handoffs and cold starts can outweigh those gains on small jobs.",
+    "zh": "小任务中，交接与冷启动开销可能超过这些收益。"
+  },
+  {
+    "start": 110.041,
+    "end": 115.464,
+    "en": "Measure each Result. This architecture guarantees neither lower cost nor lower latency.",
+    "zh": "衡量每次结果。这种架构既不保证成本更低，也不保证延迟更短。"
+  }
+]

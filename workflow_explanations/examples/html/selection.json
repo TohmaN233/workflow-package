@@ -1,0 +1,44 @@
+[
+  {
+    "topic": "tcp",
+    "method": "workflow",
+    "score": 100,
+    "file": "workflow_explanations/examples/html/tcp-workflow.html",
+    "source_task": "individual page"
+  },
+  {
+    "topic": "tcp",
+    "method": "skill",
+    "score": 93,
+    "file": "workflow_explanations/examples/html/tcp-skill.html",
+    "source_task": "three pages in one conversation"
+  },
+  {
+    "topic": "cache",
+    "method": "workflow",
+    "score": 99,
+    "file": "workflow_explanations/examples/html/cache-workflow.html",
+    "source_task": "individual page"
+  },
+  {
+    "topic": "cache",
+    "method": "skill",
+    "score": 95,
+    "file": "workflow_explanations/examples/html/cache-skill.html",
+    "source_task": "three pages in one conversation"
+  },
+  {
+    "topic": "git",
+    "method": "workflow",
+    "score": 100,
+    "file": "workflow_explanations/examples/html/git-workflow.html",
+    "source_task": "individual page"
+  },
+  {
+    "topic": "git",
+    "method": "skill",
+    "score": 96,
+    "file": "workflow_explanations/examples/html/git-skill.html",
+    "source_task": "three pages in one conversation"
+  }
+]

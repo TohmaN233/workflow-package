@@ -58,7 +58,7 @@ function cost(arm,pricing){
   +u.cached_input_tokens*(pricing.cached_input??pricing.cached_input_per_million)
   +u.output_tokens*(pricing.output??pricing.output_per_million))/1e6;
 }
-const metrics=await json(resolve(root,'codex/answer-me-with-html/experiments/metrics.json'));
+const metrics=await json(resolve(root,'workflow_explanations/experiments/results.json'));
 for(const arm of [...Object.values(metrics.single_html.baseline),...metrics.single_html.workflow_samples])
  assert(Math.abs(cost(arm,metrics.single_html.pricing_usd_per_million)-arm.cost_usd)<1e-9,'Single HTML cost');
 for(const arm of [metrics.three_html_one_conversation.skill,metrics.three_html_one_conversation.workflow])
@@ -73,6 +73,9 @@ async function docs(directory){
   const path=resolve(directory,entry.name);
   if(entry.isDirectory()){await docs(path);continue;}
   if(!entry.name.endsWith('.md'))continue;
+  const location=relative(root,path).replaceAll('\\','/');
+  assert(['README.md','README.zh-CN.md'].includes(location)||location.startsWith('workflow_explanations/'),
+   'Keep package explanations in workflow_explanations/');
   const content=await readFile(path,'utf8');
   for(const match of content.matchAll(/!?\[[^\]]*\]\(([^)]+)\)/g)){
    const target=match[1].split('#')[0];
@@ -84,4 +87,4 @@ async function docs(directory){
  }
 }
 await docs(root);
-console.log('PASS historical cost arithmetic and local document links');
+console.log('PASS final cost arithmetic and local document links');

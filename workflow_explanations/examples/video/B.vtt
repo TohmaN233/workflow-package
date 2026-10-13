@@ -1,0 +1,131 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.821
+Workflow gives AI work a process. Here's how ours works.
+Workflow 为 AI 工作提供流程。下面看看我们的实现。
+
+2
+00:00:05.071 --> 00:00:08.599
+AI workflows define stages, dependencies, and branches.
+AI 工作流定义阶段、依赖关系与分支。
+
+3
+00:00:08.949 --> 00:00:11.354
+Plan decides whether we need outside data.
+Plan 决定是否需要外部数据。
+
+4
+00:00:11.704 --> 00:00:14.849
+If so, Lookup fetches it with a deterministic tool.
+如果需要，Lookup 使用确定性工具获取数据。
+
+5
+00:00:15.199 --> 00:00:18.396
+Otherwise, Draft starts immediately, using model judgment.
+否则，Draft 立即开始，通过模型判断来写作。
+
+6
+00:00:18.746 --> 00:00:21.236
+If the task needs lookup, drafting waits.
+任务需要查询时，写作阶段就要等待。
+
+7
+00:00:22.936 --> 00:00:29.523
+Our Host owns authoritative Run state, dependencies, routing, execution records, and mechanical checks.
+Host 掌握 Run 的权威状态，负责依赖、路由、执行记录与机械检查。
+
+8
+00:00:29.873 --> 00:00:35.051
+Main, the initiating conversation, makes semantic decisions and assigns stages through Host.
+Main 就是发起任务的会话，负责语义决策，并通过 Host 分配阶段。
+
+9
+00:00:35.401 --> 00:00:39.665
+Host creates a Main worker: an isolated, temporary stage context.
+Host 创建 Main worker：一个隔离的临时阶段上下文。
+
+10
+00:00:40.015 --> 00:00:44.380
+The worker returns results. Host records execution and checks delivery.
+Worker 返回结果；Host 记录执行并检查交付。
+
+11
+00:00:44.730 --> 00:00:49.044
+Main accepts delivery, combining its judgment with Host's execution authority.
+Main 结合自身判断与 Host 的执行权威，验收交付结果。
+
+12
+00:00:50.744 --> 00:00:55.385
+A Harness connects models, tools, the environment, and the execution lifecycle.
+Harness 连接模型、工具、环境与执行生命周期。
+
+13
+00:00:55.735 --> 00:00:59.007
+A Workflow supplies the task process that the harness runs.
+Workflow 提供由 Harness 执行的任务流程。
+
+14
+00:00:59.357 --> 00:01:02.520
+A Skill supplies reusable instructions and tool assets.
+Skill 提供可复用的指令与工具资源。
+
+15
+00:01:02.870 --> 00:01:07.201
+Converting a Skill to a Workflow must preserve its tools and operating boundaries.
+将 Skill 转成 Workflow，必须保留其工具与操作边界。
+
+16
+00:01:08.901 --> 00:01:11.994
+Host routes Stage A into an isolated context.
+Host 将阶段 A 路由到隔离上下文。
+
+17
+00:01:12.344 --> 00:01:14.634
+Stage B gets its own relevant history.
+阶段 B 得到与自己有关的历史信息。
+
+18
+00:01:14.984 --> 00:01:17.180
+A Reviewer role can serve Stage A.
+Reviewer 角色可以服务于阶段 A。
+
+19
+00:01:17.530 --> 00:01:21.752
+The same role can serve Stage B. Roles and node identities differ.
+同一个角色也可以服务于阶段 B。角色与节点身份不同。
+
+20
+00:01:23.452 --> 00:01:27.209
+Stage A and Stage B share input, without depending on each other.
+阶段 A 与阶段 B 共享输入，但彼此没有依赖。
+
+21
+00:01:27.559 --> 00:01:33.164
+Reusable common context, or caching where supported, can reduce repeated setup for Stage B.
+复用公共上下文，或在支持时使用缓存，可以减少阶段 B 的重复准备。
+
+22
+00:01:33.514 --> 00:01:35.672
+Independent stages can run in parallel.
+独立阶段可以并行执行。
+
+23
+00:01:36.022 --> 00:01:39.200
+Join waits for both results before dependent work starts.
+Join 等待两份结果到齐后，再启动依赖它们的工作。
+
+24
+00:01:40.900 --> 00:01:44.784
+Bounded context, caching, and parallel work may bring Gains.
+限定上下文、缓存与并行，可能带来收益。
+
+25
+00:01:45.134 --> 00:01:49.691
+Overhead from handoffs and cold starts can outweigh those gains on small jobs.
+小任务中，交接与冷启动开销可能超过这些收益。
+
+26
+00:01:50.041 --> 00:01:55.464
+Measure each Result. This architecture guarantees neither lower cost nor lower latency.
+衡量每次结果。这种架构既不保证成本更低，也不保证延迟更短。

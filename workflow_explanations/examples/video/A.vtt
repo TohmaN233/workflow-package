@@ -1,0 +1,106 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.097
+Three ideas connect: process, runtime, and reusable know-how.
+流程、运行环境与可复用的知识，这三个概念相互关联。
+
+2
+00:00:05.347 --> 00:00:12.057
+An AI workflow defines stages and dependencies. A deterministic tool prepares input for model judgment.
+AI 工作流定义阶段及依赖关系。确定性工具先准备输入，再交给模型判断。
+
+3
+00:00:12.407 --> 00:00:16.064
+Judgment can branch: deliver when ready, or revise when needed.
+判断可以产生分支：准备好就交付，需要修改就返修。
+
+4
+00:00:17.764 --> 00:00:19.982
+Our Host owns authoritative Run state.
+我们的 Host 掌握 Run 的权威状态。
+
+5
+00:00:20.332 --> 00:00:22.331
+It handles dependencies and routing.
+它处理依赖关系与路由。
+
+6
+00:00:22.681 --> 00:00:24.134
+It records execution.
+它记录执行过程。
+
+7
+00:00:24.484 --> 00:00:28.820
+It also performs mechanical checks; semantic decisions belong to Main.
+它还执行机械检查；语义决策由 Main 负责。
+
+8
+00:00:30.520 --> 00:00:34.333
+Main is the initiating conversation. It makes semantic decisions.
+Main 就是发起任务的会话，负责语义决策。
+
+9
+00:00:34.683 --> 00:00:39.259
+A Main worker uses an isolated, temporary context for one assigned stage.
+Main worker 在隔离的临时上下文中，完成分配给它的一个阶段。
+
+10
+00:00:39.609 --> 00:00:45.531
+Role delegation chooses who works. Node identity says which stage; they are different concepts.
+Role 委派决定由谁来做；节点身份决定是哪个阶段。这是两个不同概念。
+
+11
+00:00:45.881 --> 00:00:47.262
+Main accepts the delivery.
+Main 验收交付结果。
+
+12
+00:00:48.962 --> 00:00:51.045
+A Workflow supplies the task process.
+Workflow 提供任务流程。
+
+13
+00:00:51.395 --> 00:00:56.104
+The harness connects models, tools, environment, and the execution lifecycle.
+Harness 连接模型、工具、环境与执行生命周期。
+
+14
+00:00:56.454 --> 00:00:59.676
+A Skill supplies reusable instructions and tool assets.
+Skill 提供可复用的指令与工具资源。
+
+15
+00:01:01.376 --> 00:01:05.967
+Converting a Skill into a Workflow should preserve its tools and operating boundaries.
+将 Skill 转成 Workflow 时，应保留其工具与操作边界。
+
+16
+00:01:06.317 --> 00:01:09.529
+Bounded stage context can reduce irrelevant material.
+限定每个阶段的上下文，可以减少无关信息。
+
+17
+00:01:09.879 --> 00:01:14.762
+Reusable common context, with caching where supported, can reduce repeated work.
+复用公共上下文，并在支持时使用缓存，可以减少重复工作。
+
+18
+00:01:16.462 --> 00:01:20.961
+After preparation, independent research and diagram stages can run in parallel.
+准备完成后，相互独立的研究与绘图阶段可以并行执行。
+
+19
+00:01:21.311 --> 00:01:25.828
+Combine waits for both results. Parallel work can shorten the critical path.
+汇合阶段等待两份结果。并行可以缩短关键路径。
+
+20
+00:01:26.178 --> 00:01:30.051
+But handoffs and cold starts can outweigh these benefits on small jobs.
+但在小任务中，交接与冷启动的开销可能超过这些收益。
+
+21
+00:01:30.401 --> 00:01:33.779
+This architecture does not guarantee lower cost or latency.
+这种架构并不保证成本更低或延迟更短。

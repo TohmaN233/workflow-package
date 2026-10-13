@@ -2,15 +2,18 @@
 
 [中文](README.zh-CN.md) · [Codex Agents Workflow](https://github.com/TohmaN233/codex-agents-workflow) · [Project site](https://tgy233.top/tgypage/caw/)
 
-Reusable Workflow packages, separate from their execution engines and default configuration.
+Reusable Workflow packages, kept separate from their execution engines and default configuration.
 
-| Platform | Packages |
-| --- | --- |
-| [Codex](codex/README.md) | [Answer me with HTML](codex/answer-me-with-html/README.md): visual HTML explanations, batch pages, video and asset reuse. [GitHub README generator](codex/github-readme-generator/README.md): evidence-based README and optional multilingual repository documentation. |
-| [Pi](pi/README.md) | Reserved for future Pi packages; no Pi package is published yet. |
+**The Workflow itself is a `*.workflow-package.json` file.** All usage notes, comparisons and output examples live in [workflow_explanations](workflow_explanations/README.md).
 
-For Codex, install [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow), open its workbench, choose **Install Workflow**, then select a downloaded `*.workflow-package.json` file. Packages are opt-in and do not change the plugin's default library. Installation checks integrity and dependencies; it does not install missing programs. See the [Codex catalogue](codex/README.md) for individual requirements and raw download links.
+| Platform | Workflow | Download | Explanation |
+| --- | --- | --- | --- |
+| Codex | Answer me with HTML | [Package JSON](codex/answer-me-with-html/answer-me-with-html.workflow-package.json) | [HTML diagrams, batch pages, video and asset reuse](workflow_explanations/answer-me-with-html.md) |
+| Codex | GitHub README generator | [Package JSON](codex/github-readme-generator/github-readme-generator.workflow-package.json) | [README and optional multilingual repository documentation](workflow_explanations/github-readme-generator.md) |
+| Pi | No package yet | — | [Platform status](workflow_explanations/platforms.md) |
 
-The [three HTML/video comparison studies](codex/answer-me-with-html/experiments/README.md) report selected historical results and their limits. The README package has functional qualification and personal extensions, with **no Skill-versus-Workflow performance experiment**.
+Install [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow), open its workbench, choose **Install Workflow**, and select a downloaded package JSON. See [installation and dependencies](workflow_explanations/platforms.md).
 
-Original Skills and retained license notices are credited in each package directory. Repository-authored documentation is [MIT licensed](LICENSE); bundled upstream materials retain their own notices.
+The [comparison results and examples](workflow_explanations/experiments/results.md) cover HTML and video. The README package has personal extensions and functional checks, with no Skill-versus-Workflow benchmark. Contributions of reusable packages are welcome; see [how to contribute](workflow_explanations/contributing.md).
+
+Original Skills are credited in the explanations; their license notices stay beside the packages and inside the bundles. Repository-authored documentation is [MIT licensed](LICENSE).

@@ -2,15 +2,18 @@
 
 [English](README.md) · [Codex Agents Workflow](https://github.com/TohmaN233/codex-agents-workflow) · [项目主页](https://tgy233.top/tgypage/caw/)
 
-独立保存可复用 Workflow 安装包，与执行引擎及其默认配置分开维护。
+可复用的 Workflow 安装包，与执行引擎和默认配置分开维护。
 
-| 平台 | 安装包 |
-| --- | --- |
-| [Codex](codex/README.zh-CN.md) | [Answer me with HTML](codex/answer-me-with-html/README.zh-CN.md)：HTML 图解、批量网页、视频及资产复用。[GitHub README generator](codex/github-readme-generator/README.zh-CN.md)：基于仓库证据编写 README，可按请求扩展多语种仓库文档。 |
-| [Pi](pi/README.md) | 为未来的 Pi 包预留，目前没有发布 Pi 工作流。 |
+**Workflow 本体是 `*.workflow-package.json` 文件。** 使用说明、对照结果和产物样例统一放在 [workflow_explanations](workflow_explanations/README.zh-CN.md)。
 
-Codex 用户先安装 [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow)，打开工作台，选择 **安装 Workflow**，再选下载的 `*.workflow-package.json`。这些包由用户自行选择安装，不改变插件默认流程库。安装器检查完整性和依赖，不会安装缺少的程序。具体要求与下载链接见 [Codex 目录](codex/README.zh-CN.md)。
+| 平台 | Workflow | 下载 | 说明 |
+| --- | --- | --- | --- |
+| Codex | Answer me with HTML | [安装包 JSON](codex/answer-me-with-html/answer-me-with-html.workflow-package.json) | [HTML 图解、批量网页、视频与资产复用](workflow_explanations/answer-me-with-html.zh-CN.md) |
+| Codex | GitHub README generator | [安装包 JSON](codex/github-readme-generator/github-readme-generator.workflow-package.json) | [README 与可选的多语言仓库文档](workflow_explanations/github-readme-generator.zh-CN.md) |
+| Pi | 暂无安装包 | — | [平台说明](workflow_explanations/platforms.zh-CN.md) |
 
-[三组 HTML／视频对照](codex/answer-me-with-html/experiments/README.zh-CN.md)保留历史结果及适用边界。README 包经过功能验证并包含个人扩展，**没有 Skill 与 Workflow 的性能对照实验**。
+安装 [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow)，打开工作台，选择 **安装 Workflow**，再打开下载的安装包 JSON。详见[安装与依赖](workflow_explanations/platforms.zh-CN.md)。
 
-每个包的目录注明原 Skill 来源并保留许可证。仓库自行编写的文档采用 [MIT 许可证](LICENSE)，内嵌的上游内容保留原版权声明。
+[对照结果和样例](workflow_explanations/experiments/results.zh-CN.md)覆盖 HTML 与视频；README 包只有个人扩展和功能验证，没有 Skill／Workflow 性能实验。欢迎贡献通用工作流包，见[贡献说明](workflow_explanations/contributing.zh-CN.md)。
+
+说明中保留原 Skill 来源；原许可证放在安装包旁，并保留在包内。本仓库自写文档采用 [MIT 许可证](LICENSE)。

@@ -2,6 +2,8 @@
 
 [English](platforms.md) · [说明索引](README.zh-CN.md)
 
+可执行安装步骤与路线依赖见[安装说明](install.zh-CN.md)。
+
 Codex 包需要 [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow)。在工作台选择 **安装 Workflow**，打开下载的 `*.workflow-package.json`。`workflow_install_workflow_package` 工具也支持 `package_path` 或 HTTPS 地址。
 
 [codex/catalog.json](../codex/catalog.json)记录文件／包的完整性和依赖；远程安装可选的 `expected_sha256` 使用文件摘要。安装包版本与引擎发布版本分开维护。

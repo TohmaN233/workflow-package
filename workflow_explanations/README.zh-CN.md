@@ -4,6 +4,7 @@
 
 这里统一保存安装包说明、对照结果和产物样例。导入首页链接的 JSON；此目录中的文件用于说明和展示。
 
+- [LLM 安装步骤：依赖、导入与验收](install.zh-CN.md)
 - [安装与平台](platforms.zh-CN.md)
 - [Answer me with HTML](answer-me-with-html.zh-CN.md)
 - [GitHub README generator](github-readme-generator.zh-CN.md)

@@ -14,7 +14,7 @@ Reusable Workflow packages, kept separate from their execution engines and defau
 | Codex | GitHub README generator | [Package JSON](codex/github-readme-generator/github-readme-generator.workflow-package.json) | [README and optional multilingual repository documentation](workflow_explanations/github-readme-generator.md) |
 | Pi | No package yet | — | [Platform status](workflow_explanations/platforms.md) |
 
-Install [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow), open its workbench, choose **Install Workflow**, and select a downloaded package JSON. See [installation and dependencies](workflow_explanations/platforms.md).
+Install [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow), open its workbench, choose **Install Workflow**, and select a downloaded package JSON. See the [LLM-executable installation and dependency procedure](workflow_explanations/install.md).
 
 The [comparison results and examples](workflow_explanations/experiments/results.md) cover HTML and video. The README package has personal extensions and functional checks, with no Skill-versus-Workflow benchmark. Contributions of reusable packages are welcome; see [how to contribute](workflow_explanations/contributing.md).
 

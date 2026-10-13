@@ -2,6 +2,8 @@
 
 [中文](platforms.zh-CN.md) · [Index](README.md)
 
+For executable setup steps and route-specific dependencies, follow the [installation procedure](install.md).
+
 Codex packages require [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-workflow). In the workbench, choose **Install Workflow** and select the downloaded `*.workflow-package.json`. The `workflow_install_workflow_package` tool also accepts `package_path` or an HTTPS URL.
 
 [codex/catalog.json](../codex/catalog.json) records file/package integrity and dependencies. The remote installer's optional `expected_sha256` is the file digest. Package versions are separate from the engine release.

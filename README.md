@@ -16,4 +16,6 @@ Install [Codex Agents Workflow 1.2](https://github.com/TohmaN233/codex-agents-wo
 
 The [comparison results and examples](workflow_explanations/experiments/results.md) cover HTML and video. The README package has personal extensions and functional checks, with no Skill-versus-Workflow benchmark. Contributions of reusable packages are welcome; see [how to contribute](workflow_explanations/contributing.md).
 
+The HTML/video package uses Main workers primarily to make comparisons with the original Skill easier; production nodes can also use subagents with lower-cost models, while Main handles orchestration and acceptance.
+
 Original Skills are credited in the explanations; their license notices stay beside the packages and inside the bundles. Repository-authored documentation is [MIT licensed](LICENSE).

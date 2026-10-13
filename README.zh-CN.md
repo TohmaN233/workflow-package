@@ -16,4 +16,6 @@
 
 [对照结果和样例](workflow_explanations/experiments/results.zh-CN.md)覆盖 HTML 与视频；README 包只有个人扩展和功能验证，没有 Skill／Workflow 性能实验。欢迎贡献通用工作流包，见[贡献说明](workflow_explanations/contributing.zh-CN.md)。
 
+HTML／视频包使用 Main worker，主要是为了便于和原 Skill 做对照实验；制作节点也可以改用 subagent 并选择更便宜的模型，Main 负责调度与验收。
+
 说明中保留原 Skill 来源；原许可证放在安装包旁，并保留在包内。本仓库自写文档采用 [MIT 许可证](LICENSE)。

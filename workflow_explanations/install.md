@@ -30,18 +30,21 @@ The package carries its scripts, references and resource bytes. The HTML package
 
 Inspect both the global dependency list and the selected nodes' `runtime_requirements`. Conditional dependencies need not appear in the global list.
 
+For the upstream 0.5.2 HTML package, update the engine from its current `main` before importing. Its explicitly declared WebM operations need the long Host-tool deadline support; an older build still labeled 1.2 may reject that contract. Use the normal engine installer and current connection check, not an application reinstall or a trial business Run.
+
 | Route | Additional requirements |
 | --- | --- |
 | HTML, diagrams, batch pages | Node.js **20+** |
-| New video or existing-asset assembly (`export_mp4`, `reuse_video`) | Node.js **22+**, FFmpeg, Chrome-compatible browser |
-| New narration | Receiving-host TTS configuration; ElevenLabs uses `ELEVENLABS_API_KEY` and optionally `ELEVENLABS_VOICE_ID` |
+| MP4 export or existing-player MP4 reuse (`export_mp4`, `reuse_video`) | Node.js **22+**, FFmpeg, Chrome-compatible browser |
+| WebM export or existing-player WebM reuse (`export_webm`, `reuse_video_webm`) | Node.js **22+**, Chrome-compatible browser; no FFmpeg requirement |
+| New narration | Receiving-host TTS configuration; ElevenLabs uses `ELEVENLABS_API_KEY` and optional voice/model IDs; explicit local TTS uses `AM_TTS_URL` and its configured `AM_TTS_*` options |
 | Existing narration/text reuse | Supplied local audio, matching text/subtitles and route inputs; no new TTS request |
-| Original Skill update routes, only when selected | `update_npx_skills`: `npx`; `update_git`: `git`, `npm`; `update_claude_plugin`: `claude` |
+| Original Skill update routes, only when selected | `update_npx_skills`: `npx`; `update_git`: `git`, `npm`; `update_claude_plugin`: `claude`; `update_dsh`: `dsh` with its existing profile/package |
 | README/documentation | Enabled configured Provider **`native-luna`**; no media software |
 
 Provider IDs refer to receiving-host configuration, not model files to download. Optional accounts and credentials belong to the receiving host and are not bundled.
 
-Use the engine's [Node/Git instructions](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.md) if needed. For video, reuse a working browser and FFmpeg first; install missing tools using the existing package manager:
+Use the engine's [Node/Git instructions](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.md) if needed. For movie export, reuse a working browser first; install FFmpeg only for MP4. Install missing selected-route tools using the existing package manager:
 
 | System | FFmpeg | Browser, if none is suitable |
 | --- | --- | --- |

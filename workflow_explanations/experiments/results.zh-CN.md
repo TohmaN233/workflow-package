@@ -1,6 +1,6 @@
 # Skill 与 Workflow 对照
 
-当前分发版本：HTML 包 1.1.3、上游 0.5.3、CAW 1.2.2。三页 Workflow 样本已更新为本次内容修订后的实际产物与计量；固定 Skill、历史单页和视频样本保持原记录。不同源版本分别标明。
+当前分发版本：HTML 包 1.1.4、上游 0.5.3、CAW 1.2.2。1.1.4 修复需求传递，仅完成离线回归；下列三页 Workflow 计量和成品属于 1.1.3，不代表本版本的新实验或完整内容对等证明。固定 Skill、历史单页和视频样本保持原记录。不同源版本分别标明。
 
 [English](results.md) · [Workflow 安装包](../answer-me-with-html.zh-CN.md) · [数据](results.json) · [原 Skill](https://github.com/QingYunA/answer-me-with-html)
 

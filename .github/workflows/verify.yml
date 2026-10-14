@@ -12,5 +12,6 @@ jobs:
           node-version: 22
       - run: node scripts/check-packages.mjs
       - run: node scripts/check-html-task-scope.mjs
+      - run: node scripts/check-html-requirement-transfer.mjs
       - run: node scripts/check-gallery-artifacts.mjs
       - run: node scripts/build-gallery.mjs

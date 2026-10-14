@@ -455,13 +455,13 @@
     "url": "https://github.com/TohmaN233/workflow-package/blob/727cea7fc22419bc455ed8cff38c0182323dea11/codex/answer-me-with-html/answer-me-with-html.workflow-package.json"
   },
   "distributed_package": {
-    "package_version": "1.1.3",
-    "workflow_revision_hash": "a6ac4ca2f6ab2f09ab43145a31941b5078e77ed22355255083386b583aaf5793",
+    "package_version": "1.1.4",
+    "workflow_revision_hash": "5eba0e5b0d56855e57eb06df7abb0d7b1f1808527c31b92e47882f9c78fc5c9c",
     "source_release": "v0.5.3",
     "source_commit": "83bfc9383105e304d90b5f93db848996d5420d84",
     "engine_version": "1.2.2",
     "node_count": 41,
     "resource_count": 140,
-    "qualification": "Fresh three-page content qualification on v0.5.3; explicit invocation has no ambient activation mode. Fixed Skill sample remains v0.5.2. Original callables/resources retained; no engine changes or new Host gates."
+    "qualification": "Offline lossless requirement-transfer and original-renderer regression checks; no model or paid voice calls. Historical three-page metrics and artifacts remain tied to their original 1.1.3 revision and are not full content-parity proof."
   }
 }

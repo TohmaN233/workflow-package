@@ -28,6 +28,7 @@ jobs:
           node-version: 22
       - run: node scripts/check-packages.mjs
       - run: node scripts/check-html-task-scope.mjs
+      - run: node scripts/check-gallery-artifacts.mjs
       - run: node scripts/build-gallery.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4

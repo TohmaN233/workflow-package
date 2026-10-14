@@ -6,20 +6,6 @@ const TOPICS = {
   cache: { en: "Redis / Memcached", zh: "Redis / Memcached" },
   git: { en: "Git merge / rebase", zh: "Git merge / rebase" }
 };
-const ARTIFACTS = {
-  tcp: {
-    skill: "../examples/html/tcp-skill.html",
-    workflow: "../examples/html/tcp-workflow.html"
-  },
-  cache: {
-    skill: "../examples/html/cache-skill.html",
-    workflow: "../examples/html/cache-workflow.html"
-  },
-  git: {
-    skill: "../examples/html/git-skill.html",
-    workflow: "../examples/html/git-workflow.html"
-  }
-};
 const SECTION_IDS = new Set(["top", "main", "latest", "batch", "single", "video", "method", "limitations"]);
 const state = { lang: "en", topic: "tcp", section: "batch", data: null };
 const formatter = () => new Intl.NumberFormat(state.lang === "zh-CN" ? "zh-CN" : "en-US");
@@ -330,23 +316,30 @@ function renderPricing() {
 
 function renderArtifacts() {
   const topic = state.topic;
-  const artifact = ARTIFACTS[topic];
-  if (!artifact) throw new Error("Missing artifact paths for topic " + topic);
-
-  const skillFrame = document.getElementById("skill-preview");
-  const workflowFrame = document.getElementById("workflow-preview");
-  const skillLink = document.getElementById("skill-artifact-link");
-  const workflowLink = document.getElementById("workflow-artifact-link");
-  if (skillFrame.getAttribute("src") !== artifact.skill) skillFrame.src = artifact.skill;
-  if (workflowFrame.getAttribute("src") !== artifact.workflow) workflowFrame.src = artifact.workflow;
-  skillLink.href = artifact.skill;
-  workflowLink.href = artifact.workflow;
-  skillFrame.title = state.lang === "zh-CN"
-    ? "三页批量实验中的 Skill " + topicName(topic) + " 讲解页"
-    : "Skill " + topicName(topic) + " explainer from the three-page batch experiment";
-  workflowFrame.title = state.lang === "zh-CN"
-    ? "三页批量实验中的 Workflow " + topicName(topic) + " 讲解页"
-    : "Workflow " + topicName(topic) + " explainer from the three-page batch experiment";
+  for (const arm of ["skill", "workflow"]) {
+    const matches = state.data.three_html_one_conversation.artifacts.filter(record => record.topic === topic && record.arm === arm);
+    if (matches.length !== 1) throw new Error("Expected one measured artifact for " + topic + "/" + arm);
+    const artifact = matches[0];
+    if (typeof artifact.path !== "string" || !/^[a-f0-9]{64}$/.test(artifact.sha256)) throw new Error("Missing artifact path or content version");
+    const url = artifact.path + "?v=" + artifact.sha256;
+    const method = arm === "skill" ? "Skill" : "Workflow";
+    const title = state.lang === "zh-CN"
+      ? "三页批量实验中的 " + method + " " + topicName(topic) + " 讲解页"
+      : method + " " + topicName(topic) + " explainer from the three-page batch experiment";
+    const frame = document.getElementById(arm + "-preview");
+    if (frame.getAttribute("src") !== url) {
+      // Initial TCP navigation and a later deep-link/topic navigation must not
+      // race in the same browsing context. Keep a frame only for identical bytes.
+      const next = frame.cloneNode(false);
+      next.src = url;
+      next.title = title;
+      next.setAttribute("loading", "eager");
+      frame.replaceWith(next);
+    } else frame.title = title;
+    const link = document.getElementById(arm + "-artifact-link");
+    link.href = url;
+    link.removeAttribute("aria-disabled");
+  }
 
   const caption = document.getElementById("artifact-caption");
   setText(
@@ -377,8 +370,8 @@ function renderLanguage() {
 
 function renderAll() {
   renderLanguage();
-  renderArtifacts();
   if (!state.data) return;
+  renderArtifacts();
   renderLatest();
   renderBatch();
   renderSingle();

@@ -1,5 +1,7 @@
 # Skill versus Workflow
 
+Current distribution: HTML package 1.1.2, upstream 0.5.3, CAW 1.2.2. The data and outputs below retain the exact originally measured source versions and Workflow revisions. The 0.5.3 update passed tool/configuration checks without a new model benchmark.
+
 [中文](results.zh-CN.md) · [Workflow package](../answer-me-with-html.md) · [Data](results.json) · [Original Skill](https://github.com/QingYunA/answer-me-with-html)
 
 **[Open the live comparison gallery](https://tohman233.github.io/workflow-package/)** to view the HTML outputs, video examples and these metrics directly in your browser.
@@ -46,14 +48,16 @@ Single-page runs show no consistent advantage across token use, cost and time. T
 
 ## Three pages in one conversation
 
-Each method produces TCP, Redis / Memcached, and Git merge / rebase explainers in one conversation. Both use `gpt-6.1-sol/high` and renderer 0.4.7.
+Each method completes the same TCP, Redis / Memcached and Git merge / rebase request in one independent new conversation, using `gpt-6-luna/max` and the original **0.5.2** renderer. One successful run per method; Workflow includes Main, common preparation once, three parallel workers and all corrections.
 
-| Method | Input, including cached | Cached input | Output | API-equivalent cost | Seconds |
+| Method | Input (cached included) | Cached input / hit rate | Output | API-equivalent cost | Seconds |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Skill | 434,835 | 389,120 | 6,291 | $0.193252 | 158.577 |
-| Workflow | 208,283 | 162,304 | 5,671 | $0.164898 | 144.049 |
+| Skill | 555,547 | 516,096 / 92.90% | 14,123 | $0.016168 | 185.155 |
+| Workflow | 305,998 | 225,536 / 73.71% | 20,100 | $0.020352 | 143.531 |
 
-Workflow uses **52.10% fewer input tokens**, costs **14.67% less**, and takes **9.16% less time** in this comparison.
+Workflow uses **44.92%** less input and finishes **22.48%** faster. Standard API-equivalent cost rises **25.88%** (+$0.004184). Cache-hit rates are **73.71% / 92.90%** for Workflow / Skill; uncached input is **80,462 / 39,451** and output **20,100 / 14,123**. Less total input alone does not establish a cost reduction.
+
+Using [official OpenAI Luna pricing](https://developers.openai.com/api/docs/models/gpt-6-luna), per million tokens: $0.10 input, $0.01 cached input, $0.125 cache writes and $0.50 output. Requests stay below 272K input; reported cache writes are zero and output includes reasoning. Engineering work and prior failed trials are separate from this successful pair.
 
 | Topic | Skill | Workflow |
 | --- | --- | --- |
@@ -76,4 +80,4 @@ Watch the [independently produced Skill / Workflow videos](https://tohman233.git
 
 ## Measurement
 
-Costs include Main, shared-context preparation, all workers and corrections; time covers complete delivery. These are API-equivalent costs, not subscription bills. The per-million-token rates for fresh input / cached input / output are $2 / $0.10 / $10 for HTML and $2 / $0.20 / $12 for video and text. The three-page batch and video stages each report one task per method.
+Costs include Main, shared-context preparation, all workers and corrections; time covers complete delivery. These are API-equivalent costs, not subscription bills. Per million fresh input / cached input / output tokens: the Luna batch uses $0.10 / $0.01 / $0.50, historical Sol single-page HTML uses $2 / $0.10 / $10, and video/text use $2 / $0.20 / $12. The three-page batch and video stages each report one task per method.

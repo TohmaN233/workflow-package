@@ -2,21 +2,21 @@
   "schema_version": 1,
   "engine": {
     "repository": "https://github.com/TohmaN233/codex-agents-workflow",
-    "qualified_release": "1.2"
+    "qualified_release": "1.2.2"
   },
   "packages": [
     {
       "id": "answer-me-with-html-evidence",
       "name": "answer-me-with-html",
       "platform": "codex",
-      "package_version": "1.1.1",
+      "package_version": "1.1.2",
       "path": "codex/answer-me-with-html/answer-me-with-html.workflow-package.json",
       "source_skill": "https://github.com/QingYunA/answer-me-with-html",
-      "workflow_revision_hash": "ea82d2ad44494c7f750d06a451d6eaa1a47d82fd136a78419c3c20c6b46c5efe",
-      "package_sha256": "07eb21ae3db070ae59e9aeb001d40c6322da1a9aca98dd65d01be0fc5a8bd054",
-      "file_sha256": "bd8331896a58f3929ba10d8eac62a6fa5c6a49c6081493599e56be959c432d78",
+      "workflow_revision_hash": "a17809c331a51c0393f64155683e59e405d366b8317db3f8e918015ae8a8da47",
+      "package_sha256": "651483376e4704d533ad43c75f76eb5a92da8cb31eba7760a5168bd9cfea53c6",
+      "file_sha256": "69a5c6af2849f90efb3f3b0d70d6c8e8937110639d0ca398a5202dac1c0ba34c",
       "node_count": 41,
-      "resource_count": 130,
+      "resource_count": 140,
       "dependencies": {
         "providers": [],
         "tools": [
@@ -47,8 +47,8 @@
           }
         ]
       },
-      "source_release": "v0.5.2",
-      "source_commit": "4da5ae89ac435683110aa1b8707d9d4170184c55"
+      "source_release": "v0.5.3",
+      "source_commit": "83bfc9383105e304d90b5f93db848996d5420d84"
     },
     {
       "id": "github-readme-generator",

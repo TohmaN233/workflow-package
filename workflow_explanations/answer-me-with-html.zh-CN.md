@@ -10,15 +10,17 @@ HTML 写作节点用已有材料和知识完成一般概念讲解。只有用户
 
 结构化输入已明确提供独立网页请求及共同要求时，Host 直接绑定该计划；自由文本或混合路线请求仍由 Main 判断。Main 验收完整稿件和诊断，不重复读取制作节点的渲染语法指南。
 
+显式启动 Workflow 已确定要制作产物，不再判断环境里的 Skill 是否应自动触发。路由、Host 接口和制作节点已移除 `always_on`／`behavior`；网页根据任务复杂度规划内容，短问题也可能需要完整的技术讲解。验收检查机制、适用条件和必要子问题，不把字数、面板数或渲染成功当作内容覆盖。原有工具和 STE 修正流程保持完整，没有新增 Host 内容校验。
+
 视频支持新稿件、已有配音／播放器资产、MP4 或 WebM 导出，以及仅重写文本。已有音频可复用，无需调用语音服务。新配音使用接收端配置的 Provider 与凭据，也支持明确选中的本地 OpenAI 兼容语音服务。两种视频文件导出都需要 Node.js 22+ 和 Chrome，只有 MP4 需要 FFmpeg；HTML 和播放器页面需要 Node.js 20+。
 
 请求示例：用 HTML 图解 TCP；一次制作三个独立讲解网页；用已有稿件和英文配音制作视频；仅重写稿件。可查看[六个 HTML 成品](examples/html/index.html)和[带双语字幕的视频 A/B](examples/video/comparison.html)。
 
 包内含 **41 个节点、140 个运行资源**，以及上游原样打包的 [CLI 0.5.3](https://github.com/QingYunA/answer-me-with-html/tree/v0.5.3)。保留 ER 图、结构变更、决策与 Reply/Remark 反馈、源码与图片、离线公式、自动／paper／用户主题、多语言与 RTL、WebM 导出、成功重试替换和 DSH 更新。0.5.3 增加主题目录的安装／列表／更新／移除、comic／manga／pop 主题支持、图示样式参数、内置漫画字体、Reply 控件改进和 `close_after_reply`。Main worker 节点与路线保持不变；现有配置 Host 调用原主题 CLI，并保留覆盖自定义主题需要用户同意的条件。
 
-上游元描述鼓励的使用范围比正文决策节更宽。本次保留正文的具体路由规则，以及视频必须明确请求的条件。服务器仍由用户启动；只有接收端实际提供 DSH present 工具时，才调用它呈现产物。
+视频和文件导出仍须明确请求；配置、清理、更新、已有资产复用和局部修改保留各自路线。服务器仍由用户启动；只有接收端实际提供 DSH present 工具时，才调用它呈现产物。
 
-安装包 **1.1.2** 分发上游 0.5.3，配套 CAW **1.2.2**。十项实际原 CLI／Host 配置检查通过；上游配置／主题／Reply 测试为 46 项通过、9 项依赖浏览器而跳过。此次更新没有调用模型或付费配音。已有[单页实验](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)和新增的 [Luna/max 三页对照](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#batch?lang=zh-CN)保留原来的 0.5.2 渲染器与实测产物；三页样本输入减少 44.92%、耗时减少 22.48%，Standard API 等价成本增加 25.88%。历史样本不冒充 0.5.3 性能，实际测试版本与当前分发包分别记录。
+安装包 **1.1.3** 分发上游 0.5.3，配套 CAW **1.2.2**；本次仅更新 Workflow 包。原 CLI／Host 配置检查与上游配置／主题／Reply 测试的记录保留。新的 [Luna/max 三页验证](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#batch?lang=zh-CN)在全新会话中完成原来的三个题目：TCP 关闭状态、缓存未命中／失效与选型条件均已核对，Git 保留历史变化和共享提交的解释。原 Skill 基线仍为 0.5.2，未重跑；此次 Workflow 使用 0.5.3，版本差异明确记录。新三页产物与其真实计量一起更新：输入减少 47.62%、耗时减少 14.58%，Standard API 等价成本增加 25.40%。这不是同版本因果实验，也没有调用付费配音。[历史单页实验](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)保持原数据与产物。
 
 ## 适用范围与局限性
 

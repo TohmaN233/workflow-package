@@ -1,6 +1,6 @@
 # Skill versus Workflow
 
-Current distribution: HTML package 1.1.2, upstream 0.5.3, CAW 1.2.2. The data and outputs below retain the exact originally measured source versions and Workflow revisions. The 0.5.3 update passed tool/configuration checks without a new model benchmark.
+Current distribution: HTML package 1.1.3, upstream 0.5.3, CAW 1.2.2. The three-page Workflow sample now contains the actual outputs and measurements from the content revision. The fixed Skill, historical single-page and video samples retain their original records. Source versions are identified separately.
 
 [中文](results.zh-CN.md) · [Workflow package](../answer-me-with-html.md) · [Data](results.json) · [Original Skill](https://github.com/QingYunA/answer-me-with-html)
 
@@ -48,14 +48,14 @@ Single-page runs show no consistent advantage across token use, cost and time. T
 
 ## Three pages in one conversation
 
-Each method completes the same TCP, Redis / Memcached and Git merge / rebase request in one independent new conversation, using `gpt-6-luna/max` and the original **0.5.2** renderer. One successful run per method; Workflow includes Main, common preparation once, three parallel workers and all corrections.
+Each method completes the identical TCP, Redis / Memcached and Git merge / rebase three-page request in an independent new conversation using `gpt-6-luna/max`. Skill retains its original **0.5.2** sample; Workflow uses the content-corrected **0.5.3** package. Skill was not rerun, so source-version effects cannot be isolated. One successful delivery is shown per method. Workflow includes Main, common preparation once, three parallel workers and all corrections. Review checked close states, cache-miss/invalidation paths, selection conditions and Git history changes; this is not a blind quality score.
 
 | Method | Input (cached included) | Cached input / hit rate | Output | API-equivalent cost | Seconds |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Skill | 555,547 | 516,096 / 92.90% | 14,123 | $0.016168 | 185.155 |
-| Workflow | 305,998 | 225,536 / 73.71% | 20,100 | $0.020352 | 143.531 |
+| Workflow | 290,972 | 221,696 / 76.19% | 22,258 | $0.020274 | 158.158 |
 
-Workflow uses **44.92%** less input and finishes **22.48%** faster. Standard API-equivalent cost rises **25.88%** (+$0.004184). Cache-hit rates are **73.71% / 92.90%** for Workflow / Skill; uncached input is **80,462 / 39,451** and output **20,100 / 14,123**. Less total input alone does not establish a cost reduction.
+Workflow uses **47.62%** less input and finishes **14.58%** faster. Standard API-equivalent cost rises **25.40%** (+$0.004106). Cache-hit rates are **76.19% / 92.90%** for Workflow / Skill; uncached input is **69,276 / 39,451** and output **22,258 / 14,123**. Less total input alone does not establish a cost reduction.
 
 Using [official OpenAI Luna pricing](https://developers.openai.com/api/docs/models/gpt-6-luna), per million tokens: $0.10 input, $0.01 cached input, $0.125 cache writes and $0.50 output. Requests stay below 272K input; reported cache writes are zero and output includes reasoning. Engineering work and prior failed trials are separate from this successful pair.
 

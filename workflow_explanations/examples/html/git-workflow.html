@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="paper" data-mode="auto" data-style="80">
+<html lang="zh-CN" data-theme="blueprint" data-mode="auto" data-style="80">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="Answer me with HTML 0.5.2">
-<title>Git merge 与 git rebase：历史如何变化</title>
+<meta name="generator" content="Answer me with HTML 0.5.3">
+<title>Git 合并与变基</title>
 <style>
 html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -369,6 +369,37 @@ code, pre, kbd { font-family: var(--font-mono); }
 .am-reply textarea { font-family: var(--font-mono); font-size: 12.5px; }
 .am-reply-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .am-reply .am-btn:disabled { opacity: .5; cursor: default; }
+/* The sheet shows the reply drawn (src/runtime/reply-view.js), each line in its own direction; the Markdown that Copy copies sits under a fold. */
+.am-reply-view {
+  max-height: min(60vh, 26em); overflow: auto; padding: 10px 12px; font: 14px/1.6 var(--font-sans); color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--radius); overflow-wrap: anywhere;
+}
+.am-reply-view:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.am-reply-view > div { text-align: start; unicode-bidi: isolate; }
+.am-rv-gap { height: .5em; }
+.am-rv-h1 { font-weight: 700; font-size: 15px; }
+.am-rv-h2 { font-weight: 700; color: var(--ink-2); margin-top: 2px; }
+.am-rv-tag {
+  display: inline-block; min-width: 1.6em; padding: 0 4px; font-size: 12px; line-height: 1.5; text-align: center;
+  color: var(--ink-2); border: 1px solid var(--line-2); border-radius: var(--radius);
+}
+.am-rv-a { padding-inline-start: 1.6em; }
+.am-rv-a em { color: var(--ink-2); }
+.am-rv-quote { margin-inline-start: 1em; padding-inline-start: 10px; border-inline-start: 3px solid var(--line-2); color: var(--ink-2); white-space: pre-wrap; }
+.am-reply-raw summary { margin-top: 10px; margin-bottom: 6px; font-size: 12px; color: var(--ink-2); cursor: pointer; }
+/* The bar at the bottom of the page: counts and one-click copy, so the reader need not go to the Reply button at the top. */
+.am-reply-bar {
+  position: fixed; inset-block-end: 16px; inset-inline: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 24px);
+  z-index: 10; display: flex; align-items: center; gap: 10px; padding-block: 8px; padding-inline: 14px 8px; font-size: 13px;
+  color: var(--ink); background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--radius); box-shadow: 0 6px 24px rgba(0,0,0,.18);
+}
+.am-reply-bar[hidden] { display: none; }
+.am-reply-bar-count { color: var(--ink-2); }
+.am-reply-bar .am-btn { flex: none; white-space: nowrap; }
+body.am-has-reply-bar { padding-block-end: 72px; }
+@media (max-width: 480px) {
+  .am-reply-bar { inset-inline: 12px; width: auto; justify-content: space-between; }
+}
 /* Code block: a header (title or path:lines, language, copy), then one span per line; numbered blocks show the line number in a gutter */
 .am-codeblock { margin: 10px 0; min-width: 0; }
 .am-codeblock .am-code { border-top-left-radius: 0; border-top-right-radius: 0; padding: 10px 0; }
@@ -432,7 +463,7 @@ code, pre, kbd { font-family: var(--font-mono); }
   position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;
   border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);
 }
-.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }
+.am-tl-item--hi .am-tl-dot { background: var(--hi-stroke, var(--accent)); border-color: var(--hi-stroke, var(--accent)); }
 .am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }
 .am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }
 .am-timeline--v li { position: relative; padding: 0 0 14px; padding-inline-start: 22px; }
@@ -505,11 +536,16 @@ code, pre, kbd { font-family: var(--font-mono); }
 .am-tree-root--solo { padding-bottom: 12px; }
 .am-tree-root--solo::after { display: none; }
 .am-tree-box {
-  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;
-  border-radius: var(--radius); font-weight: 600;
+  border: var(--node-width, var(--bw)) solid var(--node-stroke, var(--line)); background: var(--node-fill, var(--paper)); padding: 6px 14px; text-align: center;
+  border-radius: var(--node-radius, var(--radius)); font-weight: 600; color: var(--node-text, inherit); filter: var(--node-shadow, none);
 }
 .am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }
-.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }
+/* The root box and a highlighted box are emphasis: they take the highlight tokens. With none set the root box keeps its accent tint and a highlighted box looks like any other. */
+.am-tree-box--root, .am-tree-box--hi { border-color: var(--hi-stroke, var(--node-stroke, var(--line))); color: var(--hi-text, var(--node-text, inherit)); }
+.am-tree-box--root { background: var(--hi-fill, var(--accent-bg)); }
+.am-tree-box--hi { background: var(--hi-fill, var(--node-fill, var(--paper))); }
+.am-tree-box--root small, .am-tree-box--hi small { color: var(--hi-text, var(--ink-2)); }
+.am-tree-box--root { font-size: 15px; padding: 8px 28px; }
 .am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }
 .am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }
 .am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }
@@ -533,19 +569,32 @@ code, pre, kbd { font-family: var(--font-mono); }
 /* Embedded previews can lose html[data-theme]; the fallbacks keep diagrams readable, and defined theme variables still win. */
 .am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans, sans-serif); }
 .am-diagram text { fill: var(--ink, #16181d); font-size: 13px; }
-.am-node-shape { fill: var(--paper, #ffffff); stroke: var(--line, #1d2026); stroke-width: var(--bw, 1.5px); }
-.am-node--hi .am-node-shape { fill: var(--accent-bg, #e4ecf8); stroke: var(--accent, #1d5fbf); }
-.am-node--hi text { fill: var(--accent, #1d5fbf); font-weight: 600; }
-.am-edge { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 1.3; }
+/* Diagram tokens (docs/reference.md, "Diagram tokens"): each painted part reads an optional token and falls back to the look it always had,
+   so a theme that sets none of them draws the same diagram. Font family, size and weight are not tokens: diagram text is measured for the sans font. */
+.am-node-shape { fill: var(--node-fill, var(--paper, #ffffff)); stroke: var(--node-stroke, var(--line, #1d2026)); stroke-width: var(--node-width, var(--bw, 1.5px)); filter: var(--node-shadow, none); }
+/* A cylinder is two shapes (body, then cap): only the body casts the shadow. */
+.am-node-shape ~ .am-node-shape { filter: none; }
+/* The corner radius is an SVG attribute (the fallback for Safari before 17.4, which ignores a CSS rx); the default here equals the attribute. A pill and a diamond keep their shape. */
+.am-node--rect .am-node-shape, .am-node--er .am-node-shape { rx: var(--node-radius, 3px); }
+.am-node--hi .am-node-shape { fill: var(--hi-fill, var(--accent-bg, #e4ecf8)); stroke: var(--hi-stroke, var(--accent, #1d5fbf)); }
+.am-diagram .am-node-text { fill: var(--node-text, var(--ink, #16181d)); }
+.am-node--hi text { fill: var(--hi-text, var(--accent, #1d5fbf)); font-weight: 600; }
+.am-diagram .am-node--hi .am-node-text { fill: var(--hi-text, var(--accent, #1d5fbf)); }
+.am-edge { fill: none; stroke: var(--edge-color, var(--ink-2, #4b5260)); stroke-width: var(--edge-width, 1.3); }
 .am-edge--dashed { stroke-dasharray: 5 4; }
-.am-arrow { fill: var(--ink-2, #4b5260); }
+.am-arrow { fill: var(--edge-color, var(--ink-2, #4b5260)); }
 .am-edge-label rect { fill: var(--paper, #ffffff); }
-.am-diagram .am-edge-label text { fill: var(--accent, #1d5fbf); font-size: 11.5px; }
-.am-cluster { fill: var(--fill, #f3f5f8); stroke: var(--line-2, #d6dae1); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-diagram .am-edge-label text { fill: var(--edge-label, var(--accent, #1d5fbf)); font-size: 11.5px; }
+.am-cluster { fill: var(--cluster-fill, var(--fill, #f3f5f8)); stroke: var(--cluster-stroke, var(--line-2, #d6dae1)); stroke-width: 1; stroke-dasharray: 4 3; }
 .am-diagram .am-cluster-label { fill: var(--ink-2, #4b5260); font: 11px var(--font-mono, monospace); }
-.am-lifeline { stroke: var(--ink-3, #8b929e); stroke-width: 1; stroke-dasharray: 4 4; }
-.am-actor { fill: var(--paper, #ffffff); stroke: var(--line, #1d2026); stroke-width: var(--bw, 1.5px); }
-.am-note { fill: var(--warn-bg, #fdf3e2); stroke: var(--warn, #a8620a); stroke-width: 1; }
+/* The PK / FK / UK marks of an entity follow the node text, and the highlighted text in a highlighted entity, so they stay readable on the theme's fills. */
+.am-diagram .am-er-key { fill: var(--node-text, var(--ink-2, #4b5260)); }
+.am-diagram .am-node--hi .am-er-key { fill: var(--hi-text, var(--ink-2, #4b5260)); }
+.am-lifeline { stroke: var(--lifeline-color, var(--ink-3, #8b929e)); stroke-width: 1; stroke-dasharray: 4 4; }
+/* An actor (and the box of a divider) looks like a node unless the theme sets the actor tokens. */
+.am-actor { fill: var(--actor-fill, var(--node-fill, var(--paper, #ffffff))); stroke: var(--actor-stroke, var(--node-stroke, var(--line, #1d2026))); stroke-width: var(--node-width, var(--bw, 1.5px)); filter: var(--node-shadow, none); rx: var(--node-radius, 2px); }
+.am-diagram .am-actor-text { fill: var(--actor-text, var(--node-text, var(--ink, #16181d))); }
+.am-note { fill: var(--note-fill, var(--warn-bg, #fdf3e2)); stroke: var(--note-stroke, var(--warn, #a8620a)); stroke-width: var(--note-width, 1); rx: var(--note-radius, 2px); }
 .am-diagram .am-step { fill: var(--ink-3, #8b929e); font: 10px var(--font-mono, monospace); }
 
 .am-diagram-expand {
@@ -677,7 +726,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 .am-colophon a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
 @media print {
-  .am-toolbar, .am-diagram-expand, .am-lightbox, .am-code-copy, .am-comment-btn, .am-comment, .am-reply { display: none !important; }
+  .am-toolbar, .am-diagram-expand, .am-lightbox, .am-code-copy, .am-comment-btn, .am-comment, .am-reply, .am-reply-bar { display: none !important; }
   body { background: var(--paper); }
   .am-panel { break-inside: avoid; box-shadow: none; }
 }
@@ -753,95 +802,77 @@ html[data-theme="paper"] .am-md table { font-family: var(--font-sans); }
 </style>
 </head>
 <body>
-<div class="am-toolbar" data-am-root-lang="zh-CN" data-am-root-theme="paper" data-am-root-mode="auto" data-am-root-style="80">
-<label class="am-pick">主题<select data-am="theme"><option value="blueprint">图纸</option><option value="shadcn">卡片</option><option value="paper" selected>纸张</option></select></label>
+<div class="am-toolbar" data-am-root-lang="zh-CN" data-am-root-theme="blueprint" data-am-root-mode="auto" data-am-root-style="80">
+<label class="am-pick">主题<select data-am="theme"><option value="blueprint" selected>图纸</option><option value="shadcn">卡片</option><option value="paper">纸张</option></select></label>
 <label class="am-pick">明暗<select data-am="mode"><option value="auto" selected>跟随系统</option><option value="light">亮</option><option value="dark">暗</option></select></label>
-<button class="am-btn am-btn--reply" type="button" data-am="reply" data-ui="{&quot;button&quot;:&quot;回复&quot;,&quot;comment&quot;:&quot;评论&quot;,&quot;commentHint&quot;:&quot;对这个面板的意见&quot;,&quot;title&quot;:&quot;你的回复&quot;,&quot;hint&quot;:&quot;复制后粘贴到对话里。&quot;,&quot;copy&quot;:&quot;复制回复&quot;,&quot;close&quot;:&quot;关闭&quot;,&quot;suggested&quot;:&quot;建议&quot;,&quot;empty&quot;:&quot;先选择选项，或在面板上写评论。&quot;,&quot;decisions&quot;:&quot;决定&quot;,&quot;comments&quot;:&quot;评论&quot;,&quot;confirmed&quot;:&quot;确认了建议&quot;,&quot;untouched&quot;:&quot;未作答，保留建议&quot;,&quot;was&quot;:&quot;原为&quot;,&quot;typed&quot;:&quot;以 \&quot;&gt;\&quot; 开头的行是读者输入的文字。&quot;,&quot;done&quot;:&quot;已复制 ✓&quot;,&quot;remarks&quot;:&quot;标注&quot;,&quot;kinds&quot;:{&quot;suggestion&quot;:&quot;建议&quot;,&quot;keep&quot;:&quot;保留&quot;,&quot;question&quot;:&quot;疑问&quot;,&quot;concern&quot;:&quot;关注&quot;}}">回复</button>
+<button class="am-btn am-btn--reply" type="button" data-am="reply" data-ui="{&quot;button&quot;:&quot;回复&quot;,&quot;comment&quot;:&quot;评论&quot;,&quot;commentHint&quot;:&quot;对这个面板的意见&quot;,&quot;title&quot;:&quot;你的回复&quot;,&quot;hint&quot;:&quot;复制后粘贴回和 Agent 的对话，它会按你的选择和意见继续。&quot;,&quot;copy&quot;:&quot;复制回复&quot;,&quot;copyFailed&quot;:&quot;复制失败 — 请按 Cmd/Ctrl+C&quot;,&quot;close&quot;:&quot;关闭&quot;,&quot;suggested&quot;:&quot;建议&quot;,&quot;empty&quot;:&quot;先选择选项，或在面板上写评论。&quot;,&quot;decisions&quot;:&quot;决定&quot;,&quot;comments&quot;:&quot;评论&quot;,&quot;confirmed&quot;:&quot;确认了建议&quot;,&quot;untouched&quot;:&quot;未作答，保留建议&quot;,&quot;was&quot;:&quot;原为&quot;,&quot;typed&quot;:&quot;以 \&quot;&gt;\&quot; 开头的行是读者输入的文字。&quot;,&quot;raw&quot;:&quot;查看将复制的文本&quot;,&quot;preview&quot;:&quot;预览&quot;,&quot;count&quot;:{&quot;answered&quot;:&quot;已作答 {n} 项&quot;,&quot;comments&quot;:&quot;评论 {n} 条&quot;,&quot;remarks&quot;:&quot;标注 {n} 处&quot;},&quot;done&quot;:&quot;已复制 ✓&quot;,&quot;remarks&quot;:&quot;标注&quot;,&quot;kinds&quot;:{&quot;suggestion&quot;:&quot;建议&quot;,&quot;keep&quot;:&quot;保留&quot;,&quot;question&quot;:&quot;疑问&quot;,&quot;concern&quot;:&quot;关注&quot;}}">回复</button>
 <button class="am-btn am-btn--remark" type="button" data-am="remark" data-ui="{&quot;button&quot;:&quot;标注&quot;,&quot;hint&quot;:&quot;批注（可选）&quot;,&quot;save&quot;:&quot;保存&quot;,&quot;remove&quot;:&quot;删除&quot;,&quot;section&quot;:&quot;标注&quot;,&quot;kinds&quot;:{&quot;suggestion&quot;:&quot;建议&quot;,&quot;keep&quot;:&quot;保留&quot;,&quot;question&quot;:&quot;疑问&quot;,&quot;concern&quot;:&quot;关注&quot;}}">标注</button>
 <button class="am-btn" type="button" data-am="copy" data-done="已复制 ✓">复制源稿</button>
 </div>
-<main class="am-doc">
-<header class="am-head"><p class="am-colophon">Generated by <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">Answer me with HTML</a> 0.5.2 · 2026-10-14 11:21 · <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">★ Star on GitHub</a></p><h1>Git merge 与 git rebase：历史如何变化</h1><p class="am-sub">从提交图理解合并与重放</p><div class="am-intro am-md"><div class="am-md"><p><strong>核心结论：</strong> <code>git merge</code> 汇合两条分支的历史；<code>git rebase</code> 把当前分支的提交重放到新的基底上。前者通常保留分叉，后者通常形成更线性的历史。</p>
+<main class="am-sheet">
+<header class="am-head"><p class="am-colophon">Generated by <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">Answer me with HTML</a> 0.5.3 · 2026-10-14 15:39 · <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">★ Star on GitHub</a></p><h1>Git 合并与变基</h1><p class="am-sub">merge 保留分叉，rebase 重放提交</p><div class="am-intro am-md"><div class="am-md"><p>结论：<code>merge</code> 汇合两条提交路径；<code>rebase</code> 把本分支提交重放到新基点，生成新提交。</p>
 </div></div></header>
-<div class="am-doc-layout">
-<nav class="am-toc" aria-label="目录"><a href="#panel-A">A · 先看分支如何分开</a><a href="#panel-B">B · merge：保留两条提交线</a><a href="#panel-C">C · rebase：在新基底上重放提交</a><a href="#panel-D">D · 按共享方式选择</a></nav><div class="am-doc-body">
+<div class="am-frame">
+<div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+<div class="am-grid" style="--cols: 3">
 <section class="am-panel" id="panel-A">
-<header class="am-panel-head"><span class="am-panel-id">A</span><h2>先看分支如何分开</h2><span class="am-panel-meta">共同基点之后，各自前进</span></header>
-<div class="am-panel-body"><div class="am-md"><p>Git 把提交组织成有向图。每个提交记录父提交，分支名指向一个提交，并随新提交移动。</p>
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>分支历史原本是什么样？</h2><span class="am-panel-meta">提交关系图</span></header>
+<div class="am-panel-body"><div class="am-md"><p>提交之间的箭头表示父提交指向子提交。图中 <code>C0</code> 到 <code>C2</code> 是共同历史。之后，<code>main</code> 前进到 <code>M2</code>，<code>feature</code> 前进到 <code>F2</code>。分支名指向提交图中的末端提交。</p>
 </div>
-<figure class="am-diagram am-flow"><svg viewBox="0 0 399 134" width="399" height="134" role="img" aria-label="流程图：共同基点 A、主线提交 B、主线提交 C、功能提交 X、功能提交 Y" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M94.6,84.5 L112.2,93.5 Q129.7,102.5 141.2,102.5 L152.7,102.5" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge" d="M245.5,102.5 L257,102.5 Q268.5,102.5 280,102.5 L291.5,102.5" marker-end="url(#am1-arrow)"/></g><g data-step="2"><path class="am-edge" d="M94.6,49.5 L112.2,40.5 Q129.7,31.5 141.2,31.5 L152.7,31.5" marker-end="url(#am1-arrow)"/></g><g data-step="3"><path class="am-edge" d="M245.5,31.5 L257,31.5 Q268.5,31.5 280,31.5 L291.5,31.5" marker-end="url(#am1-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="共同基点 A" data-step="0"><rect class="am-node-shape" x="14" y="49.5" width="92.7" height="35" rx="3"/><text x="60.4" y="67" text-anchor="middle" dominant-baseline="central">共同基点 A</text></g><g class="am-node am-node--rect" data-key="主线提交 B" data-step="0"><rect class="am-node-shape" x="152.7" y="85" width="92.7" height="35" rx="3"/><text x="199.1" y="102.5" text-anchor="middle" dominant-baseline="central">主线提交 B</text></g><g class="am-node am-node--rect" data-key="主线提交 C" data-step="1"><rect class="am-node-shape" x="291.5" y="85" width="92.7" height="35" rx="3"/><text x="337.9" y="102.5" text-anchor="middle" dominant-baseline="central">主线提交 C</text></g><g class="am-node am-node--rect" data-key="功能提交 X" data-step="2"><rect class="am-node-shape" x="152.7" y="14" width="92.7" height="35" rx="3"/><text x="199.1" y="31.5" text-anchor="middle" dominant-baseline="central">功能提交 X</text></g><g class="am-node am-node--rect" data-key="功能提交 Y" data-step="3"><rect class="am-node-shape" x="291.5" y="14" width="92.7" height="35" rx="3"/><text x="337.9" y="31.5" text-anchor="middle" dominant-baseline="central">功能提交 Y</text></g></g></svg></figure>
-<div class="am-md"><p>图中，<code>main</code> 指向 C，<code>feature</code> 指向 Y。两条分支从 A 分开后，各自新增了提交。</p>
+<figure class="am-diagram am-flow"><svg viewBox="0 0 216 387" width="216" height="387" role="img" aria-label="流程图：C0、C1、C2、M1、M2、F1、F2" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M108,49 L108,60.5 Q108,72 108,83.5 L108,95" marker-end="url(#am1-arrow)"/></g><g data-step="0"><path class="am-edge" d="M108,130 L108,141.5 Q108,153 108,164.5 L108,176" marker-end="url(#am1-arrow)"/></g><g data-step="0"><path class="am-edge" d="M132.2,211 L148.1,222.5 Q164,234 164,245.5 L164,257" marker-end="url(#am1-arrow)"/></g><g data-step="0"><path class="am-edge" d="M164,292 L164,303.5 Q164,315 164,326.5 L164,338" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge" d="M83.8,211 L67.9,222.5 Q52,234 52,245.5 L52,257" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge" d="M52,292 L52,303.5 Q52,315 52,326.5 L52,338" marker-end="url(#am1-arrow)"/></g></g><g><g class="am-node am-node--round" data-key="C0" data-step="0"><rect class="am-node-shape" x="70" y="14" width="76" height="35" rx="17.5"/><text x="108" y="31.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C0</text></g><g class="am-node am-node--round" data-key="C1" data-step="0"><rect class="am-node-shape" x="70" y="95" width="76" height="35" rx="17.5"/><text x="108" y="112.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C1</text></g><g class="am-node am-node--round" data-key="C2" data-step="0"><rect class="am-node-shape" x="70" y="176" width="76" height="35" rx="17.5"/><text x="108" y="193.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C2</text></g><g class="am-node am-node--round" data-key="M1" data-step="0"><rect class="am-node-shape" x="126" y="257" width="76" height="35" rx="17.5"/><text x="164" y="274.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">M1</text></g><g class="am-node am-node--round" data-key="M2" data-step="0"><rect class="am-node-shape" x="126" y="338" width="76" height="35" rx="17.5"/><text x="164" y="355.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">M2</text></g><g class="am-node am-node--round" data-key="F1" data-step="1"><rect class="am-node-shape" x="14" y="257" width="76" height="35" rx="17.5"/><text x="52" y="274.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F1</text></g><g class="am-node am-node--round" data-key="F2" data-step="1"><rect class="am-node-shape" x="14" y="338" width="76" height="35" rx="17.5"/><text x="52" y="355.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F2</text></g></g></svg></figure>
+<div class="am-md"><p>图中的短标签仅用于说明提交关系。</p>
 </div></div>
 </section>
 <section class="am-panel" id="panel-B">
-<header class="am-panel-head"><span class="am-panel-id">B</span><h2>merge：保留两条提交线</h2><span class="am-panel-meta">合并提交记录两个父提交</span></header>
-<div class="am-panel-body"><div class="am-md"><p>在 <code>main</code> 上运行 <code>git merge feature</code>，Git 把 <code>feature</code> 的改动并入当前分支。</p>
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>merge 怎样接起两条历史？</h2><span class="am-panel-meta">保留分叉与汇合点</span></header>
+<div class="am-panel-body"><div class="am-md"><p>在 <code>main</code> 上执行 <code>git merge feature</code>。Git 新建 <code>X</code>，并把 <code>M2</code>、<code>F2</code> 设为它的两个父提交。原有提交 ID 不变，图中保留两条路径和汇合点。</p>
 </div>
-<figure class="am-codeblock"><figcaption class="am-code-head"><span class="am-code-title"></span><span class="am-code-lang">bash</span><button class="am-code-copy" type="button" data-am="copy-code" data-done="已复制 ✓">复制</button></figcaption><pre class="am-code"><code data-lang="bash"><span class="am-ln">git switch main</span><span class="am-ln">git merge feature</span></code></pre></figure>
-<div class="am-md"><p>两条分支都有独立提交时，Git 通常创建一个合并提交 M。M 有两个父提交，因此提交图保留两条提交线及其汇合点。</p>
+<figure class="am-diagram am-flow"><svg viewBox="0 0 216 468" width="216" height="468" role="img" aria-label="流程图：C0、C1、C2、M1、M2、X、F1、F2" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M108,49 L108,60.5 Q108,72 108,83.5 L108,95" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M108,130 L108,141.5 Q108,153 108,164.5 L108,176" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M132.2,211 L148.1,222.5 Q164,234 164,245.5 L164,257" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M164,292 L164,303.5 Q164,315 164,326.5 L164,338" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M164,373 L164,384.5 Q164,396 148.1,407.5 L132.2,419" marker-end="url(#am2-arrow)"/></g><g data-step="1"><path class="am-edge" d="M83.8,211 L67.9,222.5 Q52,234 52,245.5 L52,257" marker-end="url(#am2-arrow)"/></g><g data-step="1"><path class="am-edge" d="M52,292 L52,303.5 Q52,315 52,326.5 L52,338" marker-end="url(#am2-arrow)"/></g><g data-step="1"><path class="am-edge" d="M52,373 L52,384.5 Q52,396 67.9,407.5 L83.8,419" marker-end="url(#am2-arrow)"/></g></g><g><g class="am-node am-node--round" data-key="C0" data-step="0"><rect class="am-node-shape" x="70" y="14" width="76" height="35" rx="17.5"/><text x="108" y="31.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C0</text></g><g class="am-node am-node--round" data-key="C1" data-step="0"><rect class="am-node-shape" x="70" y="95" width="76" height="35" rx="17.5"/><text x="108" y="112.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C1</text></g><g class="am-node am-node--round" data-key="C2" data-step="0"><rect class="am-node-shape" x="70" y="176" width="76" height="35" rx="17.5"/><text x="108" y="193.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C2</text></g><g class="am-node am-node--round" data-key="M1" data-step="0"><rect class="am-node-shape" x="126" y="257" width="76" height="35" rx="17.5"/><text x="164" y="274.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">M1</text></g><g class="am-node am-node--round" data-key="M2" data-step="0"><rect class="am-node-shape" x="126" y="338" width="76" height="35" rx="17.5"/><text x="164" y="355.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">M2</text></g><g class="am-node am-node--round" data-key="X" data-step="0"><rect class="am-node-shape" x="70" y="419" width="76" height="35" rx="17.5"/><text x="108" y="436.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">X</text></g><g class="am-node am-node--round" data-key="F1" data-step="1"><rect class="am-node-shape" x="14" y="257" width="76" height="35" rx="17.5"/><text x="52" y="274.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F1</text></g><g class="am-node am-node--round" data-key="F2" data-step="1"><rect class="am-node-shape" x="14" y="338" width="76" height="35" rx="17.5"/><text x="52" y="355.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F2</text></g></g></svg></figure>
+<div class="am-md"><p><code>X</code> 是新的合并提交。它记录两条历史在此处汇合。</p>
 </div>
-<figure class="am-diagram am-flow"><svg viewBox="0 0 540 134" width="540" height="134" role="img" aria-label="流程图：共同基点 A、主线提交 B、主线提交 C、功能提交 X、功能提交 Y、合并提交 M" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M94.6,84.5 L112.2,93.5 Q129.7,102.5 141.2,102.5 L152.7,102.5" marker-end="url(#am2-arrow)"/></g><g data-step="1"><path class="am-edge" d="M245.5,102.5 L257,102.5 Q268.5,102.5 280,102.5 L291.5,102.5" marker-end="url(#am2-arrow)"/></g><g data-step="2"><path class="am-edge" d="M94.6,49.5 L112.2,40.5 Q129.7,31.5 141.2,31.5 L152.7,31.5" marker-end="url(#am2-arrow)"/></g><g data-step="3"><path class="am-edge" d="M245.5,31.5 L257,31.5 Q268.5,31.5 280,31.5 L291.5,31.5" marker-end="url(#am2-arrow)"/></g><g data-step="4"><path class="am-edge" d="M384.2,102.5 L395.7,102.5 Q407.2,102.5 425.1,93.5 L443,84.5" marker-end="url(#am2-arrow)"/></g><g data-step="5"><path class="am-edge" d="M384.2,31.5 L395.7,31.5 Q407.2,31.5 425.1,40.5 L443,49.5" marker-end="url(#am2-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="共同基点 A" data-step="0"><rect class="am-node-shape" x="14" y="49.5" width="92.7" height="35" rx="3"/><text x="60.4" y="67" text-anchor="middle" dominant-baseline="central">共同基点 A</text></g><g class="am-node am-node--rect" data-key="主线提交 B" data-step="0"><rect class="am-node-shape" x="152.7" y="85" width="92.7" height="35" rx="3"/><text x="199.1" y="102.5" text-anchor="middle" dominant-baseline="central">主线提交 B</text></g><g class="am-node am-node--rect" data-key="主线提交 C" data-step="1"><rect class="am-node-shape" x="291.5" y="85" width="92.7" height="35" rx="3"/><text x="337.9" y="102.5" text-anchor="middle" dominant-baseline="central">主线提交 C</text></g><g class="am-node am-node--rect" data-key="功能提交 X" data-step="2"><rect class="am-node-shape" x="152.7" y="14" width="92.7" height="35" rx="3"/><text x="199.1" y="31.5" text-anchor="middle" dominant-baseline="central">功能提交 X</text></g><g class="am-node am-node--rect" data-key="功能提交 Y" data-step="3"><rect class="am-node-shape" x="291.5" y="14" width="92.7" height="35" rx="3"/><text x="337.9" y="31.5" text-anchor="middle" dominant-baseline="central">功能提交 Y</text></g><g class="am-node am-node--rect" data-key="合并提交 M" data-step="4"><rect class="am-node-shape" x="430.2" y="49.5" width="95.1" height="35" rx="3"/><text x="477.8" y="67" text-anchor="middle" dominant-baseline="central">合并提交 M</text></g></g></svg></figure>
-<div class="am-md"><p>合并后，<code>main</code> 指向 M，<code>feature</code> 仍指向 Y。若目标分支没有新增提交，Git 可以快进：它只移动目标分支指针，不创建 M。需要显式保留合并节点时，可运行 <code>git merge --no-ff feature</code>。</p>
-</div></div>
+<div class="am-callout am-callout--info" role="note"><div class="am-callout-title">快进合并</div><div class="am-callout-body am-md"><p>若 <code>main</code> 仍停在共同基点，Git 可直接快进到 <code>feature</code>。这时 <code>main</code> 指针移动，但不会新建提交。加 <code>--no-ff</code> 可在可快进时也创建合并提交。</p>
+</div></div></div>
 </section>
 <section class="am-panel" id="panel-C">
-<header class="am-panel-head"><span class="am-panel-id">C</span><h2>rebase：在新基底上重放提交</h2><span class="am-panel-meta">改写当前分支的提交链</span></header>
-<div class="am-panel-body"><div class="am-md"><p>在 <code>feature</code> 上运行 <code>git rebase main</code>，Git 按顺序把功能分支的改动重放到 <code>main</code> 最新提交之后。</p>
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>rebase 怎样重放提交？</h2><span class="am-panel-meta">生成新的提交 ID</span></header>
+<div class="am-panel-body"><div class="am-md"><p>在 <code>feature</code> 上执行 <code>git rebase main</code>。Git 找出 <code>feature</code> 独有的提交，再按原顺序重放到 <code>main</code> 末端。图中 <code>F1-new</code> 和 <code>F2-new</code> 是重放后生成的新提交。</p>
 </div>
-<figure class="am-codeblock"><figcaption class="am-code-head"><span class="am-code-title"></span><span class="am-code-lang">bash</span><button class="am-code-copy" type="button" data-am="copy-code" data-done="已复制 ✓">复制</button></figcaption><pre class="am-code"><code data-lang="bash"><span class="am-ln">git switch feature</span><span class="am-ln">git rebase main</span></code></pre></figure>
-<div class="am-md"><p>假设 Git 把 X、Y 重放为 X′、Y′，主线仍停在 C，<code>feature</code> 改为指向 Y′。提交图变成一条线：</p>
-</div>
-<figure class="am-diagram am-flow"><svg viewBox="0 0 691 63" width="691" height="63" role="img" aria-label="流程图：共同基点 A、主线提交 B、主线提交 C、重放提交 X′、重放提交 Y′" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M106.7,31.5 L118.2,31.5 Q129.7,31.5 141.2,31.5 L152.7,31.5" marker-end="url(#am3-arrow)"/></g><g data-step="1"><path class="am-edge" d="M245.5,31.5 L257,31.5 Q268.5,31.5 280,31.5 L291.5,31.5" marker-end="url(#am3-arrow)"/></g><g data-step="2"><path class="am-edge" d="M384.2,31.5 L395.7,31.5 Q407.2,31.5 418.7,31.5 L430.2,31.5" marker-end="url(#am3-arrow)"/></g><g data-step="3"><path class="am-edge" d="M530.2,31.5 L541.7,31.5 Q553.2,31.5 564.7,31.5 L576.2,31.5" marker-end="url(#am3-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="共同基点 A" data-step="0"><rect class="am-node-shape" x="14" y="14" width="92.7" height="35" rx="3"/><text x="60.4" y="31.5" text-anchor="middle" dominant-baseline="central">共同基点 A</text></g><g class="am-node am-node--rect" data-key="主线提交 B" data-step="0"><rect class="am-node-shape" x="152.7" y="14" width="92.7" height="35" rx="3"/><text x="199.1" y="31.5" text-anchor="middle" dominant-baseline="central">主线提交 B</text></g><g class="am-node am-node--rect" data-key="主线提交 C" data-step="1"><rect class="am-node-shape" x="291.5" y="14" width="92.7" height="35" rx="3"/><text x="337.9" y="31.5" text-anchor="middle" dominant-baseline="central">主线提交 C</text></g><g class="am-node am-node--rect" data-key="重放提交 X′" data-step="2"><rect class="am-node-shape" x="430.2" y="14" width="100" height="35" rx="3"/><text x="480.2" y="31.5" text-anchor="middle" dominant-baseline="central">重放提交 X′</text></g><g class="am-node am-node--rect" data-key="重放提交 Y′" data-step="3"><rect class="am-node-shape" x="576.2" y="14" width="100" height="35" rx="3"/><text x="626.3" y="31.5" text-anchor="middle" dominant-baseline="central">重放提交 Y′</text></g></g></svg></figure>
-<div class="am-md"><p>重放会改变父提交，因此 Git 通常为每个重放后的提交生成新的提交 ID。原提交没有被就地修改；当前分支指向新的提交链。若发生冲突，解决文件后运行 <code>git add &lt;文件&gt;</code> 和 <code>git rebase --continue</code>；要放弃这次重放，运行 <code>git rebase --abort</code>。</p>
+<figure class="am-diagram am-flow"><svg viewBox="0 0 229 549" width="229" height="549" role="img" aria-label="流程图：C0、C1、C2、M1、M2、F1-new、F2-new、F1-old" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M112.6,49 L112.6,60.5 Q112.6,72 112.6,83.5 L112.6,95" marker-end="url(#am3-arrow)"/></g><g data-step="0"><path class="am-edge" d="M112.6,130 L112.6,141.5 Q112.6,153 112.6,164.5 L112.6,176" marker-end="url(#am3-arrow)"/></g><g data-step="0"><path class="am-edge" d="M137.4,211 L153.8,222.5 Q170.1,234 170.1,245.5 L170.1,257" marker-end="url(#am3-arrow)"/></g><g data-step="0"><path class="am-edge" d="M170.1,292 L170.1,303.5 Q170.1,315 170.1,326.5 L170.1,338" marker-end="url(#am3-arrow)"/></g><g data-step="0"><path class="am-edge" d="M170.1,373 L170.1,384.5 Q170.1,396 170.1,407.5 L170.1,419" marker-end="url(#am3-arrow)"/></g><g data-step="0"><path class="am-edge" d="M170.1,454 L170.1,465.5 Q170.1,477 170.1,488.5 L170.1,500" marker-end="url(#am3-arrow)"/></g><g data-step="1"><path class="am-edge" d="M87.7,211 L71.4,222.5 Q55.1,234 55.1,245.5 L55.1,257" marker-end="url(#am3-arrow)"/></g><g data-step="1"><path class="am-edge" d="M55.1,292 L55.1,303.5 Q55.1,315 55.1,326.5 L55.1,338" marker-end="url(#am3-arrow)"/></g></g><g><g class="am-node am-node--round" data-key="C0" data-step="0"><rect class="am-node-shape" x="74.6" y="14" width="76" height="35" rx="17.5"/><text x="112.6" y="31.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C0</text></g><g class="am-node am-node--round" data-key="C1" data-step="0"><rect class="am-node-shape" x="74.6" y="95" width="76" height="35" rx="17.5"/><text x="112.6" y="112.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C1</text></g><g class="am-node am-node--round" data-key="C2" data-step="0"><rect class="am-node-shape" x="74.6" y="176" width="76" height="35" rx="17.5"/><text x="112.6" y="193.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">C2</text></g><g class="am-node am-node--round" data-key="M1" data-step="0"><rect class="am-node-shape" x="132.1" y="257" width="76" height="35" rx="17.5"/><text x="170.1" y="274.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">M1</text></g><g class="am-node am-node--round" data-key="M2" data-step="0"><rect class="am-node-shape" x="132.1" y="338" width="76" height="35" rx="17.5"/><text x="170.1" y="355.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">M2</text></g><g class="am-node am-node--round" data-key="F1-new" data-step="0"><rect class="am-node-shape" x="125.6" y="419" width="89.1" height="35" rx="17.5"/><text x="170.1" y="436.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F1-new</text></g><g class="am-node am-node--round" data-key="F2-new" data-step="0"><rect class="am-node-shape" x="125.6" y="500" width="89.1" height="35" rx="17.5"/><text x="170.1" y="517.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F2-new</text></g><g class="am-node am-node--round" data-key="F1-old" data-step="1"><rect class="am-node-shape" x="14" y="257" width="82.1" height="35" rx="17.5"/><text x="55.1" y="274.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F1-old</text></g><g class="am-node am-node--round" data-key="F2-old" data-step="1"><rect class="am-node-shape" x="14" y="338" width="82.1" height="35" rx="17.5"/><text x="55.1" y="355.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">F2-old</text></g></g></svg></figure>
+<div class="am-md"><p>重放提交获得新的父提交，因此提交 ID 会改变。<code>feature</code> 分支名移到新末端。旧提交若没有其他引用，之后可由 Git 清理。</p>
+<p>若重放遇到冲突，rebase 会暂停。解决冲突后运行 <code>git rebase --continue</code>。运行 <code>git rebase --abort</code> 可取消此次 rebase。</p>
 </div></div>
 </section>
-<section class="am-panel" id="panel-D">
-<header class="am-panel-head"><span class="am-panel-id">D</span><h2>按共享方式选择</h2><span class="am-panel-meta">整理本地历史，谨慎处理共享历史</span></header>
+<section class="am-panel am-span-wide" id="panel-D" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>何时选 merge 或 rebase？</h2><span class="am-panel-meta">按历史用途选择</span></header>
 <div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
 <thead>
 <tr>
-<th>情况</th>
-<th>常用选择</th>
-<th>历史结果</th>
+<th>比较点</th>
+<th>merge</th>
+<th>rebase</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>让本地功能分支追上 <code>main</code></td>
-<td><code>rebase</code></td>
-<td>提交链通常更线性</td>
+<td>历史结果</td>
+<td>保留分叉；分支分离时通常新增合并提交</td>
+<td>历史更线性；重放提交获得新 ID</td>
 </tr>
 <tr>
-<td>汇入已经共享的分支</td>
-<td><code>merge</code></td>
-<td>保留原提交 ID 和汇合记录</td>
+<td>适用情形</td>
+<td>保留汇合过程；整合已共享的提交</td>
+<td>整理尚未公开的本地提交</td>
 </tr>
 <tr>
-<td>需要记录团队何时整合分支</td>
-<td><code>merge</code></td>
-<td>合并提交明确标出整合点</td>
+<td>冲突处理</td>
+<td>在此次合并过程中解决</td>
+<td>可能在多个重放提交处分别暂停</td>
 </tr>
 </tbody></table></div>
-<div class="am-table-wrap"><table>
-<thead>
-<tr>
-<th>操作</th>
-<th>会发生什么</th>
-<th>需要留意</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>merge</code></td>
-<td>保留已有提交；分叉时通常新增一个有两个父提交的提交</td>
-<td>可快进时默认只移动分支指针</td>
-</tr>
-<tr>
-<td><code>rebase</code></td>
-<td>重放当前分支提交，并把分支指针移到新提交</td>
-<td>新提交 ID 会改变</td>
-</tr>
-</tbody></table></div>
-<p>不要随意 rebase 已发布且他人依赖的提交。重写共享历史会让协作者面对不同的提交 ID；先与团队约定再操作。</p>
-<p>查看提交图时，可运行 <code>git log --graph --oneline --decorate --all</code>。这会显示分支指针、提交关系和合并节点，便于核对操作结果。</p>
+<p>若协作者已经基于已推送的提交继续工作，通常选 <code>merge</code>。这能避免替换他们依赖的提交 ID。若功能分支仅在本地且尚未公开，想要线性历史，可把它 rebase 到最新 <code>main</code>。</p>
+<ul>
+<li>在 <code>main</code> 上合并 <code>feature</code>：<code>git switch main</code>，然后运行 <code>git merge feature</code>。</li>
+<li>把 <code>feature</code> 重放到 <code>main</code>：<code>git switch feature</code>，然后运行 <code>git rebase main</code>。</li>
+</ul>
 </div></div>
 </section>
 </div>
@@ -863,89 +894,68 @@ html[data-theme="paper"] .am-md table { font-family: var(--font-sans); }
 </div>
 </div>
 <textarea id="am-source" hidden readonly aria-hidden="true">---
-title: Git merge 与 git rebase：历史如何变化
-subtitle: 从提交图理解合并与重放
-template: doc
+title: Git 合并与变基
+subtitle: merge 保留分叉，rebase 重放提交
+template: sheet
 theme: auto
 cols: 3
 lang: zh
 style: 80
 ---
 
-**核心结论：** `git merge` 汇合两条分支的历史；`git rebase` 把当前分支的提交重放到新的基底上。前者通常保留分叉，后者通常形成更线性的历史。
+结论：`merge` 汇合两条提交路径；`rebase` 把本分支提交重放到新基点，生成新提交。
 
-## 先看分支如何分开 {meta=&quot;共同基点之后，各自前进&quot;}
+## 分支历史原本是什么样？ {meta=&quot;提交关系图&quot;}
 
-Git 把提交组织成有向图。每个提交记录父提交，分支名指向一个提交，并随新提交移动。
+提交之间的箭头表示父提交指向子提交。图中 `C0` 到 `C2` 是共同历史。之后，`main` 前进到 `M2`，`feature` 前进到 `F2`。分支名指向提交图中的末端提交。
 
-```flow LR
-共同基点 A -&gt; 主线提交 B
-主线提交 B -&gt; 主线提交 C
-共同基点 A -&gt; 功能提交 X
-功能提交 X -&gt; 功能提交 Y
+```flow
+(C0) -&gt; (C1) -&gt; (C2) -&gt; (M1) -&gt; (M2)
+(C2) -&gt; (F1) -&gt; (F2)
 ```
 
-图中，`main` 指向 C，`feature` 指向 Y。两条分支从 A 分开后，各自新增了提交。
+图中的短标签仅用于说明提交关系。
 
-## merge：保留两条提交线 {meta=&quot;合并提交记录两个父提交&quot;}
+## merge 怎样接起两条历史？ {meta=&quot;保留分叉与汇合点&quot;}
 
-在 `main` 上运行 `git merge feature`，Git 把 `feature` 的改动并入当前分支。
+在 `main` 上执行 `git merge feature`。Git 新建 `X`，并把 `M2`、`F2` 设为它的两个父提交。原有提交 ID 不变，图中保留两条路径和汇合点。
 
-```bash
-git switch main
-git merge feature
+```flow
+(C0) -&gt; (C1) -&gt; (C2) -&gt; (M1) -&gt; (M2) -&gt; (X)
+(C2) -&gt; (F1) -&gt; (F2) -&gt; (X)
 ```
 
-两条分支都有独立提交时，Git 通常创建一个合并提交 M。M 有两个父提交，因此提交图保留两条提交线及其汇合点。
+`X` 是新的合并提交。它记录两条历史在此处汇合。
 
-```flow LR
-共同基点 A -&gt; 主线提交 B
-主线提交 B -&gt; 主线提交 C
-共同基点 A -&gt; 功能提交 X
-功能提交 X -&gt; 功能提交 Y
-主线提交 C -&gt; 合并提交 M
-功能提交 Y -&gt; 合并提交 M
+```callout info 快进合并
+若 `main` 仍停在共同基点，Git 可直接快进到 `feature`。这时 `main` 指针移动，但不会新建提交。加 `--no-ff` 可在可快进时也创建合并提交。
 ```
 
-合并后，`main` 指向 M，`feature` 仍指向 Y。若目标分支没有新增提交，Git 可以快进：它只移动目标分支指针，不创建 M。需要显式保留合并节点时，可运行 `git merge --no-ff feature`。
+## rebase 怎样重放提交？ {meta=&quot;生成新的提交 ID&quot;}
 
-## rebase：在新基底上重放提交 {meta=&quot;改写当前分支的提交链&quot;}
+在 `feature` 上执行 `git rebase main`。Git 找出 `feature` 独有的提交，再按原顺序重放到 `main` 末端。图中 `F1-new` 和 `F2-new` 是重放后生成的新提交。
 
-在 `feature` 上运行 `git rebase main`，Git 按顺序把功能分支的改动重放到 `main` 最新提交之后。
-
-```bash
-git switch feature
-git rebase main
+```flow
+(C0) -&gt; (C1) -&gt; (C2) -&gt; (M1) -&gt; (M2) -&gt; (F1-new) -&gt; (F2-new)
+(C2) -&gt; (F1-old) -&gt; (F2-old)
 ```
 
-假设 Git 把 X、Y 重放为 X′、Y′，主线仍停在 C，`feature` 改为指向 Y′。提交图变成一条线：
+重放提交获得新的父提交，因此提交 ID 会改变。`feature` 分支名移到新末端。旧提交若没有其他引用，之后可由 Git 清理。
 
-```flow LR
-共同基点 A -&gt; 主线提交 B
-主线提交 B -&gt; 主线提交 C
-主线提交 C -&gt; 重放提交 X′
-重放提交 X′ -&gt; 重放提交 Y′
-```
+若重放遇到冲突，rebase 会暂停。解决冲突后运行 `git rebase --continue`。运行 `git rebase --abort` 可取消此次 rebase。
 
-重放会改变父提交，因此 Git 通常为每个重放后的提交生成新的提交 ID。原提交没有被就地修改；当前分支指向新的提交链。若发生冲突，解决文件后运行 `git add &lt;文件&gt;` 和 `git rebase --continue`；要放弃这次重放，运行 `git rebase --abort`。
+## 何时选 merge 或 rebase？ {meta=&quot;按历史用途选择&quot;}
 
-## 按共享方式选择 {meta=&quot;整理本地历史，谨慎处理共享历史&quot;}
-
-| 情况 | 常用选择 | 历史结果 |
+| 比较点 | merge | rebase |
 | --- | --- | --- |
-| 让本地功能分支追上 `main` | `rebase` | 提交链通常更线性 |
-| 汇入已经共享的分支 | `merge` | 保留原提交 ID 和汇合记录 |
-| 需要记录团队何时整合分支 | `merge` | 合并提交明确标出整合点 |
+| 历史结果 | 保留分叉；分支分离时通常新增合并提交 | 历史更线性；重放提交获得新 ID |
+| 适用情形 | 保留汇合过程；整合已共享的提交 | 整理尚未公开的本地提交 |
+| 冲突处理 | 在此次合并过程中解决 | 可能在多个重放提交处分别暂停 |
 
-| 操作 | 会发生什么 | 需要留意 |
-| --- | --- | --- |
-| `merge` | 保留已有提交；分叉时通常新增一个有两个父提交的提交 | 可快进时默认只移动分支指针 |
-| `rebase` | 重放当前分支提交，并把分支指针移到新提交 | 新提交 ID 会改变 |
+若协作者已经基于已推送的提交继续工作，通常选 `merge`。这能避免替换他们依赖的提交 ID。若功能分支仅在本地且尚未公开，想要线性历史，可把它 rebase 到最新 `main`。
 
-不要随意 rebase 已发布且他人依赖的提交。重写共享历史会让协作者面对不同的提交 ID；先与团队约定再操作。
-
-查看提交图时，可运行 `git log --graph --oneline --decorate --all`。这会显示分支指针、提交关系和合并节点，便于核对操作结果。
-</textarea>
+- 在 `main` 上合并 `feature`：`git switch main`，然后运行 `git merge feature`。
+- 把 `feature` 重放到 `main`：`git switch feature`，然后运行 `git rebase main`。</textarea>
 <script>
 (() => {
 // How a formula reads in a quote. MathML has no plain text, so src/math.js writes the formula as the draft wrote it, delimiters included, in
@@ -1240,9 +1250,61 @@ function replyText({ title, decisions, comments, remarks = [], ui, rtl = false }
   return `${out.join('\n')}\n`;
 }
 
+// A letter of a right-to-left script. One definition for the page builder (src/bidi.js) and for the right-to-left page script
+// (src/runtime/reply-view.js), so the two cannot drift apart. A plain ES module; the page script gets this file in front of
+// reply-view.js, with its `export` keyword dropped and reply-view.js's import of it removed (src/runtime/compose.js).
+const RTL_LETTER = /[\p{Script=Hebrew}\p{Script=Arabic}\p{Script=Syriac}\p{Script=Thaana}\p{Script=Nko}\p{Script=Samaritan}\p{Script=Mandaic}]/u;
+
+// The reply as the reader sees it in the Reply sheet (src/runtime/reply.js): the Markdown that Copy copies, drawn as headings, bold answers
+// and quoted comments instead of raw "# Re: ...", "1. [E] ..." and "- **A · ...**" lines. Each line gets its own direction, so a
+// Hebrew reader sees Latin answers and paths in place; a line with no right-to-left letter reads left to right, as on any other page.
+// The raw Markdown stays in the sheet under a fold, so the copied text does not change.
+// A plain ES module for tests; the page gets it with its `export` keyword dropped and rtl-letter.js in front of it in place of the
+// import (src/runtime/compose.js).
+
+const escHtml = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+// A line with a right-to-left letter reads right to left; a line without one (an English comment, a path) reads left to right.
+const dirOf = (s) => (RTL_LETTER.test(s) ? 'rtl' : 'ltr');
+
+// The only inline Markdown src/runtime/reply-text.js writes: **answer**, _(note)_ and the "quote" of a remark. Each piece is isolated in its own direction,
+// so a Latin answer inside a Hebrew line keeps its place, and "A · title" still starts with the panel letter.
+const piece = (tag, text) => `<${tag}><bdi dir="${dirOf(text)}">${text}</bdi></${tag}>`;
+function inline(s) {
+  return escHtml(s)
+    .replace(/\*\*(.+?)\*\*/g, (_, t) => piece('strong', t))
+    .replace(/(^|\s)_(.+?)_(?=\s|$)/g, (_, pre, t) => pre + piece('em', t))
+    // The quoted start of a marked block ("- **A · concern** "text""): isolated, so Latin text in a Hebrew line keeps its place.
+    .replace(/&quot;(.+)&quot;$/, (_, t) => `&quot;<bdi dir="${dirOf(t)}">${t}</bdi>&quot;`);
+}
+
+// The reply text (src/runtime/reply-text.js) as HTML, one block per line.
+function replyViewHtml(text) {
+  return text
+    .replace(/\n$/, '')
+    .split('\n')
+    .map((line) => {
+      const dir = dirOf(line);
+      let m;
+      if (!line.trim()) return '<div class="am-rv-gap"></div>';
+      if ((m = line.match(/^(#{1,2}) (.*)$/))) return `<div class="am-rv-h${m[1].length}" dir="${dir}">${inline(m[2])}</div>`;
+      if ((m = line.match(/^(\d+)\. \[([^\]]*)\] (.*)$/))) {
+        return `<div class="am-rv-q" dir="${dir}"><bdi>${m[1]}.</bdi> <bdi class="am-rv-tag">${escHtml(m[2])}</bdi> ${inline(m[3])}</div>`;
+      }
+      if ((m = line.match(/^ {3}([←→]) (.*)$/))) return `<div class="am-rv-a" dir="${dir}">${m[1]} ${inline(m[2])}</div>`;
+      if ((m = line.match(/^- (.*)$/))) return `<div class="am-rv-c" dir="${dir}">${inline(m[1])}</div>`;
+      // A comment line is shown exactly as the reader typed it.
+      if ((m = line.match(/^ {2}> ?(.*)$/))) return `<div class="am-rv-quote" dir="${dirOf(m[1])}">${escHtml(m[1]) || '&nbsp;'}</div>`;
+      return `<div dir="${dir}">${inline(line)}</div>`;
+    })
+    .join('');
+}
+
 // Answer on the page: every panel gets a Comment box, and the Reply button collects the ask answers, the comments and the remarks
 // into one Markdown reply (replyText) to copy back to the agent. Answers and comments stay in localStorage across reloads.
-// The remark script (remark.js) adds the blocks the reader marked, through window.__amRemarkData.
+// The remark script (remark.js) adds the blocks the reader marked, through window.__amRemarkData, and tells this script about a change
+// with an "am-remark-change" event on the document.
+// The Reply sheet shows the reply drawn (replyViewHtml) with the Markdown that Copy copies under a fold. Once the reader has given any
+// input, a bar at the bottom of the page shows the counts and copies the reply in one click, so there is no trip to the top-right button.
 const replyBtn = document.querySelector('[data-am="reply"]');
 const COMMENT_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>';
 if (replyBtn) {
@@ -1258,6 +1320,10 @@ if (replyBtn) {
   const keyOf = (ask) => textOf(ask.querySelector('legend')) ?? ask.dataset.ask;
   const touched = new Set();
   const boxes = new Map();
+  // The bar is built below with the sheet; the handlers that change the counts only call this.
+  let refreshBar = () => {};
+  // The textarea a failed copy keeps selected, so the reader can still use the keyboard shortcut.
+  let stuck = null;
 
   const load = () => {
     try {
@@ -1296,6 +1362,7 @@ if (replyBtn) {
     const answer = () => {
       touched.add(ask);
       save();
+      refreshBar();
     };
     ask.addEventListener('change', answer);
     ask.addEventListener('click', (e) => { if (e.target.matches('input')) answer(); });
@@ -1322,6 +1389,7 @@ if (replyBtn) {
     box.addEventListener('input', () => {
       btn.classList.toggle('am-comment-btn--on', Boolean(box.value.trim()));
       save();
+      refreshBar();
     });
     btn.classList.toggle('am-comment-btn--on', Boolean(box.value.trim()));
     if (box.value.trim()) show(true);
@@ -1333,9 +1401,12 @@ if (replyBtn) {
   const sheet = document.createElement('dialog');
   sheet.className = 'am-reply';
   sheet.setAttribute('aria-label', ui.title);
-  sheet.innerHTML = '<div class="am-reply-head"><strong></strong><span></span></div><textarea readonly rows="14"></textarea><div class="am-reply-actions"><button type="button" class="am-btn" data-act="copy"></button><button type="button" class="am-btn" data-act="close"></button></div>';
+  sheet.innerHTML = '<div class="am-reply-head"><strong></strong><span></span></div><div class="am-reply-view" tabindex="0"></div><details class="am-reply-raw"><summary></summary><textarea readonly rows="10"></textarea></details><div class="am-reply-actions"><button type="button" class="am-btn" data-act="copy"></button><button type="button" class="am-btn" data-act="close"></button></div>';
   sheet.querySelector('strong').textContent = ui.title;
   sheet.querySelector('span').textContent = ui.hint;
+  sheet.querySelector('summary').textContent = ui.raw;
+  const view = sheet.querySelector('.am-reply-view');
+  const raw = sheet.querySelector('details');
   const text = sheet.querySelector('textarea');
   const copy = sheet.querySelector('[data-act="copy"]');
   const close = sheet.querySelector('[data-act="close"]');
@@ -1358,25 +1429,90 @@ if (replyBtn) {
     return empty ? '' : replyText({ title, decisions, comments, remarks, ui, rtl: document.documentElement.dir === 'rtl' });
   };
 
-  replyBtn.addEventListener('click', () => {
+  // The text goes through the clipboard API; a page the browser treats as insecure (file://) falls back to selecting a temporary
+  // textarea, because the sheet's own textarea can sit inside a closed fold, where it cannot be selected.
+  // That fallback reports whether it worked. When it does not, the text stays selected (so Cmd/Ctrl+C still copies it) and the
+  // button says what to do instead of showing the "Copied ✓" label the reader cannot trust.
+  const copyText = async (str, btn) => {
+    stuck?.remove();
+    stuck = null;
+    try {
+      await navigator.clipboard.writeText(str);
+      // The close_after_reply script (close-after-reply.js) closes the tab once the reply is on the clipboard.
+      document.dispatchEvent(new Event('am-reply-copied'));
+    } catch {
+      const tmp = Object.assign(document.createElement('textarea'), { value: str });
+      tmp.style.cssText = 'position:fixed;top:-100px;opacity:0';
+      // Inside the sheet while it is open: while a modal dialog is open the rest of the document cannot take focus, so a textarea
+      // in the body can be selected but not focused, and the keyboard shortcut the reader is told to press would copy nothing.
+      // The bottom bar copies while the sheet is closed, and a closed dialog is not rendered, so there the textarea goes in the body.
+      (sheet.open ? sheet : document.body).append(tmp);
+      tmp.select();
+      let copied = false;
+      try {
+        copied = document.execCommand('copy');
+      } catch {
+        copied = false;
+      }
+      if (!copied) {
+        stuck = tmp;
+        btn.textContent = ui.copyFailed;
+        setTimeout(() => { btn.textContent = ui.copy; }, 3000);
+        return;
+      }
+      tmp.remove();
+    }
+    btn.textContent = ui.done;
+    setTimeout(() => { btn.textContent = ui.copy; }, 1400);
+  };
+
+  const open = () => {
     const reply = compose();
-    text.value = reply || ui.empty;
+    if (reply) view.innerHTML = replyViewHtml(reply);
+    else view.textContent = ui.empty;
+    view.scrollTop = 0;
+    text.value = reply;
+    raw.open = false;
+    raw.hidden = !reply;
     copy.disabled = !reply;
     if (sheet.showModal) sheet.showModal();
     else sheet.setAttribute('open', '');
     (reply ? copy : close).focus();
-  });
+  };
+  replyBtn.addEventListener('click', open);
   close.addEventListener('click', () => (sheet.close ? sheet.close() : sheet.removeAttribute('open')));
-  copy.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(text.value);
-    } catch {
-      text.select();
-      document.execCommand('copy');
-    }
-    copy.textContent = ui.done;
-    setTimeout(() => { copy.textContent = ui.copy; }, 1400);
-  });
+  // A failed copy leaves the text selected for Cmd/Ctrl+C; closing the sheet drops that textarea.
+  sheet.addEventListener('close', () => { stuck?.remove(); stuck = null; });
+  copy.addEventListener('click', () => copyText(text.value, copy));
+
+  const bar = Object.assign(document.createElement('div'), { className: 'am-reply-bar', hidden: true });
+  bar.setAttribute('role', 'region');
+  bar.setAttribute('aria-label', ui.title);
+  const summary = Object.assign(document.createElement('span'), { className: 'am-reply-bar-count' });
+  summary.setAttribute('aria-live', 'polite');
+  const preview = Object.assign(document.createElement('button'), { type: 'button', className: 'am-btn', textContent: ui.preview });
+  const barCopy = Object.assign(document.createElement('button'), { type: 'button', className: 'am-btn am-btn--reply', textContent: ui.copy });
+  preview.addEventListener('click', open);
+  barCopy.addEventListener('click', () => copyText(compose(), barCopy));
+  bar.append(summary, preview, barCopy);
+  document.body.append(bar);
+
+  // The bar shows only the counts that are above zero, and only once there is any input at all.
+  refreshBar = () => {
+    const counts = {
+      answered: touched.size,
+      comments: [...boxes.values()].filter((box) => box.value.trim()).length,
+      remarks: (window.__amRemarkData?.() ?? []).length,
+    };
+    const parts = Object.entries(counts).filter(([, n]) => n > 0).map(([kind, n]) => ui.count[kind].replace('{n}', n));
+    summary.textContent = parts.join(' · ');
+    bar.hidden = !parts.length;
+    document.body.classList.toggle('am-has-reply-bar', parts.length > 0);
+  };
+  document.addEventListener('am-remark-change', () => refreshBar());
+  // Saved remarks are restored by remark.js, which runs after this script in the same <script> element: its data is not there yet.
+  // A microtask runs when that whole element has finished, so the first count includes them.
+  queueMicrotask(() => refreshBar());
 }
 })();
 (() => {
@@ -1480,6 +1616,8 @@ function occurrenceKeys(bases) {
     } catch {
       // Storage may be off (private window, a sandboxed page); marks then last until the page closes.
     }
+    // The reply bar (reply.js) shows the number of marks.
+    document.dispatchEvent(new Event('am-remark-change'));
   };
 
   const chip = (el, mark) => {

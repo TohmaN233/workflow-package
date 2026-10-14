@@ -38,3 +38,19 @@ assert.deepEqual(main.input_bindings.mode.coalesce,['/nodes/declared_page_route/
 assert.deepEqual(bundle.snapshot.workflow.nodes.find(item => item.id === 'final').input_bindings.route_decision.coalesce,
   ['/nodes/declared_page_route/output/decision','/nodes/activity_001/output']);
 console.log('PASS explicit plan binding and free-form Main route; acceptance retains full content without producer guide replay');
+
+assert.doesNotMatch(text,/always[-_]on/,'Explicit Workflow invocation must not inherit ambient activation or small-page rules');
+for(const node of bundle.snapshot.workflow.nodes) {
+  assert(!/always[-_]on|\bbehavior\b/.test(JSON.stringify(node)),`${node.id}: obsolete activation must not reach a runtime node`);
+}
+for(const tool of bundle.snapshot.workflow.host_tools) {
+  assert(!/always[-_]on|\bbehavior\b/.test(JSON.stringify([tool.input_schema,tool.output_schema])),`${tool.id}: obsolete activation must not remain in Host interfaces`);
+}
+const {resolveRenderContract,ROUTE_OUTPUT_SCHEMA}=await moduleFrom(sourceText('workflow-assets/host-adapter/render-contract.mjs'));
+assert(!Object.hasOwn(ROUTE_OUTPUT_SCHEMA.properties,'behavior'));
+const renderSelection={destination:{},opening:'inherit',overrides:{},panel:{}};
+for(const opening of ['open','no_open']) {
+  assert.equal(resolveRenderContract({task:{opening},mode:'page',render_selection:renderSelection,home:'.answer-me-with-html'}).opening,opening);
+}
+assert.deepEqual(Object.keys(declaredPageRoute(plan,validateRouteDecision).decision).sort(),['batch_context','mode','options','render_selection','selection']);
+console.log('PASS explicit Workflow route: no ambient activation field, complexity-based writer planning, original opening settings retained');

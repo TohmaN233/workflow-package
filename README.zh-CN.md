@@ -4,11 +4,11 @@
 
 可复用的 Workflow 安装包，与执行引擎和默认配置分开维护。
 
-**[直接打开 Skill／Workflow 对照展示 →](https://tohman233.github.io/workflow-package/)** 并排查看六份可交互的 HTML，播放视频样例，并查看实验记录的耗时、token 与 API 等价成本。展示也保留了 Workflow 没有一致优势的单页结果。
+**[直接打开 Skill／Workflow 对照展示 →](https://tohman233.github.io/workflow-package/)** 并排查看可交互的 HTML，播放视频样例，并查看实验记录的耗时、token 与 API 等价成本。
 
 **Workflow 本体是 `*.workflow-package.json` 文件。** 使用说明、对照结果和产物样例统一放在 [workflow_explanations](workflow_explanations/README.zh-CN.md)。
 
-新增[0.5.2 新会话单页对照](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)：输入更少，成本与耗时更高；页面如实列出 Main／worker 成本和阶段时间。长聊天中隔离无关历史的收益是重要使用场景，本轮未测量。
+新增[0.5.2 新会话单页对照](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)：查看 ER 图、真实源码、离线公式和反馈功能。长聊天中的任务隔离与独立阶段的并行是重要使用场景；具体测量、缓存与节点交接的局限性在展示页末说明。
 
 | 平台 | Workflow | 下载 | 说明 |
 | --- | --- | --- | --- |

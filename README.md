@@ -4,11 +4,11 @@
 
 Reusable Workflow packages, kept separate from their execution engines and default configuration.
 
-**[See Skill vs Workflow in your browser →](https://tohman233.github.io/workflow-package/)** Compare six interactive HTML outputs side by side, play the video examples, and explore the recorded time, token use and API-equivalent cost. The gallery includes single-page results where Workflow has no consistent advantage.
+**[See Skill vs Workflow in your browser →](https://tohman233.github.io/workflow-package/)** Compare interactive HTML outputs side by side, play the video examples, and explore the recorded time, token use and API-equivalent cost.
 
 **The Workflow itself is a `*.workflow-package.json` file.** All usage notes, comparisons and output examples live in [workflow_explanations](workflow_explanations/README.md).
 
-New [0.5.2 fresh-conversation single-page comparison](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=en): fewer input tokens, higher cost and time, with Main/worker cost and phase timing. Isolating unrelated history in a long chat is an important use case, not measured in this trial.
+New [0.5.2 fresh-conversation single-page comparison](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=en): explore ER diagrams, real source, offline formulas and feedback. Isolating tasks within long chats and parallelizing independent stages are important use cases; measurements and cache/coordination limitations are explained at the end of the gallery.
 
 | Platform | Workflow | Download | Explanation |
 | --- | --- | --- | --- |

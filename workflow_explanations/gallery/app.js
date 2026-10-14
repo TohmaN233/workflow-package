@@ -20,7 +20,7 @@ const ARTIFACTS = {
     workflow: "../examples/html/git-workflow.html"
   }
 };
-const SECTION_IDS = new Set(["top", "main", "latest", "batch", "single", "video", "method"]);
+const SECTION_IDS = new Set(["top", "main", "latest", "batch", "single", "video", "method", "limitations"]);
 const state = { lang: "en", topic: "tcp", section: "batch", data: null };
 const formatter = () => new Intl.NumberFormat(state.lang === "zh-CN" ? "zh-CN" : "en-US");
 

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {cp, mkdir, readFile, readdir, rm, stat, writeFile} from 'node:fs/promises';
 import {dirname, relative, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const output = resolve(root, '_site');
@@ -13,6 +14,16 @@ for (const directory of ['gallery', 'examples']) {
   await cp(resolve(root, 'workflow_explanations', directory),
     resolve(output, 'workflow_explanations', directory), {recursive: true});
 }
+// GitHub Pages caches stable filenames. Version the shell assets by their bytes;
+// measured HTML files stay byte-identical and receive their versions at runtime.
+const shell = resolve(output, 'workflow_explanations/gallery/index.html');
+let shellText = await readFile(shell, 'utf8');
+for (const asset of ['app.js', 'style.css']) {
+  const hash = createHash('sha256').update(await readFile(resolve(dirname(shell), asset))).digest('hex');
+  assert(shellText.includes('"' + asset + '"'), 'Missing shell asset: ' + asset);
+  shellText = shellText.replace('"' + asset + '"', '"' + asset + '?v=' + hash + '"');
+}
+await writeFile(shell, shellText);
 await cp(resolve(root, 'workflow_explanations/experiments/results.json'),
   resolve(output, 'workflow_explanations/experiments/results.json'));
 await cp(resolve(root, 'LICENSE'), resolve(output, 'LICENSE'));

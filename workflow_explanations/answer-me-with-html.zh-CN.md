@@ -10,6 +10,8 @@ HTML 写作节点用已有材料和知识完成一般概念讲解。只有用户
 
 结构化输入已明确提供独立网页请求及共同要求时，Host 直接绑定该计划；自由文本或混合路线请求仍由 Main 判断。Main 验收完整稿件和诊断，不重复读取制作节点的渲染语法指南。
 
+批量传递保留原文：Host 将原始任务中除 `pages` 外的全部字段作为 `common_task` 送入共享前缀，每页完整原始对象作为 `original_page` 只交给对应 worker。自由文本总请求同样完整保留；Main 提取的 `batch_context` 仅作补充，不能替代或缩减原始要求。长输入使用完整文件交付，不截断。原始稿件经过渲染和汇合后仍须保持一致；内容是否充分由 Main 依据完整原始请求做语义验收。
+
 显式启动 Workflow 已确定要制作产物，不再判断环境里的 Skill 是否应自动触发。路由、Host 接口和制作节点已移除 `always_on`／`behavior`；网页根据任务复杂度规划内容，短问题也可能需要完整的技术讲解。验收检查机制、适用条件和必要子问题，不把字数、面板数或渲染成功当作内容覆盖。原有工具和 STE 修正流程保持完整，没有新增 Host 内容校验。
 
 视频支持新稿件、已有配音／播放器资产、MP4 或 WebM 导出，以及仅重写文本。已有音频可复用，无需调用语音服务。新配音使用接收端配置的 Provider 与凭据，也支持明确选中的本地 OpenAI 兼容语音服务。两种视频文件导出都需要 Node.js 22+ 和 Chrome，只有 MP4 需要 FFmpeg；HTML 和播放器页面需要 Node.js 20+。
@@ -20,7 +22,7 @@ HTML 写作节点用已有材料和知识完成一般概念讲解。只有用户
 
 视频和文件导出仍须明确请求；配置、清理、更新、已有资产复用和局部修改保留各自路线。服务器仍由用户启动；只有接收端实际提供 DSH present 工具时，才调用它呈现产物。
 
-安装包 **1.1.3** 分发上游 0.5.3，配套 CAW **1.2.2**；本次仅更新 Workflow 包。原 CLI／Host 配置检查与上游配置／主题／Reply 测试的记录保留。新的 [Luna/max 三页验证](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#batch?lang=zh-CN)在全新会话中完成原来的三个题目：TCP 关闭状态、缓存未命中／失效与选型条件均已核对，Git 保留历史变化和共享提交的解释。原 Skill 基线仍为 0.5.2，未重跑；此次 Workflow 使用 0.5.3，版本差异明确记录。新三页产物与其真实计量一起更新：输入减少 47.62%、耗时减少 14.58%，Standard API 等价成本增加 25.40%。这不是同版本因果实验，也没有调用付费配音。[历史单页实验](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)保持原数据与产物。
+安装包 **1.1.4** 分发上游 0.5.3，配套 CAW **1.2.2**；本次仅修复 Workflow 的需求传递，未更新 CAW。离线回归覆盖实际拆页、共享前缀、完整长输入文件、原渲染器及汇合，未调用模型或付费语音。已有 [Luna/max 三页测量](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#batch?lang=zh-CN)仍属于 **1.1.3** 的实际运行，不能视为本版本的性能或完整内容对等证明。该次输入减少 47.62%、耗时减少 14.58%，Standard API 等价成本增加 25.40%；Skill 为 0.5.2、Workflow 渲染器为 0.5.3，原始计量和成品均保留。后续复核发现部分知识点遗漏，此前的大类覆盖检查不足以证明完整性。[历史单页实验](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)同样保持原数据与产物。
 
 ## 适用范围与局限性
 

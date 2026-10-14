@@ -1,6 +1,6 @@
 # Skill versus Workflow
 
-Current distribution: HTML package 1.1.3, upstream 0.5.3, CAW 1.2.2. The three-page Workflow sample now contains the actual outputs and measurements from the content revision. The fixed Skill, historical single-page and video samples retain their original records. Source versions are identified separately.
+Current distribution: HTML package 1.1.4, upstream 0.5.3, CAW 1.2.2. Version 1.1.4 fixes requirement transfer and has offline regression checks only. The three-page Workflow measurements and outputs below belong to 1.1.3; they are not a new experiment on this revision or proof of full content parity. The fixed Skill, historical single-page and video samples retain their original records. Source versions are identified separately.
 
 [中文](results.zh-CN.md) · [Workflow package](../answer-me-with-html.md) · [Data](results.json) · [Original Skill](https://github.com/QingYunA/answer-me-with-html)
 

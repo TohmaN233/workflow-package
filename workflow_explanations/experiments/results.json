@@ -212,5 +212,107 @@
         "repetition": 3
       }
     ]
+  },
+  "html_052_single": {
+    "date_utc": "2026-10-14",
+    "source_release": "v0.5.2",
+    "source_commit": "4da5ae89ac435683110aa1b8707d9d4170184c55",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "sample_count_per_method": 1,
+    "scope": "Fresh independent outer conversations; identical supplied inputs; one page-production SDK Main worker; initiating Main routes and accepts.",
+    "tested_workflow_revision": "ea82d2ad44494c7f750d06a451d6eaa1a47d82fd136a78419c3c20c6b46c5efe",
+    "tested_engine": {
+      "version": "1.2",
+      "local_source_commit": "f05f737",
+      "patch": "committed terminal completion facts; engine is distributed separately from this package"
+    },
+    "pricing_usd_per_million": {
+      "input": 2,
+      "cached_input": 0.1,
+      "cache_write_input": 2.5,
+      "output": 10
+    },
+    "skill": {
+      "cost_usd": 0.2465648,
+      "wall_ms": 146169,
+      "usage": {
+        "input_tokens": 553582,
+        "cached_input_tokens": 483968,
+        "output_tokens": 5894,
+        "cache_write_input_tokens": 0
+      }
+    },
+    "workflow": {
+      "cost_usd": 0.3006076,
+      "wall_ms": 203863,
+      "usage": {
+        "input_tokens": 522747,
+        "cached_input_tokens": 419456,
+        "output_tokens": 5208,
+        "cache_write_input_tokens": 0
+      }
+    },
+    "workflow_components": [
+      {
+        "name": "initiating_main",
+        "cost_usd": 0.14103,
+        "usage": {
+          "input_tokens": 154392,
+          "cached_input_tokens": 92160,
+          "output_tokens": 735,
+          "cache_write_input_tokens": 0
+        }
+      },
+      {
+        "name": "sdk_main_worker",
+        "cost_usd": 0.1595776,
+        "usage": {
+          "input_tokens": 368355,
+          "cached_input_tokens": 327296,
+          "output_tokens": 4473,
+          "cache_write_input_tokens": 0
+        }
+      }
+    ],
+    "workflow_phases": [
+      {
+        "name": "startup_and_routing",
+        "wall_ms": 15102
+      },
+      {
+        "name": "sdk_production",
+        "wall_ms": 166068
+      },
+      {
+        "name": "host_observation_semantic_acceptance_and_recording",
+        "wall_ms": 16938
+      },
+      {
+        "name": "final_reply",
+        "wall_ms": 5755
+      }
+    ],
+    "cache_cost_gap": {
+      "skill_uncached_input": 69614,
+      "workflow_uncached_input": 103291,
+      "uncached_input_cost_difference_usd": 0.067354,
+      "cached_input_cost_difference_usd": -0.0064512,
+      "output_cost_difference_usd": -0.00686,
+      "net_difference_usd": 0.0540428
+    },
+    "artifacts": {
+      "skill": "../examples/html/run-052-skill.html",
+      "workflow": "../examples/html/run-052-workflow.html"
+    },
+    "checks": [
+      "ER entities and cardinalities",
+      "real source-code embedding and clipboard copy",
+      "offline math formulas",
+      "Reply/Remark roundtrip"
+    ],
+    "quality_scope": "Requested functions checked in both products; not a blind quality score or universal equivalence claim. Original doc/sheet template choices differ.",
+    "measurement_scope": "Full business Main plus SDK worker; reasoning counted once within output; reported cache-write input is zero. Engineering maintenance and earlier failed/development attempts excluded, not presented as end-to-end optimization cost.",
+    "long_chat_scope": "Not measured. With a relevant task brief, an isolated production worker can omit unrelated history from a long initiating conversation. Main still carries its own conversation; net savings depend on task, handoffs and caching."
   }
 }

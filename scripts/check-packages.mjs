@@ -59,6 +59,15 @@ function cost(arm,pricing){
   +u.output_tokens*(pricing.output??pricing.output_per_million))/1e6;
 }
 const metrics=await json(resolve(root,'workflow_explanations/experiments/results.json'));
+if(metrics.html_052_single){
+ const latest=metrics.html_052_single;
+ for(const arm of [latest.skill,latest.workflow,...latest.workflow_components])
+  assert(Math.abs(cost(arm,latest.pricing_usd_per_million)-arm.cost_usd)<1e-9,'0.5.2 single-page cost');
+ assert(Math.abs(latest.workflow_components.reduce((n,r)=>n+r.cost_usd,0)-latest.workflow.cost_usd)<1e-9,'0.5.2 full business cost');
+ assert.equal(latest.workflow_phases.reduce((n,r)=>n+r.wall_ms,0),latest.workflow.wall_ms,'0.5.2 full business time');
+ const current=catalogue.packages.find(p=>p.id==='answer-me-with-html-evidence');
+ assert.equal(current.workflow_revision_hash,latest.tested_workflow_revision,'Gallery describes the distributed tested Workflow revision');
+}
 if(metrics.single_html)for(const arm of [...Object.values(metrics.single_html.baseline),...metrics.single_html.workflow_samples])
  assert(Math.abs(cost(arm,metrics.single_html.pricing_usd_per_million)-arm.cost_usd)<1e-9,'Single-page HTML cost');
 for(const arm of [metrics.three_html_one_conversation.skill,metrics.three_html_one_conversation.workflow])
@@ -69,7 +78,7 @@ for(const stage of ['reuse','text'])for(const side of ['skill','workflow']){
 }
 async function docs(directory){
  for(const entry of await readdir(directory,{withFileTypes:true})){
-  if(entry.name==='.git')continue;
+  if(entry.name==='.git'||directory===root&&entry.name==='_site')continue;
   const path=resolve(directory,entry.name);
   if(entry.isDirectory()){await docs(path);continue;}
   if(!entry.name.endsWith('.md'))continue;

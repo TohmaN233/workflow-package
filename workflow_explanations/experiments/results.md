@@ -6,6 +6,32 @@
 
 Compare the HTML and video outputs below to judge quality yourself. Both methods use LLMs, whose outputs are stochastic.
 
+## 0.5.2: one page in fresh conversations
+
+Measured on 2026-10-14 with gpt-6.1-sol/high, upstream **0.5.2**, identical supplied facts and code, and separate fresh conversations. Skill is the fixed sample; Workflow ran once after engineering checks. Package **1.1.1** exports the tested revision with the same 41 nodes and 130 runtime resources.
+
+| Method | Input (cached included) | Cached input | Output | API-equivalent USD | Full delivery, seconds |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Skill | 553,582 | 483,968 | 5,894 | $0.246565 | 146.169 |
+| Workflow | 522,747 | 419,456 | 5,208 | $0.300608 | 203.863 |
+
+Input decreased **5.57%**, cost increased **21.92%**, and time increased **39.47%**. See the [online measurements](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=en) and unchanged [Skill page](../examples/html/run-052-skill.html) and [Workflow page](../examples/html/run-052-workflow.html). ER cardinalities, real code embedding and copy, offline formulas, and Reply/Remark were checked. Skill uses doc and Workflow uses sheet, both supported original templates; this is not a blind quality score.
+
+The route has one SDK Main worker producing the page; Main selects the route and accepts the result. The worker uses 368,355 input tokens and **$0.159578**; Main adds 154,392 input tokens and **$0.141030**. Uncached input is **103,291** for Workflow versus **69,614** for Skill. This adds $0.067354; lower cached input and output subtract $0.013311, leaving **+$0.054043**. These counts explain the price difference, but alone do not prove a cache implementation regression.
+
+| Workflow phase | Seconds |
+| --- | ---: |
+| Startup and routing | 15.102 |
+| SDK production node | 166.068 |
+| Host observation, Main semantic acceptance and recording | 16.938 |
+| Final reply | 5.755 |
+
+The worker alone took longer than the entire Skill sample. The render command took about 1.2 seconds; worker time also includes preparation, model responses, source reads and checks. One production task has no independent-page parallelism.
+
+**A stronger isolation use case is requesting a page during an already long chat.** A focused task brief lets production calls omit unrelated chat history; Main still carries its own conversation. This fresh-conversation trial did not measure that benefit and claims no savings percentage for it.
+
+Costs include the business Main and SDK worker; output includes reasoning once and cache-write input was explicitly reported as zero. Engineering maintenance and older failed/development attempts are excluded from this final pair, not presented as the cost of the whole optimization process. The engine was CAW **1.2** with local source revision f05f737 for terminal-completion returns, maintained separately from the Workflow package. The following records are historical experiments, not measurements of the current 0.5.2 package.
+
 ## Pages run separately
 
 Workflow values are means of three runs per topic. Input includes cached tokens.

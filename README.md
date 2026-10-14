@@ -8,6 +8,8 @@ Reusable Workflow packages, kept separate from their execution engines and defau
 
 **The Workflow itself is a `*.workflow-package.json` file.** All usage notes, comparisons and output examples live in [workflow_explanations](workflow_explanations/README.md).
 
+New [0.5.2 fresh-conversation single-page comparison](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=en): fewer input tokens, higher cost and time, with Main/worker cost and phase timing. Isolating unrelated history in a long chat is an important use case, not measured in this trial.
+
 | Platform | Workflow | Download | Explanation |
 | --- | --- | --- | --- |
 | Codex | Answer me with HTML | [Package JSON](codex/answer-me-with-html/answer-me-with-html.workflow-package.json) | [HTML diagrams, batch pages, video and asset reuse](workflow_explanations/answer-me-with-html.md) |

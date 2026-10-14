@@ -8,6 +8,8 @@
 
 **Workflow 本体是 `*.workflow-package.json` 文件。** 使用说明、对照结果和产物样例统一放在 [workflow_explanations](workflow_explanations/README.zh-CN.md)。
 
+新增[0.5.2 新会话单页对照](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)：输入更少，成本与耗时更高；页面如实列出 Main／worker 成本和阶段时间。长聊天中隔离无关历史的收益是重要使用场景，本轮未测量。
+
 | 平台 | Workflow | 下载 | 说明 |
 | --- | --- | --- | --- |
 | Codex | Answer me with HTML | [安装包 JSON](codex/answer-me-with-html/answer-me-with-html.workflow-package.json) | [HTML 图解、批量网页、视频与资产复用](workflow_explanations/answer-me-with-html.zh-CN.md) |

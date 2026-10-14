@@ -9,22 +9,15 @@
       "id": "answer-me-with-html-evidence",
       "name": "answer-me-with-html",
       "platform": "codex",
-      "package_version": "1.1.0",
+      "package_version": "1.1.1",
       "path": "codex/answer-me-with-html/answer-me-with-html.workflow-package.json",
       "source_skill": "https://github.com/QingYunA/answer-me-with-html",
-      "workflow_revision_hash": "89c0a01f3021872597ab7ad2474f2fb6baae18e33607d23f0f65376ab0647f22",
-      "package_sha256": "ca40905fc9b4c6ad2d8f670c2d3f519fdfe2da270b04c38acdd5a344fb354d4a",
-      "file_sha256": "3b4693d1244feab7f1f92bc9cc2d40d4d9cd068f290f756010ebc8c6c682fc67",
+      "workflow_revision_hash": "ea82d2ad44494c7f750d06a451d6eaa1a47d82fd136a78419c3c20c6b46c5efe",
+      "package_sha256": "07eb21ae3db070ae59e9aeb001d40c6322da1a9aca98dd65d01be0fc5a8bd054",
+      "file_sha256": "bd8331896a58f3929ba10d8eac62a6fa5c6a49c6081493599e56be959c432d78",
       "node_count": 41,
       "resource_count": 130,
       "dependencies": {
-        "executables": [
-          {
-            "name": "node",
-            "version": ">=20.0.0"
-          }
-        ],
-        "mcp_servers": [],
         "providers": [],
         "tools": [
           "am_batch_observe",
@@ -45,6 +38,13 @@
           "am_video_prepare",
           "am_worker_render",
           "read_workflow_resource"
+        ],
+        "mcp_servers": [],
+        "executables": [
+          {
+            "name": "node",
+            "version": ">=20.0.0"
+          }
         ]
       },
       "source_release": "v0.5.2",

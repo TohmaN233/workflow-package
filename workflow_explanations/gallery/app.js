@@ -20,7 +20,7 @@ const ARTIFACTS = {
     workflow: "../examples/html/git-workflow.html"
   }
 };
-const SECTION_IDS = new Set(["top", "main", "batch", "single", "video", "method"]);
+const SECTION_IDS = new Set(["top", "main", "latest", "batch", "single", "video", "method"]);
 const state = { lang: "en", topic: "tcp", section: "batch", data: null };
 const formatter = () => new Intl.NumberFormat(state.lang === "zh-CN" ? "zh-CN" : "en-US");
 
@@ -77,6 +77,10 @@ function validateData(data) {
   if (!batch || !batch.pricing_usd_per_million) throw new Error("Missing three_html_one_conversation data");
   requiredRecord(batch.skill, "three_html_one_conversation.skill");
   requiredRecord(batch.workflow, "three_html_one_conversation.workflow");
+  const latest = data.html_052_single;
+  if (!latest || !Array.isArray(latest.workflow_phases)) throw new Error("Missing 0.5.2 comparison data");
+  requiredRecord(latest.skill, "html_052_single.skill");
+  requiredRecord(latest.workflow, "html_052_single.workflow");
 
   const single = data.single_html;
   if (!single || !single.baseline || !Array.isArray(single.workflow_samples)) {
@@ -163,6 +167,29 @@ function describeComparison(enLabel, zhLabel, baseline, comparison) {
   return state.lang === "zh-CN"
     ? zhLabel + "增加 " + formatPercent(change)
     : enLabel + " was " + formatPercent(change) + " higher";
+}
+
+function renderLatest() {
+  const latest = state.data.html_052_single;
+  const tbody = document.getElementById("latest-rows");
+  tbody.replaceChildren();
+  appendMethodRow(tbody, "Skill", latest.skill);
+  appendMethodRow(tbody, "Workflow", latest.workflow);
+  const input = describeComparison("input-token count", "输入 token 数", latest.skill.usage.input_tokens, latest.workflow.usage.input_tokens);
+  const cost = describeComparison("cost", "成本", latest.skill.cost_usd, latest.workflow.cost_usd);
+  const time = describeComparison("time", "耗时", latest.skill.wall_ms, latest.workflow.wall_ms);
+  setText(document.getElementById("latest-delta"), "In this sample, Workflow's " + input + ", " + cost + ", and " + time + ".",
+    "本样本中，Workflow 的" + input + "、" + cost + "、" + time + "。");
+  const main = latest.workflow_components.find(item => item.name === "initiating_main");
+  const worker = latest.workflow_components.find(item => item.name === "sdk_main_worker");
+  const gap = latest.cache_cost_gap;
+  setText(document.getElementById("latest-cost"),
+    "SDK worker: " + formatUsd(worker.cost_usd) + "; initiating Main: " + formatUsd(main.cost_usd) + ". Uncached input: Workflow " + formatTokens(gap.workflow_uncached_input) + ", Skill " + formatTokens(gap.skill_uncached_input) + ". Net cost difference: +" + formatUsd(gap.net_difference_usd) + ".",
+    "SDK worker：" + formatUsd(worker.cost_usd) + "；发起 Main：" + formatUsd(main.cost_usd) + "。未缓存输入：Workflow " + formatTokens(gap.workflow_uncached_input) + "，Skill " + formatTokens(gap.skill_uncached_input) + "。净成本差额：+" + formatUsd(gap.net_difference_usd) + "。");
+  const phases = Object.fromEntries(latest.workflow_phases.map(item => [item.name, item.wall_ms]));
+  setText(document.getElementById("latest-time"),
+    "Startup and routing: " + formatSeconds(phases.startup_and_routing) + " s; SDK production: " + formatSeconds(phases.sdk_production) + " s; Host observation, semantic acceptance and recording: " + formatSeconds(phases.host_observation_semantic_acceptance_and_recording) + " s; final reply: " + formatSeconds(phases.final_reply) + " s.",
+    "启动与路线选择：" + formatSeconds(phases.startup_and_routing) + " 秒；SDK 制作：" + formatSeconds(phases.sdk_production) + " 秒；Host 观察、语义验收与记录：" + formatSeconds(phases.host_observation_semantic_acceptance_and_recording) + " 秒；最后回复：" + formatSeconds(phases.final_reply) + " 秒。");
 }
 
 function renderBatch() {
@@ -355,6 +382,7 @@ function renderAll() {
   renderLanguage();
   renderArtifacts();
   if (!state.data) return;
+  renderLatest();
   renderBatch();
   renderSingle();
   renderVideo();
@@ -437,6 +465,8 @@ async function loadExperimentData() {
     state.data = data;
     document.getElementById("data-error").hidden = true;
     renderAll();
+    const locationSection = parseLocationHash().section;
+    if (locationSection) document.getElementById(locationSection)?.scrollIntoView({ block: "start" });
   } catch (error) {
     console.error("Unable to load the experiment gallery data from " + DATA_URL, error);
     document.getElementById("data-error").hidden = false;

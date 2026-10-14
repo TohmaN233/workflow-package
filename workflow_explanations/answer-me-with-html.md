@@ -19,3 +19,7 @@ The package includes 41 nodes and 130 runtime resources, with the exact bundled 
 The upstream description encourages broader use than its detailed decision section. This update retains that section's specific routing rules and explicit video intent. Serving remains user-started; a DSH presentation tool is used only when the receiving host actually provides it.
 
 Package **1.1.1** exports the tested 0.5.2 single-page revision, preserving the semantic graph and all runtime resources from 1.1.0. New [measurements and paired outputs](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=en): input 5.57% lower, cost 21.92% higher and time 39.47% higher. This route has one production worker. Its stronger long-chat isolation use case was not measured; Main still carries its conversation. Older 0.4.7 page and video data remain historical evidence, not current-package performance. The 0.5.2 update also passed real voice-off MP4/WebM export checks without buying narration.
+
+## Scope and limitations
+
+Cache-hit variation and stochastic LLM behavior can make a Workflow run cost more or take longer than Skill; overly fine node splits and serial handoffs also add mechanical overhead. Isolating a page task within a long chat and overlapping independent stages in complex work offer stronger use cases. This fresh-conversation single-page sample did not measure long-chat gains and provides no savings percentage for that setting.

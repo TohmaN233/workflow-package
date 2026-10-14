@@ -17,11 +17,12 @@
       <span>FIELD NOTES <span class="wordmark-dot">·</span> 01</span>
     </a>
     <nav class="primary-nav" aria-label="Primary navigation">
-      <a href="#latest" data-en="0.5.2 trial" data-zh="0.5.2 实测">0.5.2 trial</a>
+      <a href="#latest" data-en="0.5.2 features" data-zh="0.5.2 功能">0.5.2 features</a>
       <a href="#batch" data-en="Batch" data-zh="批量">Batch</a>
       <a href="#single" data-en="Single page" data-zh="单页">Single page</a>
       <a href="#video" data-en="Video & text" data-zh="视频与文本">Video &amp; text</a>
       <a href="#method" data-en="Method" data-zh="统计口径">Method</a>
+      <a href="#limitations" data-en="Limitations" data-zh="局限性">Limitations</a>
     </nav>
     <button class="language-toggle" id="language-toggle" type="button" aria-label="Switch language to Chinese">
       <span data-en="中文" data-zh="English">中文</span>
@@ -47,44 +48,19 @@
     <section class="section" id="latest" aria-labelledby="latest-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow"><span class="section-number">0.5.2</span><span data-en="2026-10-14 · one page in fresh conversations" data-zh="2026-10-14 · 新会话制作单页">2026-10-14 · one page in fresh conversations</span></p>
-          <h2 id="latest-title" data-en="Less input. Higher cost and time." data-zh="输入更少，成本与耗时更高。">Less input. Higher cost and time.</h2>
+          <p class="eyebrow"><span class="section-number">0.5.2</span><span data-en="Interactive explanation pages" data-zh="可交互的讲解网页">Interactive explanation pages</span></p>
+          <h2 id="latest-title" data-en="Diagrams, real code and formulas." data-zh="把图解、源码与公式放进一页。">Diagrams, real code and formulas.</h2>
         </div>
-        <p class="section-intro" data-en="Both methods used gpt-6.1-sol/high, upstream 0.5.2 and identical supplied facts and code. The Skill sample is fixed; Workflow ran once after engineering checks. Its route uses one SDK Main worker to produce the page, with the initiating Main selecting the route and accepting the result." data-zh="双方使用 gpt-6.1-sol/high、上游 0.5.2，以及相同的事实和源码输入。Skill 使用固定样本；Workflow 完成工程预检后运行一次。本路线只有一个 SDK Main worker 制作网页，发起任务的 Main 选择路线并验收。">Both methods used gpt-6.1-sol/high, upstream 0.5.2 and identical supplied facts and code. The Skill sample is fixed; Workflow ran once after engineering checks. Its route uses one SDK Main worker to produce the page, with the initiating Main selecting the route and accepting the result.</p>
+        <p class="section-intro" data-en="Upstream 0.5.2 brings ER diagrams, real source-code components, offline mathematics and Reply/Remark feedback to the reusable Workflow. Explore the original Skill and Workflow outputs below, then see measurements and limits at the end of the page." data-zh="上游 0.5.2 的 ER 图、真实源码组件、离线数学公式和 Reply/Remark 反馈已继承到可复用的 Workflow。下方可以查看 Skill 与 Workflow 的原样产物，具体测量与局限性放在页末。">Upstream 0.5.2 brings ER diagrams, real source-code components, offline mathematics and Reply/Remark feedback to the reusable Workflow. Explore the original Skill and Workflow outputs below, then see measurements and limits at the end of the page.</p>
       </div>
-      <div class="table-wrap">
-        <table class="metrics-table">
-          <caption data-en="0.5.2 · one measured delivery per method" data-zh="0.5.2 · 每种方法各一次测量交付">0.5.2 · one measured delivery per method</caption>
-          <thead><tr>
-            <th scope="col" data-en="Method" data-zh="方法">Method</th>
-            <th scope="col" data-en="Input tokens (cached included)" data-zh="输入 token（含缓存）">Input tokens (cached included)</th>
-            <th scope="col" data-en="Cached input" data-zh="缓存输入">Cached input</th>
-            <th scope="col" data-en="Output" data-zh="输出">Output</th>
-            <th scope="col" data-en="API-equivalent USD" data-zh="API 等价美元">API-equivalent USD</th>
-            <th scope="col" data-en="Full delivery · seconds" data-zh="完整交付 · 秒">Full delivery · seconds</th>
-          </tr></thead>
-          <tbody id="latest-rows"><tr><td colspan="6" data-en="Loading measurements…" data-zh="正在读取测量数据…">Loading measurements…</td></tr></tbody>
-        </table>
-      </div>
-      <p class="delta-note" id="latest-delta" aria-live="polite"></p>
       <div class="method-grid">
         <article>
-          <h3 data-en="Where the cost goes" data-zh="成本花在哪里">Where the cost goes</h3>
-          <p id="latest-cost"></p>
-          <p data-en="The production worker uses less input than the full Skill run, but Main adds its own context and calls. The cache counts explain this sample's pricing difference; they do not by themselves prove a cache implementation regression." data-zh="制作 worker 的输入少于 Skill 全程，但还需加回 Main 自己的上下文和调用。缓存计数能够解释本样本的计价差额，不能单独证明缓存机制发生回归。">The production worker uses less input than the full Skill run, but Main adds its own context and calls. The cache counts explain this sample's pricing difference; they do not by themselves prove a cache implementation regression.</p>
+          <h3 data-en="A focused task inside a long chat" data-zh="在长聊天中，交出一个聚焦的制作任务">A focused task inside a long chat</h3>
+          <p data-en="When a long conversation reaches a page-making request, Main can pass relevant facts, requirements and assets to an isolated production worker. Its repeated production calls can omit unrelated history. Main keeps the conversation and accepts the result. Independent pages or production stages can also be scheduled in parallel when their dependencies allow it." data-zh="在很长的聊天中提出网页请求时，Main 可以把相关事实、要求与资产交给隔离的制作 worker；制作过程中的多次调用可以不携带无关历史。Main 保留会话并验收结果。多个独立网页或制作阶段，还可以按实际依赖安排并行。">When a long conversation reaches a page-making request, Main can pass relevant facts, requirements and assets to an isolated production worker. Its repeated production calls can omit unrelated history. Main keeps the conversation and accepts the result. Independent pages or production stages can also be scheduled in parallel when their dependencies allow it.</p>
         </article>
         <article>
-          <h3 data-en="Where the time goes" data-zh="时间花在哪里">Where the time goes</h3>
-          <p id="latest-time"></p>
-          <p data-en="There is only one production task here, so production cannot be parallelized across independent pages. The worker alone took longer than the entire Skill sample. The renderer itself took about 1.2 seconds; worker time also includes preparation, model responses, source reads and checks." data-zh="本次只有一个制作任务，没有独立网页之间的并行空间。worker 本身已比 Skill 全程更慢。渲染命令本身约 1.2 秒；worker 时间还包含准备、模型响应、读取源码与检查。">There is only one production task here, so production cannot be parallelized across independent pages. The worker alone took longer than the entire Skill sample. The renderer itself took about 1.2 seconds; worker time also includes preparation, model responses, source reads and checks.</p>
-        </article>
-        <article>
-          <h3 data-en="The long-chat use case was not measured" data-zh="本次未测量长聊天场景">The long-chat use case was not measured</h3>
-          <p data-en="A stronger reason for context isolation is requesting a page during an already long conversation. With a focused task brief, the production worker can omit unrelated chat history from its repeated production calls. Main still carries its own conversation. These fresh-conversation trials do not measure that benefit, and no savings percentage is claimed for it." data-zh="隔离更有价值的场景是在已经很长的聊天中提出网页请求。传入聚焦的任务材料后，制作 worker 的多次调用可以不携带无关聊天历史；Main 仍保留自己的会话上下文。本轮双方均从新会话开始，未测量这一收益，也不宣称其节省比例。">A stronger reason for context isolation is requesting a page during an already long conversation. With a focused task brief, the production worker can omit unrelated chat history from its repeated production calls. Main still carries its own conversation. These fresh-conversation trials do not measure that benefit, and no savings percentage is claimed for it.</p>
-        </article>
-        <article>
-          <h3 data-en="Functions and measurement boundary" data-zh="功能与测量边界">Functions and measurement boundary</h3>
-          <p data-en="ER cardinalities, real-code embedding and copy, offline mathematics, and Reply/Remark were checked. Both original template choices are supported: Skill uses doc, Workflow uses sheet. This is a feature check of one pair, not a blind quality score. Costs include the business Main and SDK worker; engineering maintenance and older failed/development attempts are excluded. The tested engine was CAW 1.2 with local terminal-completion fix f05f737; the engine is separate from the Workflow package." data-zh="已核验 ER 基数、真实代码嵌入与复制、离线数学公式、Reply/Remark。Skill 使用 doc，Workflow 使用 sheet，两者均为原工具支持的模板。这是一个样本对的功能检查，不是盲评质量分数。成本包含业务 Main 和 SDK worker，排除工程维护及较早的失败／开发尝试。本轮引擎为 CAW 1.2 加本地终态完成返回修复 f05f737；引擎与 Workflow 包分别维护。">ER cardinalities, real-code embedding and copy, offline mathematics, and Reply/Remark were checked. Both original template choices are supported: Skill uses doc, Workflow uses sheet. This is a feature check of one pair, not a blind quality score. Costs include the business Main and SDK worker; engineering maintenance and older failed/development attempts are excluded. The tested engine was CAW 1.2 with local terminal-completion fix f05f737; the engine is separate from the Workflow package.</p>
+          <h3 data-en="Inspect the delivered functions" data-zh="直接查看交付功能">Inspect the delivered functions</h3>
+          <p data-en="Both pages explain a Workflow Run through ER relationships, embedded real code and offline cost formulas. Source copying and Reply/Remark were checked in the browser. Skill uses the original doc template and Workflow uses sheet. Open either full page to inspect its layout and feedback controls." data-zh="两份页面都用 ER 关系、真实源码和离线成本公式讲解一次 Workflow Run，源码复制与 Reply/Remark 已在浏览器核验。Skill 使用原有 doc 模板，Workflow 使用 sheet；打开完整页面可查看布局并使用反馈控件。">Both pages explain a Workflow Run through ER relationships, embedded real code and offline cost formulas. Source copying and Reply/Remark were checked in the browser. Skill uses the original doc template and Workflow uses sheet. Open either full page to inspect its layout and feedback controls.</p>
         </article>
       </div>
       <div class="preview-grid">
@@ -97,7 +73,7 @@
           <iframe src="../examples/html/run-052-workflow.html" title="Workflow 0.5.2 Run explainer" sandbox="allow-scripts" loading="lazy"></iframe>
         </article>
       </div>
-      <p class="sample-note" data-en="Original delivered HTML files are copied unchanged. The following batch, single-topic and video records are older experiments; their results are not attributed to this updated 0.5.2 package." data-zh="交付 HTML 按原样复制。下方批量、单主题与视频数据属于历史实验，不将其结果归属于当前更新后的 0.5.2 包。">Original delivered HTML files are copied unchanged. The following batch, single-topic and video records are older experiments; their results are not attributed to this updated 0.5.2 package.</p>
+      <p class="sample-note"><a href="#limitations" data-en="See the single-page measurements and limitations ↓" data-zh="查看页末的单页测量与局限性 ↓">See the single-page measurements and limitations ↓</a></p>
     </section>
 
     <section class="section batch-section" id="batch" aria-labelledby="batch-title">
@@ -290,6 +266,48 @@
         <a href="https://github.com/TohmaN233/workflow-package" target="_blank" rel="noopener" data-en="Experiment source repository ↗" data-zh="实验源代码仓库 ↗">Experiment source repository ↗</a>
         <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener" data-en="Original Skill ↗" data-zh="原始 Skill ↗">Original Skill ↗</a>
       </div>
+    </section>
+    <section class="section method-section" id="limitations" aria-labelledby="limitations-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span class="section-number">05</span><span data-en="Scope and measured overhead" data-zh="适用场景与实测开销">Scope and measured overhead</span></p>
+          <h2 id="limitations-title" data-en="Where the benefits depend on the task." data-zh="适用范围与局限性。">Where the benefits depend on the task.</h2>
+        </div>
+        <p class="section-intro" data-en="Workflow is not guaranteed to cost less or finish faster in every run. Cache-hit variation and stochastic LLM behavior can affect cost and time. Finer node splits and more serial handoffs also accumulate startup, binding and coordination overhead. Split work by meaningful responsibilities and dependencies, and parallelize genuinely independent work." data-zh="Workflow 不保证每次都更省或更快。缓存命中差异、LLM 输出的随机性可能影响成本与耗时；节点拆得越细、串行交接越多，启动、绑定与协调等固定开销也越容易累积。节点应按实际职责与依赖划分，并行用于真正独立的工作。">Workflow is not guaranteed to cost less or finish faster in every run. Cache-hit variation and stochastic LLM behavior can affect cost and time. Finer node splits and more serial handoffs also accumulate startup, binding and coordination overhead. Split work by meaningful responsibilities and dependencies, and parallelize genuinely independent work.</p>
+      </div>
+      <p class="sample-note" data-en="The 0.5.2 example is one page produced in separate fresh gpt-6.1-sol/high conversations with identical supplied facts and code. Skill is a fixed sample; Workflow ran once after engineering checks, using one SDK production worker plus Main routing and acceptance. This pair measures single-page overhead, not the isolation benefit of a long prior conversation." data-zh="0.5.2 示例是在独立的新会话中制作一页，双方均为 gpt-6.1-sol/high，事实与源码输入相同。Skill 为固定样本；Workflow 在工程预检后运行一次，由一个 SDK worker 制作，Main 选择路线并验收。这对样本测量单页基础开销，没有测量长聊天历史中的隔离收益。">The 0.5.2 example is one page produced in separate fresh gpt-6.1-sol/high conversations with identical supplied facts and code. Skill is a fixed sample; Workflow ran once after engineering checks, using one SDK production worker plus Main routing and acceptance. This pair measures single-page overhead, not the isolation benefit of a long prior conversation.</p>
+      <div class="table-wrap">
+        <table class="metrics-table">
+          <caption data-en="0.5.2 · one measured delivery per method" data-zh="0.5.2 · 每种方法各一次测量交付">0.5.2 · one measured delivery per method</caption>
+          <thead><tr>
+            <th scope="col" data-en="Method" data-zh="方法">Method</th>
+            <th scope="col" data-en="Input tokens (cached included)" data-zh="输入 token（含缓存）">Input tokens (cached included)</th>
+            <th scope="col" data-en="Cached input" data-zh="缓存输入">Cached input</th>
+            <th scope="col" data-en="Output" data-zh="输出">Output</th>
+            <th scope="col" data-en="API-equivalent USD" data-zh="API 等价美元">API-equivalent USD</th>
+            <th scope="col" data-en="Full delivery · seconds" data-zh="完整交付 · 秒">Full delivery · seconds</th>
+          </tr></thead>
+          <tbody id="latest-rows"><tr><td colspan="6" data-en="Loading measurements…" data-zh="正在读取测量数据…">Loading measurements…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="delta-note" id="latest-delta" aria-live="polite"></p>
+      <div class="method-grid">
+        <article>
+          <h3 data-en="Where the cost goes" data-zh="成本花在哪里">Where the cost goes</h3>
+          <p id="latest-cost"></p>
+          <p data-en="The production worker uses less input than the full Skill run, but Main adds its own context and calls. The cache counts explain this sample's pricing difference; they do not by themselves prove a cache implementation regression." data-zh="制作 worker 的输入少于 Skill 全程，但还需加回 Main 自己的上下文和调用。缓存计数能够解释本样本的计价差额，不能单独证明缓存机制发生回归。">The production worker uses less input than the full Skill run, but Main adds its own context and calls. The cache counts explain this sample's pricing difference; they do not by themselves prove a cache implementation regression.</p>
+        </article>
+        <article>
+          <h3 data-en="Where the time goes" data-zh="时间花在哪里">Where the time goes</h3>
+          <p id="latest-time"></p>
+          <p data-en="There is only one production task here, so production cannot be parallelized across independent pages. The worker alone took longer than the entire Skill sample. The renderer itself took about 1.2 seconds; worker time also includes preparation, model responses, source reads and checks." data-zh="本次只有一个制作任务，没有独立网页之间的并行空间。worker 本身已比 Skill 全程更慢。渲染命令本身约 1.2 秒；worker 时间还包含准备、模型响应、读取源码与检查。">There is only one production task here, so production cannot be parallelized across independent pages. The worker alone took longer than the entire Skill sample. The renderer itself took about 1.2 seconds; worker time also includes preparation, model responses, source reads and checks.</p>
+        </article>
+        <article>
+          <h3 data-en="Functions and measurement boundary" data-zh="功能与测量边界">Functions and measurement boundary</h3>
+          <p data-en="ER cardinalities, real-code embedding and copy, offline mathematics, and Reply/Remark were checked. Both original template choices are supported: Skill uses doc, Workflow uses sheet. This is a feature check of one pair, not a blind quality score. Costs include the business Main and SDK worker; engineering maintenance and older failed/development attempts are excluded. The tested engine was CAW 1.2 with local terminal-completion fix f05f737; the engine is separate from the Workflow package." data-zh="已核验 ER 基数、真实代码嵌入与复制、离线数学公式、Reply/Remark。Skill 使用 doc，Workflow 使用 sheet，两者均为原工具支持的模板。这是一个样本对的功能检查，不是盲评质量分数。成本包含业务 Main 和 SDK worker，排除工程维护及较早的失败／开发尝试。本轮引擎为 CAW 1.2 加本地终态完成返回修复 f05f737；引擎与 Workflow 包分别维护。">ER cardinalities, real-code embedding and copy, offline mathematics, and Reply/Remark were checked. Both original template choices are supported: Skill uses doc, Workflow uses sheet. This is a feature check of one pair, not a blind quality score. Costs include the business Main and SDK worker; engineering maintenance and older failed/development attempts are excluded. The tested engine was CAW 1.2 with local terminal-completion fix f05f737; the engine is separate from the Workflow package.</p>
+        </article>
+      </div>
+      <p class="section-intro" data-en="The stronger use case is a page request embedded in a long conversation, where focused production calls can avoid repeatedly carrying unrelated history, or a larger task with independent stages that can overlap. Net gains still depend on the workflow, caching and coordination. Those long-chat gains were not measured by this fresh-conversation pair. The older batch and video results above remain separate historical evidence." data-zh="不过，更值得发挥隔离价值的场景，是在长聊天中提出网页请求，让制作调用避免反复携带无关历史；更复杂任务中真正独立的阶段，也有并行缩短等待的空间。实际净收益仍取决于工作流、缓存与交接安排。这轮新会话对照没有测量长聊天收益；上方批量与视频数据仍是分别标注的历史证据。">The stronger use case is a page request embedded in a long conversation, where focused production calls can avoid repeatedly carrying unrelated history, or a larger task with independent stages that can overlap. Net gains still depend on the workflow, caching and coordination. Those long-chat gains were not measured by this fresh-conversation pair. The older batch and video results above remain separate historical evidence.</p>
     </section>
   </main>
   <footer class="site-footer">

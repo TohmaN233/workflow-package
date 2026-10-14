@@ -112,7 +112,7 @@ function appendMetricCells(row, record) {
   const usage = record.usage;
   row.append(
     makeCell(formatTokens(usage.input_tokens)),
-    makeCell(formatTokens(usage.cached_input_tokens)),
+    makeCell(formatTokens(usage.cached_input_tokens) + (Number.isFinite(usage.cache_hit_percent) ? " · " + usage.cache_hit_percent.toFixed(2) + "%" : "")),
     makeCell(formatTokens(usage.output_tokens)),
     makeCell(formatUsd(record.cost_usd)),
     makeCell(formatSeconds(record.wall_ms))
@@ -311,23 +311,20 @@ function renderVideo() {
 }
 
 function renderPricing() {
-  const html = state.data.three_html_one_conversation.pricing_usd_per_million;
+  const batch = state.data.three_html_one_conversation.pricing_usd_per_million;
   const video = state.data.video.pricing_usd_per_million;
   const fresh = state.data.single_html.pricing_usd_per_million;
   const reasoningIncluded = state.data.single_html.pricing_usd_per_million.reasoning_already_in_output;
-  const htmlPricesEn = "$" + html.input + " fresh input / $" + html.cached_input + " cached input / $" + html.output + " output";
-  const htmlPricesZh = "未缓存输入 $" + html.input + " / 缓存输入 $" + html.cached_input + " / 输出 $" + html.output;
+  const batchPricesEn = "$" + batch.input + " fresh input / $" + batch.cached_input + " cached input / $" + batch.output + " output";
+  const batchPricesZh = "未缓存输入 $" + batch.input + " / 缓存输入 $" + batch.cached_input + " / 输出 $" + batch.output;
+  const htmlPricesEn = "$" + fresh.fresh_input_per_million + " fresh input / $" + fresh.cached_input_per_million + " cached input / $" + fresh.output_per_million + " output";
+  const htmlPricesZh = "未缓存输入 $" + fresh.fresh_input_per_million + " / 缓存输入 $" + fresh.cached_input_per_million + " / 输出 $" + fresh.output_per_million;
   const videoPricesEn = "$" + video.input + " fresh input / $" + video.cached_input + " cached input / $" + video.output + " output";
   const videoPricesZh = "未缓存输入 $" + video.input + " / 缓存输入 $" + video.cached_input + " / 输出 $" + video.output;
-  if (fresh.fresh_input_per_million !== html.input ||
-      fresh.cached_input_per_million !== html.cached_input ||
-      fresh.output_per_million !== html.output) {
-    throw new Error("HTML pricing fields disagree between experiment records");
-  }
   setText(
     document.getElementById("pricing-note"),
-    "HTML: " + htmlPricesEn + ". Video and text: " + videoPricesEn + ". Reasoning tokens are " + (reasoningIncluded ? "included" : "not included") + " in output.",
-    "HTML：" + htmlPricesZh + "。视频与文本：" + videoPricesZh + "。推理 token " + (reasoningIncluded ? "已计入" : "未计入") + "输出。"
+    "Luna batch: " + batchPricesEn + ". Historical Sol single-page HTML: " + htmlPricesEn + ". Video and text: " + videoPricesEn + ". Reasoning tokens are " + (reasoningIncluded ? "included" : "not included") + " in output.",
+    "Luna 三页批量：" + batchPricesZh + "。历史 Sol 单页 HTML：" + htmlPricesZh + "。视频与文本：" + videoPricesZh + "。推理 token " + (reasoningIncluded ? "已计入" : "未计入") + "输出。"
   );
 }
 

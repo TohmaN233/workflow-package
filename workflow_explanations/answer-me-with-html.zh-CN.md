@@ -14,11 +14,11 @@ HTML 写作节点用已有材料和知识完成一般概念讲解。只有用户
 
 请求示例：用 HTML 图解 TCP；一次制作三个独立讲解网页；用已有稿件和英文配音制作视频；仅重写稿件。可查看[六个 HTML 成品](examples/html/index.html)和[带双语字幕的视频 A/B](examples/video/comparison.html)。
 
-包内含 41 个节点、130 个运行资源，以及上游原样打包的 [CLI 0.5.2](https://github.com/QingYunA/answer-me-with-html/tree/v0.5.2)。新增 ER 图、结构变更标记、决策与 Reply/Remark 反馈、真实代码和图片引用、离线数学公式、自动／paper／用户主题、多语言与 RTL 页面，以及 WebM 导出。成功页面重试时会替换上一份产物。原安装方式更新路线增加了 DSH。
+包内含 **41 个节点、140 个运行资源**，以及上游原样打包的 [CLI 0.5.3](https://github.com/QingYunA/answer-me-with-html/tree/v0.5.3)。保留 ER 图、结构变更、决策与 Reply/Remark 反馈、源码与图片、离线公式、自动／paper／用户主题、多语言与 RTL、WebM 导出、成功重试替换和 DSH 更新。0.5.3 增加主题目录的安装／列表／更新／移除、comic／manga／pop 主题支持、图示样式参数、内置漫画字体、Reply 控件改进和 `close_after_reply`。Main worker 节点与路线保持不变；现有配置 Host 调用原主题 CLI，并保留覆盖自定义主题需要用户同意的条件。
 
 上游元描述鼓励的使用范围比正文决策节更宽。本次保留正文的具体路由规则，以及视频必须明确请求的条件。服务器仍由用户启动；只有接收端实际提供 DSH present 工具时，才调用它呈现产物。
 
-安装包 **1.1.1** 导出 0.5.2 单页试验实际使用的修订，业务节点和全部运行资源与 1.1.0 保持一致。新增[实测与并排产物](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)：输入减少 5.57%，成本增加 21.92%，耗时增加 39.47%。本路线只有一个制作 worker。隔离更有价值的长聊天场景未在本轮测量，Main 仍携带自己的会话。旧 0.4.7 网页与视频数据保留为历史证据，不代表当前包的性能；0.5.2 也经过真实无语音 MP4／WebM 导出检查，没有购买新配音。
+安装包 **1.1.2** 分发上游 0.5.3，配套 CAW **1.2.2**。十项实际原 CLI／Host 配置检查通过；上游配置／主题／Reply 测试为 46 项通过、9 项依赖浏览器而跳过。此次更新没有调用模型或付费配音。已有[单页实验](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#latest?lang=zh-CN)和新增的 [Luna/max 三页对照](https://tohman233.github.io/workflow-package/workflow_explanations/gallery/#batch?lang=zh-CN)保留原来的 0.5.2 渲染器与实测产物；三页样本输入减少 44.92%、耗时减少 22.48%，Standard API 等价成本增加 25.88%。历史样本不冒充 0.5.3 性能，实际测试版本与当前分发包分别记录。
 
 ## 适用范围与局限性
 

@@ -66,12 +66,18 @@ if(metrics.html_052_single){
  assert(Math.abs(latest.workflow_components.reduce((n,r)=>n+r.cost_usd,0)-latest.workflow.cost_usd)<1e-9,'0.5.2 full business cost');
  assert.equal(latest.workflow_phases.reduce((n,r)=>n+r.wall_ms,0),latest.workflow.wall_ms,'0.5.2 full business time');
  const current=catalogue.packages.find(p=>p.id==='answer-me-with-html-evidence');
- assert.equal(current.workflow_revision_hash,latest.tested_workflow_revision,'Gallery describes the distributed tested Workflow revision');
+ assert.equal(metrics.measured_package.workflow_revision_hash,latest.tested_workflow_revision,'Historical measurements retain their actual tested revision');
+ assert.equal(metrics.distributed_package.workflow_revision_hash,current.workflow_revision_hash,'Current distribution is identified separately from historical measurements');
+ assert.equal(metrics.distributed_package.source_release,current.source_release);
+ assert.equal(metrics.measured_package.source_release,'v0.5.2');
 }
 if(metrics.single_html)for(const arm of [...Object.values(metrics.single_html.baseline),...metrics.single_html.workflow_samples])
  assert(Math.abs(cost(arm,metrics.single_html.pricing_usd_per_million)-arm.cost_usd)<1e-9,'Single-page HTML cost');
 for(const arm of [metrics.three_html_one_conversation.skill,metrics.three_html_one_conversation.workflow])
  assert(Math.abs(cost(arm,metrics.three_html_one_conversation.pricing_usd_per_million)-arm.cost_usd)<1e-9,'Batch HTML cost');
+for(const artifact of metrics.three_html_one_conversation.artifacts??[]){
+ const bytes=await readFile(resolve(root,'workflow_explanations/experiments',artifact.path));assert.equal(hash(bytes),artifact.sha256,'Paired HTML must remain byte-identical to measured output');
+}
 for(const stage of ['reuse','text'])for(const side of ['skill','workflow']){
  const arm=metrics.video[stage][side];
  assert(Math.abs(cost(arm,metrics.video.pricing_usd_per_million)-arm.cost_usd)<1e-9,'Video/text cost');

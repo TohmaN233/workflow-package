@@ -3,29 +3,153 @@
   "schema_version": 1,
   "cost_basis": "API-equivalent USD, including Main and all workers; not the subscription bill.",
   "three_html_one_conversation": {
+    "case_id": "three_html_luna_052_20261014",
+    "model": "gpt-6-luna",
+    "reasoning_effort": "max",
+    "renderer_version": "0.5.2",
+    "tested_on": "2026-10-14",
     "pricing_usd_per_million": {
-      "input": 2,
-      "cached_input": 0.1,
-      "output": 10
+      "input": 0.1,
+      "cached_input": 0.01,
+      "cache_write": 0.125,
+      "output": 0.5,
+      "model": "gpt-6-luna",
+      "processing": "Standard",
+      "context": "short, per request <=272K",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+      "verified_on": "2026-10-14",
+      "reasoning_already_in_output": true
     },
     "skill": {
-      "cost_usd": 0.193252,
-      "wall_ms": 158577,
+      "cost_usd": 0.01616756,
+      "wall_ms": 185155,
       "usage": {
-        "input_tokens": 434835,
-        "cached_input_tokens": 389120,
-        "output_tokens": 6291
+        "input_tokens": 555547,
+        "cached_input_tokens": 516096,
+        "output_tokens": 14123,
+        "reasoning_output_tokens": 8387,
+        "cache_write_input_tokens": 0,
+        "cache_hit_percent": 92.89871064014386,
+        "uncached_input_tokens": 39451
       }
     },
     "workflow": {
-      "cost_usd": 0.1648984,
-      "wall_ms": 144049,
+      "cost_usd": 0.02035156,
+      "wall_ms": 143531,
       "usage": {
-        "input_tokens": 208283,
-        "cached_input_tokens": 162304,
-        "output_tokens": 5671
+        "input_tokens": 305998,
+        "cached_input_tokens": 225536,
+        "output_tokens": 20100,
+        "cache_write_input_tokens": 0,
+        "cache_hit_percent": 73.7050568957967,
+        "uncached_input_tokens": 80462
       }
-    }
+    },
+    "workflow_components": [
+      {
+        "name": "initiating_main",
+        "cost_usd": 0.00704062,
+        "usage": {
+          "input_tokens": 158442,
+          "cached_input_tokens": 115712,
+          "output_tokens": 3221,
+          "cache_write_input_tokens": 0,
+          "cache_hit_percent": 73.03114073288648
+        }
+      },
+      {
+        "name": "shared_prefix",
+        "cost_usd": 0.0016027,
+        "usage": {
+          "input_tokens": 15802,
+          "cached_input_tokens": 0,
+          "output_tokens": 45,
+          "cache_write_input_tokens": 0,
+          "cache_hit_percent": 0
+        }
+      },
+      {
+        "name": "page_worker",
+        "cost_usd": 0.0029086800000000003,
+        "usage": {
+          "input_tokens": 35664,
+          "cached_input_tokens": 30208,
+          "output_tokens": 4122,
+          "cache_write_input_tokens": 0,
+          "cache_hit_percent": 84.70165993719156
+        }
+      },
+      {
+        "name": "page_worker",
+        "cost_usd": 0.0034306199999999997,
+        "usage": {
+          "input_tokens": 35570,
+          "cached_input_tokens": 31232,
+          "output_tokens": 5369,
+          "cache_write_input_tokens": 0,
+          "cache_hit_percent": 87.80432949114422
+        }
+      },
+      {
+        "name": "page_worker",
+        "cost_usd": 0.005368940000000001,
+        "usage": {
+          "input_tokens": 60520,
+          "cached_input_tokens": 48384,
+          "output_tokens": 7343,
+          "cache_write_input_tokens": 0,
+          "cache_hit_percent": 79.94712491738268
+        }
+      }
+    ],
+    "cost_difference_usd": 0.004184,
+    "cost_difference_percent": 25.87898235726356,
+    "scope": "Each arm is a fresh independent Luna/max conversation completing the identical three-page request. Workflow includes initiating Main, one shared-prefix preparation and every worker/correction. Skill reads the original uninstalled v0.5.2 Skill. The locally tested CAW 1.2 repair removes the duplicate SDK whole-workspace freshness gate. This is one successful pair, not a blind quality score or a subscription bill.",
+    "cache_scope": "Cached tokens still count as input. Input and time decrease here, while lower cache reuse and higher output increase Standard API-equivalent cost. No claimed cost win.",
+    "artifacts": [
+      {
+        "topic": "tcp",
+        "arm": "skill",
+        "path": "../examples/html/tcp-skill.html",
+        "sha256": "190e07bef49c3ab7e72b98e672c327ce379c49fb7df55ca23687be48da00014c",
+        "bytes": 104907
+      },
+      {
+        "topic": "tcp",
+        "arm": "workflow",
+        "path": "../examples/html/tcp-workflow.html",
+        "sha256": "acb10300c969707cc9e6b6ce9a543a3bb401a461fcb14b8cd757bd8727d3d23f",
+        "bytes": 105591
+      },
+      {
+        "topic": "cache",
+        "arm": "skill",
+        "path": "../examples/html/cache-skill.html",
+        "sha256": "4249d7d09f0a31201dda3fb71cdcd64b9ff5b39f676848e4815384db0ea64d60",
+        "bytes": 109309
+      },
+      {
+        "topic": "cache",
+        "arm": "workflow",
+        "path": "../examples/html/cache-workflow.html",
+        "sha256": "b60a24c5429f8c792679e5513a2c5eb9a938914a4f3adde1561d6c26897acd17",
+        "bytes": 104214
+      },
+      {
+        "topic": "git",
+        "arm": "skill",
+        "path": "../examples/html/git-skill.html",
+        "sha256": "a5314ed96a2ae0c4dd7f48762681a700b4c3fc0865ad58fc507b9b4be3ae2c23",
+        "bytes": 115077
+      },
+      {
+        "topic": "git",
+        "arm": "workflow",
+        "path": "../examples/html/git-workflow.html",
+        "sha256": "12c281952414bed372bcedc4ca8bdcf417b4148a3233464bbd1d9a1aa0f660eb",
+        "bytes": 112168
+      }
+    ]
   },
   "video": {
     "pricing_usd_per_million": {
@@ -314,5 +438,24 @@
     "quality_scope": "Requested functions checked in both products; not a blind quality score or universal equivalence claim. Original doc/sheet template choices differ.",
     "measurement_scope": "Full business Main plus SDK worker; reasoning counted once within output; reported cache-write input is zero. Engineering maintenance and earlier failed/development attempts excluded, not presented as end-to-end optimization cost.",
     "long_chat_scope": "Not measured. With a relevant task brief, an isolated production worker can omit unrelated history from a long initiating conversation. Main still carries its own conversation; net savings depend on task, handoffs and caching."
+  },
+  "measured_package": {
+    "package_version": "1.1.1",
+    "workflow_revision_hash": "ea82d2ad44494c7f750d06a451d6eaa1a47d82fd136a78419c3c20c6b46c5efe",
+    "source_release": "v0.5.2",
+    "source_commit": "4da5ae89ac435683110aa1b8707d9d4170184c55",
+    "package_sha256": "07eb21ae3db070ae59e9aeb001d40c6322da1a9aca98dd65d01be0fc5a8bd054",
+    "file_sha256": "bd8331896a58f3929ba10d8eac62a6fa5c6a49c6081493599e56be959c432d78",
+    "url": "https://github.com/TohmaN233/workflow-package/blob/727cea7fc22419bc455ed8cff38c0182323dea11/codex/answer-me-with-html/answer-me-with-html.workflow-package.json"
+  },
+  "distributed_package": {
+    "package_version": "1.1.2",
+    "workflow_revision_hash": "a17809c331a51c0393f64155683e59e405d366b8317db3f8e918015ae8a8da47",
+    "source_release": "v0.5.3",
+    "source_commit": "83bfc9383105e304d90b5f93db848996d5420d84",
+    "engine_version": "1.2.2",
+    "node_count": 41,
+    "resource_count": 140,
+    "qualification": "Original v0.5.3 CLI and Host settings adapter tested without model or voice calls. Historical cost/time/HTML samples remain original v0.5.2; no v0.5.3 benchmark claim."
   }
 }

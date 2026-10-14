@@ -34,11 +34,11 @@ try {
   assert.deepEqual(original,before,'Preparation mutated the original request');
   for(const [index,page] of prepared.pages.entries()){
     assert.deepEqual(page.original_page,pages[index],'Original page requirements must survive normalization without overwrites');
-    assert.equal(page.task.request,pages[index].request);
+    assert(!JSON.stringify(page).includes('fact A'),'Common source material was duplicated in an item instead of remaining in the shared prefix');
     assert(!JSON.stringify(page).includes(index===0?'PAGE-B-ONLY':'PAGE-A-ONLY'),'Sibling task leaked into an isolated item');
   }
-  assert.equal(prepared.pages[0].task.settings.theme,'blueprint');
-  assert.equal(prepared.pages[1].task.settings.theme,'paper');
+  assert.equal(prepared.manifest.pages[0].task.settings.theme,'blueprint');
+  assert.equal(prepared.manifest.pages[1].task.settings.theme,'paper');
   const workflow=bundle.snapshot.workflow;
   const writer=workflow.nodes.find(node=>node.id==='batch_pages');
   assert.equal(writer.input_bindings.common_task,'/nodes/batch_prepare/output/common_task');

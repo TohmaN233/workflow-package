@@ -456,7 +456,7 @@
   },
   "distributed_package": {
     "package_version": "1.1.4",
-    "workflow_revision_hash": "aa0debd66a17422f0355e68b78bdc2a6fd7691a4268c45c5b0d8a467841595d2",
+    "workflow_revision_hash": "5eba0e5b0d56855e57eb06df7abb0d7b1f1808527c31b92e47882f9c78fc5c9c",
     "source_release": "v0.5.3",
     "source_commit": "83bfc9383105e304d90b5f93db848996d5420d84",
     "engine_version": "1.2.2",

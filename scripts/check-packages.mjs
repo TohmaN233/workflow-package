@@ -11,14 +11,17 @@ const canonical=value=>Array.isArray(value)?'['+value.map(canonical).join(',')+'
  :JSON.stringify(value);
 const json=async path=>JSON.parse(await readFile(path,'utf8'));
 const catalogue=await json(resolve(root,'codex/catalog.json'));
-const engineIndex=process.argv.indexOf('--engine');
-let validate;
-if(engineIndex!==-1){
- assert(process.argv[engineIndex+1],'--engine requires a source repository path');
- ({validateWorkflowPackage:validate}=await import(pathToFileURL(resolve(process.argv[engineIndex+1],
-  'plugins/codex-agents-workflow/control-plane/lib/workflow-package.mjs')).href));
+const piCatalogue=await json(resolve(root,'pi/catalog.json'));
+const validators={};
+for(const [platform,flag,module] of [['codex','--engine','plugins/codex-agents-workflow/control-plane/lib/workflow-package.mjs'],['pi','--pi-engine','core/workflow-package.mjs']]){
+ const index=process.argv.indexOf(flag);
+ if(index!==-1){
+  assert(process.argv[index+1],flag+' requires a source repository path');
+  ({validateWorkflowPackage:validators[platform]}=await import(pathToFileURL(resolve(process.argv[index+1],module)).href));
+ }
 }
-for(const item of catalogue.packages){
+for(const [platform,catalog] of [['codex',catalogue],['pi',piCatalogue]])for(const item of catalog.packages){
+ const validate=validators[platform];
  const file=resolve(root,item.path),raw=await readFile(file),bundle=JSON.parse(raw);
  assert.equal(hash(raw),item.file_sha256,`${item.name}: file digest`);
  const {package_sha256,...payload}=bundle;
@@ -27,7 +30,9 @@ for(const item of catalogue.packages){
  const {revision_hash,...snapshot}=payload.snapshot;
  assert.equal(hash(canonical(snapshot)),revision_hash,`${item.name}: revision digest`);
  assert.equal(revision_hash,item.workflow_revision_hash);
- assert.equal(payload.format,'codex.workflow.package');
+ assert.equal(item.platform,platform);
+ assert.equal(payload.format,platform==='pi'?'pi-caw.workflow.package':'codex.workflow.package');
+ assert.equal(payload.compatibility.plugin,platform==='pi'?'pi-CAW':'codex-agents-workflow');
  assert.equal(payload.package.id,item.id);
  assert.equal(payload.package.version,item.package_version);
  assert.deepEqual(payload.dependencies,item.dependencies);
@@ -37,6 +42,7 @@ for(const item of catalogue.packages){
   assert(!paths.has(object.path),'Duplicate resource');paths.add(object.path);
   assert(!isAbsolute(object.path)&&!object.path.split(/[\\/]/).includes('..'),'Portable resource path');
   assert(!object.path.toLowerCase().startsWith('source/'),'Private authoring source');
+  assert(!/(?:^|[/\\])agents?\.md$/i.test(object.path),'Private maintainer instructions');
   const bytes=Buffer.from(object.content_base64,'base64');
   assert.equal(bytes.length,object.bytes);assert.equal(hash(bytes),object.sha256);
   assert(!/(?:G:[/\\]Baiduyun|C:[/\\]Users[/\\]tgy23|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,}|sk-proj-[A-Za-z0-9_-]{30,})/.test(bytes.toString()),'Private path or credential');
@@ -49,7 +55,7 @@ for(const item of catalogue.packages){
  assert.equal(ids.size,nodes.length);assert.equal(nodes.length,item.node_count);
  for(const edge of payload.snapshot.workflow.edges)assert(ids.has(edge.source)&&ids.has(edge.target),'Unknown edge endpoint');
  if(validate)validate(bundle);
- console.log(`PASS ${item.name}: ${nodes.length} nodes, ${paths.size} resources${validate?', official engine validator':''}`);
+ console.log(`PASS ${platform}/${item.name}: ${nodes.length} nodes, ${paths.size} resources${validate?', official engine validator':''}`);
 }
 
 function cost(arm,pricing){

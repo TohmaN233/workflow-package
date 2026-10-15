@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="Answer me with HTML 0.5.2">
-<title>Redis与Memcached缓存选型</title>
+<meta name="generator" content="Answer me with HTML 0.5.3">
+<title>Redis 与 Memcached 怎么选</title>
 <style>
 html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -369,6 +369,37 @@ code, pre, kbd { font-family: var(--font-mono); }
 .am-reply textarea { font-family: var(--font-mono); font-size: 12.5px; }
 .am-reply-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .am-reply .am-btn:disabled { opacity: .5; cursor: default; }
+/* The sheet shows the reply drawn (src/runtime/reply-view.js), each line in its own direction; the Markdown that Copy copies sits under a fold. */
+.am-reply-view {
+  max-height: min(60vh, 26em); overflow: auto; padding: 10px 12px; font: 14px/1.6 var(--font-sans); color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--radius); overflow-wrap: anywhere;
+}
+.am-reply-view:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.am-reply-view > div { text-align: start; unicode-bidi: isolate; }
+.am-rv-gap { height: .5em; }
+.am-rv-h1 { font-weight: 700; font-size: 15px; }
+.am-rv-h2 { font-weight: 700; color: var(--ink-2); margin-top: 2px; }
+.am-rv-tag {
+  display: inline-block; min-width: 1.6em; padding: 0 4px; font-size: 12px; line-height: 1.5; text-align: center;
+  color: var(--ink-2); border: 1px solid var(--line-2); border-radius: var(--radius);
+}
+.am-rv-a { padding-inline-start: 1.6em; }
+.am-rv-a em { color: var(--ink-2); }
+.am-rv-quote { margin-inline-start: 1em; padding-inline-start: 10px; border-inline-start: 3px solid var(--line-2); color: var(--ink-2); white-space: pre-wrap; }
+.am-reply-raw summary { margin-top: 10px; margin-bottom: 6px; font-size: 12px; color: var(--ink-2); cursor: pointer; }
+/* The bar at the bottom of the page: counts and one-click copy, so the reader need not go to the Reply button at the top. */
+.am-reply-bar {
+  position: fixed; inset-block-end: 16px; inset-inline: 0; margin-inline: auto; width: max-content; max-width: calc(100vw - 24px);
+  z-index: 10; display: flex; align-items: center; gap: 10px; padding-block: 8px; padding-inline: 14px 8px; font-size: 13px;
+  color: var(--ink); background: var(--paper); border: 1px solid var(--line-2); border-radius: var(--radius); box-shadow: 0 6px 24px rgba(0,0,0,.18);
+}
+.am-reply-bar[hidden] { display: none; }
+.am-reply-bar-count { color: var(--ink-2); }
+.am-reply-bar .am-btn { flex: none; white-space: nowrap; }
+body.am-has-reply-bar { padding-block-end: 72px; }
+@media (max-width: 480px) {
+  .am-reply-bar { inset-inline: 12px; width: auto; justify-content: space-between; }
+}
 /* Code block: a header (title or path:lines, language, copy), then one span per line; numbered blocks show the line number in a gutter */
 .am-codeblock { margin: 10px 0; min-width: 0; }
 .am-codeblock .am-code { border-top-left-radius: 0; border-top-right-radius: 0; padding: 10px 0; }
@@ -432,7 +463,7 @@ code, pre, kbd { font-family: var(--font-mono); }
   position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;
   border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);
 }
-.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }
+.am-tl-item--hi .am-tl-dot { background: var(--hi-stroke, var(--accent)); border-color: var(--hi-stroke, var(--accent)); }
 .am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }
 .am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }
 .am-timeline--v li { position: relative; padding: 0 0 14px; padding-inline-start: 22px; }
@@ -505,11 +536,16 @@ code, pre, kbd { font-family: var(--font-mono); }
 .am-tree-root--solo { padding-bottom: 12px; }
 .am-tree-root--solo::after { display: none; }
 .am-tree-box {
-  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;
-  border-radius: var(--radius); font-weight: 600;
+  border: var(--node-width, var(--bw)) solid var(--node-stroke, var(--line)); background: var(--node-fill, var(--paper)); padding: 6px 14px; text-align: center;
+  border-radius: var(--node-radius, var(--radius)); font-weight: 600; color: var(--node-text, inherit); filter: var(--node-shadow, none);
 }
 .am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }
-.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }
+/* The root box and a highlighted box are emphasis: they take the highlight tokens. With none set the root box keeps its accent tint and a highlighted box looks like any other. */
+.am-tree-box--root, .am-tree-box--hi { border-color: var(--hi-stroke, var(--node-stroke, var(--line))); color: var(--hi-text, var(--node-text, inherit)); }
+.am-tree-box--root { background: var(--hi-fill, var(--accent-bg)); }
+.am-tree-box--hi { background: var(--hi-fill, var(--node-fill, var(--paper))); }
+.am-tree-box--root small, .am-tree-box--hi small { color: var(--hi-text, var(--ink-2)); }
+.am-tree-box--root { font-size: 15px; padding: 8px 28px; }
 .am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }
 .am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }
 .am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }
@@ -533,19 +569,32 @@ code, pre, kbd { font-family: var(--font-mono); }
 /* Embedded previews can lose html[data-theme]; the fallbacks keep diagrams readable, and defined theme variables still win. */
 .am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans, sans-serif); }
 .am-diagram text { fill: var(--ink, #16181d); font-size: 13px; }
-.am-node-shape { fill: var(--paper, #ffffff); stroke: var(--line, #1d2026); stroke-width: var(--bw, 1.5px); }
-.am-node--hi .am-node-shape { fill: var(--accent-bg, #e4ecf8); stroke: var(--accent, #1d5fbf); }
-.am-node--hi text { fill: var(--accent, #1d5fbf); font-weight: 600; }
-.am-edge { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 1.3; }
+/* Diagram tokens (docs/reference.md, "Diagram tokens"): each painted part reads an optional token and falls back to the look it always had,
+   so a theme that sets none of them draws the same diagram. Font family, size and weight are not tokens: diagram text is measured for the sans font. */
+.am-node-shape { fill: var(--node-fill, var(--paper, #ffffff)); stroke: var(--node-stroke, var(--line, #1d2026)); stroke-width: var(--node-width, var(--bw, 1.5px)); filter: var(--node-shadow, none); }
+/* A cylinder is two shapes (body, then cap): only the body casts the shadow. */
+.am-node-shape ~ .am-node-shape { filter: none; }
+/* The corner radius is an SVG attribute (the fallback for Safari before 17.4, which ignores a CSS rx); the default here equals the attribute. A pill and a diamond keep their shape. */
+.am-node--rect .am-node-shape, .am-node--er .am-node-shape { rx: var(--node-radius, 3px); }
+.am-node--hi .am-node-shape { fill: var(--hi-fill, var(--accent-bg, #e4ecf8)); stroke: var(--hi-stroke, var(--accent, #1d5fbf)); }
+.am-diagram .am-node-text { fill: var(--node-text, var(--ink, #16181d)); }
+.am-node--hi text { fill: var(--hi-text, var(--accent, #1d5fbf)); font-weight: 600; }
+.am-diagram .am-node--hi .am-node-text { fill: var(--hi-text, var(--accent, #1d5fbf)); }
+.am-edge { fill: none; stroke: var(--edge-color, var(--ink-2, #4b5260)); stroke-width: var(--edge-width, 1.3); }
 .am-edge--dashed { stroke-dasharray: 5 4; }
-.am-arrow { fill: var(--ink-2, #4b5260); }
+.am-arrow { fill: var(--edge-color, var(--ink-2, #4b5260)); }
 .am-edge-label rect { fill: var(--paper, #ffffff); }
-.am-diagram .am-edge-label text { fill: var(--accent, #1d5fbf); font-size: 11.5px; }
-.am-cluster { fill: var(--fill, #f3f5f8); stroke: var(--line-2, #d6dae1); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-diagram .am-edge-label text { fill: var(--edge-label, var(--accent, #1d5fbf)); font-size: 11.5px; }
+.am-cluster { fill: var(--cluster-fill, var(--fill, #f3f5f8)); stroke: var(--cluster-stroke, var(--line-2, #d6dae1)); stroke-width: 1; stroke-dasharray: 4 3; }
 .am-diagram .am-cluster-label { fill: var(--ink-2, #4b5260); font: 11px var(--font-mono, monospace); }
-.am-lifeline { stroke: var(--ink-3, #8b929e); stroke-width: 1; stroke-dasharray: 4 4; }
-.am-actor { fill: var(--paper, #ffffff); stroke: var(--line, #1d2026); stroke-width: var(--bw, 1.5px); }
-.am-note { fill: var(--warn-bg, #fdf3e2); stroke: var(--warn, #a8620a); stroke-width: 1; }
+/* The PK / FK / UK marks of an entity follow the node text, and the highlighted text in a highlighted entity, so they stay readable on the theme's fills. */
+.am-diagram .am-er-key { fill: var(--node-text, var(--ink-2, #4b5260)); }
+.am-diagram .am-node--hi .am-er-key { fill: var(--hi-text, var(--ink-2, #4b5260)); }
+.am-lifeline { stroke: var(--lifeline-color, var(--ink-3, #8b929e)); stroke-width: 1; stroke-dasharray: 4 4; }
+/* An actor (and the box of a divider) looks like a node unless the theme sets the actor tokens. */
+.am-actor { fill: var(--actor-fill, var(--node-fill, var(--paper, #ffffff))); stroke: var(--actor-stroke, var(--node-stroke, var(--line, #1d2026))); stroke-width: var(--node-width, var(--bw, 1.5px)); filter: var(--node-shadow, none); rx: var(--node-radius, 2px); }
+.am-diagram .am-actor-text { fill: var(--actor-text, var(--node-text, var(--ink, #16181d))); }
+.am-note { fill: var(--note-fill, var(--warn-bg, #fdf3e2)); stroke: var(--note-stroke, var(--warn, #a8620a)); stroke-width: var(--note-width, 1); rx: var(--note-radius, 2px); }
 .am-diagram .am-step { fill: var(--ink-3, #8b929e); font: 10px var(--font-mono, monospace); }
 
 .am-diagram-expand {
@@ -677,7 +726,7 @@ code, pre, kbd { font-family: var(--font-mono); }
 .am-colophon a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
 @media print {
-  .am-toolbar, .am-diagram-expand, .am-lightbox, .am-code-copy, .am-comment-btn, .am-comment, .am-reply { display: none !important; }
+  .am-toolbar, .am-diagram-expand, .am-lightbox, .am-code-copy, .am-comment-btn, .am-comment, .am-reply, .am-reply-bar { display: none !important; }
   body { background: var(--paper); }
   .am-panel { break-inside: avoid; box-shadow: none; }
 }
@@ -726,36 +775,6 @@ table.am-mark { background: none; }
 @media print { .am-remark-pop { display: none !important; } }
 
 
-/* New-version button and popover (src/render.js adds this file only to a page that has the button). The popover sits under the
-   toolbar and stays hidden unless open, so a browser without native popovers never shows it. */
-.am-btn--update { color: var(--ok); border-color: var(--ok); white-space: nowrap; }
-.am-update { display: none; }
-.am-update:popover-open {
-  display: block; position: fixed; inset-block: 52px auto; inset-inline: auto 12px; margin: 0; width: min(380px, calc(100vw - 24px));
-  padding: 14px 16px; font-size: 13px; color: var(--ink); background: var(--paper);
-  border: 1px solid var(--line-2); border-radius: var(--radius); box-shadow: 0 12px 40px rgba(0,0,0,.25);
-}
-.am-update p { margin: 0 0 8px; }
-.am-update-title { font-weight: 600; color: var(--ok); }
-.am-update-label { color: var(--ink-2); font-size: 12px; }
-.am-update-notes { margin: 0 0 12px; padding-inline-start: 18px; }
-.am-update-notes li { margin: 2px 0; }
-.am-update-notes code { font-size: 12px; }
-.am-update-row { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
-.am-update-row > :first-child {
-  flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; font-size: 12px; padding: 6px 8px;
-  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
-}
-.am-update a { color: var(--accent); font-size: 12px; }
-/* A phone has no room for the words: the button keeps only its dot, and its aria-label still names the version. */
-@media (max-width: 760px) {
-  .am-btn--update .am-update-text { display: none; }
-}
-@media print {
-  .am-update { display: none !important; }
-}
-
-
 html[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }
 html[data-theme="blueprint"] .am-frame::before {
   content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;
@@ -784,37 +803,31 @@ html[data-theme="paper"] .am-md table { font-family: var(--font-sans); }
 </head>
 <body>
 <div class="am-toolbar" data-am-root-lang="zh-CN" data-am-root-theme="blueprint" data-am-root-mode="auto" data-am-root-style="80">
-<button class="am-btn am-btn--update" type="button" data-am="update" popovertarget="am-update" aria-label="新版本 0.5.3" hidden>● <span class="am-update-text">新版本 <bdi>0.5.3</bdi></span></button>
 <label class="am-pick">主题<select data-am="theme"><option value="blueprint" selected>图纸</option><option value="shadcn">卡片</option><option value="paper">纸张</option></select></label>
 <label class="am-pick">明暗<select data-am="mode"><option value="auto" selected>跟随系统</option><option value="light">亮</option><option value="dark">暗</option></select></label>
-<button class="am-btn am-btn--reply" type="button" data-am="reply" data-ui="{&quot;button&quot;:&quot;回复&quot;,&quot;comment&quot;:&quot;评论&quot;,&quot;commentHint&quot;:&quot;对这个面板的意见&quot;,&quot;title&quot;:&quot;你的回复&quot;,&quot;hint&quot;:&quot;复制后粘贴到对话里。&quot;,&quot;copy&quot;:&quot;复制回复&quot;,&quot;close&quot;:&quot;关闭&quot;,&quot;suggested&quot;:&quot;建议&quot;,&quot;empty&quot;:&quot;先选择选项，或在面板上写评论。&quot;,&quot;decisions&quot;:&quot;决定&quot;,&quot;comments&quot;:&quot;评论&quot;,&quot;confirmed&quot;:&quot;确认了建议&quot;,&quot;untouched&quot;:&quot;未作答，保留建议&quot;,&quot;was&quot;:&quot;原为&quot;,&quot;typed&quot;:&quot;以 \&quot;&gt;\&quot; 开头的行是读者输入的文字。&quot;,&quot;done&quot;:&quot;已复制 ✓&quot;,&quot;remarks&quot;:&quot;标注&quot;,&quot;kinds&quot;:{&quot;suggestion&quot;:&quot;建议&quot;,&quot;keep&quot;:&quot;保留&quot;,&quot;question&quot;:&quot;疑问&quot;,&quot;concern&quot;:&quot;关注&quot;}}">回复</button>
+<button class="am-btn am-btn--reply" type="button" data-am="reply" data-ui="{&quot;button&quot;:&quot;回复&quot;,&quot;comment&quot;:&quot;评论&quot;,&quot;commentHint&quot;:&quot;对这个面板的意见&quot;,&quot;title&quot;:&quot;你的回复&quot;,&quot;hint&quot;:&quot;复制后粘贴回和 Agent 的对话，它会按你的选择和意见继续。&quot;,&quot;copy&quot;:&quot;复制回复&quot;,&quot;copyFailed&quot;:&quot;复制失败 — 请按 Cmd/Ctrl+C&quot;,&quot;close&quot;:&quot;关闭&quot;,&quot;suggested&quot;:&quot;建议&quot;,&quot;empty&quot;:&quot;先选择选项，或在面板上写评论。&quot;,&quot;decisions&quot;:&quot;决定&quot;,&quot;comments&quot;:&quot;评论&quot;,&quot;confirmed&quot;:&quot;确认了建议&quot;,&quot;untouched&quot;:&quot;未作答，保留建议&quot;,&quot;was&quot;:&quot;原为&quot;,&quot;typed&quot;:&quot;以 \&quot;&gt;\&quot; 开头的行是读者输入的文字。&quot;,&quot;raw&quot;:&quot;查看将复制的文本&quot;,&quot;preview&quot;:&quot;预览&quot;,&quot;count&quot;:{&quot;answered&quot;:&quot;已作答 {n} 项&quot;,&quot;comments&quot;:&quot;评论 {n} 条&quot;,&quot;remarks&quot;:&quot;标注 {n} 处&quot;},&quot;done&quot;:&quot;已复制 ✓&quot;,&quot;remarks&quot;:&quot;标注&quot;,&quot;kinds&quot;:{&quot;suggestion&quot;:&quot;建议&quot;,&quot;keep&quot;:&quot;保留&quot;,&quot;question&quot;:&quot;疑问&quot;,&quot;concern&quot;:&quot;关注&quot;}}">回复</button>
 <button class="am-btn am-btn--remark" type="button" data-am="remark" data-ui="{&quot;button&quot;:&quot;标注&quot;,&quot;hint&quot;:&quot;批注（可选）&quot;,&quot;save&quot;:&quot;保存&quot;,&quot;remove&quot;:&quot;删除&quot;,&quot;section&quot;:&quot;标注&quot;,&quot;kinds&quot;:{&quot;suggestion&quot;:&quot;建议&quot;,&quot;keep&quot;:&quot;保留&quot;,&quot;question&quot;:&quot;疑问&quot;,&quot;concern&quot;:&quot;关注&quot;}}">标注</button>
 <button class="am-btn" type="button" data-am="copy" data-done="已复制 ✓">复制源稿</button>
 </div>
-<div class="am-update" id="am-update" popover>
-<p class="am-update-title">新版本 <bdi>0.5.3</bdi></p>
-<p>当前 <bdi>0.5.2</bdi>。生成此页时检测到新版本。</p>
-<p class="am-update-label">这次更新：</p>
-<ul class="am-update-notes"><li>主题库：<code>am theme add comic --use</code> 从官网安装主题</li><li>主题可以改图了：节点、连线、注释框、高亮和阴影</li><li>回复：直接看到排好版的回复，在页面底部一栏一键复制</li></ul>
-<p class="am-update-label">在终端运行：</p>
-<div class="am-update-row"><code dir="ltr">npx skills update answer-me-with-html -y</code><button class="am-btn" type="button" data-am="copy-text" data-text="npx skills update answer-me-with-html -y" data-done="已复制 ✓">复制</button></div>
-<p class="am-update-label">或者告诉 Agent：</p>
-<div class="am-update-row"><span>更新 answer-me-with-html</span><button class="am-btn" type="button" data-am="copy-text" data-text="更新 answer-me-with-html" data-done="已复制 ✓">复制</button></div>
-<a href="https://github.com/QingYunA/answer-me-with-html/releases" target="_blank" rel="noopener">查看更新内容</a>
-</div>
 <main class="am-sheet">
-<header class="am-head"><p class="am-colophon">Generated by <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">Answer me with HTML</a> 0.5.2 · 2026-10-14 11:27 · <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">★ Star on GitHub</a></p><h1>Redis与Memcached缓存选型</h1><p class="am-sub">按数据模型、可靠性要求与运维复杂度选择</p><div class="am-head-meta"><span><b>source</b>缓存选型</span></div><div class="am-intro am-md"><div class="am-md"><p>Lead: 简单、易丢弃的键值缓存可选Memcached。需要丰富数据结构、复制或持久化选项时可选Redis。</p>
+<header class="am-head"><p class="am-colophon">Generated by <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">Answer me with HTML</a> 0.5.3 · 2026-10-14 21:07 · <a href="https://github.com/QingYunA/answer-me-with-html" target="_blank" rel="noopener">★ Star on GitHub</a></p><h1>Redis 与 Memcached 怎么选</h1><p class="am-sub">按数据能力、持久化和扩展方式做选择</p><div class="am-intro am-md"><div class="am-md"><p>Lead: 简单、易丢的键值缓存可先看 Memcached。需要数据结构、原子操作或持久化时，先看 Redis。</p>
 </div></div></header>
 <div class="am-frame">
 <div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
 <div class="am-grid" style="--cols: 3">
 <section class="am-panel" id="panel-A">
-<header class="am-panel-head"><span class="am-panel-id">A</span><h2>先按需求选</h2></header>
-<div class="am-panel-body"><div class="am-callout am-callout--ok" role="note"><div class="am-callout-title">默认选择</div><div class="am-callout-body am-md"><p>缓存只存短期键值，且不需要恢复数据时，先评估Memcached。若应用需要集合、队列、原子操作或Redis生态能力，选Redis。</p>
-</div></div></div>
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>先看缓存要承担什么</h2></header>
+<div class="am-panel-body"><div class="am-md"><ul>
+<li>两者都能按键读写内存数据，并设置过期时间。</li>
+<li>Memcached 把值当作字节串，适合简单对象缓存。</li>
+<li>Redis 提供字符串、哈希、列表、集合和有序集合等类型。</li>
+<li>Redis 还支持发布订阅、复制和可选持久化。</li>
+<li>性能没有脱离工作负载的通用胜者。</li>
+</ul>
+</div></div>
 </section>
 <section class="am-panel" id="panel-B">
-<header class="am-panel-head"><span class="am-panel-id">B</span><h2>两者的核心差异</h2></header>
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>能力对照</h2></header>
 <div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
 <thead>
 <tr>
@@ -825,88 +838,58 @@ html[data-theme="paper"] .am-md table { font-family: var(--font-sans); }
 </thead>
 <tbody><tr>
 <td>数据模型</td>
-<td>字符串及多种内置结构</td>
-<td>键和值的字节数据</td>
+<td>多种内置数据结构</td>
+<td>键值与不透明字节串</td>
 </tr>
 <tr>
-<td>常见操作</td>
-<td>结构操作、计数、过期与原子命令</td>
-<td>读取、写入、过期与简单计数</td>
+<td>过期与淘汰</td>
+<td>TTL 与可配置淘汰策略</td>
+<td>TTL 与内存淘汰</td>
 </tr>
 <tr>
 <td>持久化</td>
-<td>可配置快照或追加日志</td>
-<td>不提供内置持久化</td>
+<td>可选 RDB 快照或 AOF 日志</td>
+<td>内存缓存，重启后数据会丢失</td>
 </tr>
 <tr>
-<td>复制与集群</td>
-<td>提供复制和集群能力</td>
-<td>常由客户端分片和管理节点</td>
+<td>分片</td>
+<td>Redis Cluster 可分片</td>
+<td>客户端把键分配到多个节点</td>
 </tr>
 <tr>
-<td>运行特点</td>
-<td>能力多，配置项也多</td>
-<td>目标简单，常见实现支持多线程</td>
+<td>高可用</td>
+<td>可用复制与 Sentinel 等方案</td>
+<td>通常由客户端和部署方案处理</td>
+</tr>
+<tr>
+<td>常见用途</td>
+<td>计数、集合、排行榜、缓存</td>
+<td>页面片段、会话等简单缓存</td>
 </tr>
 </tbody></table></div>
 </div></div>
 </section>
 <section class="am-panel" id="panel-C">
-<header class="am-panel-head"><span class="am-panel-id">C</span><h2>缓存未命中时的数据路径</h2></header>
-<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 300 261" width="300" height="261" role="img" aria-label="流程图：应用、缓存、数据库" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M149.8,45.9 L188.7,63.5 Q227.6,81 214.1,97 L200.5,113" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="205.4" y="72" width="44.5" height="18" rx="3"/><text x="227.6" y="81" text-anchor="middle" dominant-baseline="central">查询键</text></g></g><g data-step="1"><path class="am-edge" d="M161.7,113 L139.7,97 Q117.8,81 117.8,65 L117.8,49" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="78.3" y="72" width="79" height="18" rx="3"/><text x="117.8" y="81" text-anchor="middle" dominant-baseline="central">命中时返回值</text></g></g><g data-step="2"><path class="am-edge am-edge--dashed" d="M206.7,148 L225.8,164 Q245,180 202.5,197.8 L160,215.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="205.5" y="171" width="79" height="18" rx="3"/><text x="245" y="180" text-anchor="middle" dominant-baseline="central">未命中时查询</text></g></g><g data-step="3"><path class="am-edge" d="M126.5,212 L126.5,196 Q126.5,180 145.6,164 L164.8,148" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="69.5" y="171" width="114" height="18" rx="3"/><text x="126.5" y="180" text-anchor="middle" dominant-baseline="central">写入结果并设置TTL</text></g></g><g data-step="4"><path class="am-edge" d="M97,212 L70,196 Q43,180 43,155.3 Q43,130.5 43,105.8 Q43,81 67.2,65 L91.3,49" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="15" y="121.5" width="56" height="18" rx="3"/><text x="43" y="130.5" text-anchor="middle" dominant-baseline="central">返回结果</text></g></g></g><g><g class="am-node am-node--rect" data-key="应用" data-step="0"><rect class="am-node-shape" x="85.8" y="14" width="64" height="35" rx="3"/><text x="117.8" y="31.5" text-anchor="middle" dominant-baseline="central">应用</text></g><g class="am-node am-node--rect" data-key="缓存" data-step="0"><rect class="am-node-shape" x="153.7" y="113" width="64" height="35" rx="3"/><text x="185.7" y="130.5" text-anchor="middle" dominant-baseline="central">缓存</text></g><g class="am-node am-node--rect" data-key="数据库" data-step="2"><rect class="am-node-shape" x="93" y="212" width="67" height="35" rx="3"/><text x="126.5" y="229.5" text-anchor="middle" dominant-baseline="central">数据库</text></g></g></svg></figure>
-<div class="am-md"><p>应用可把同一数据路径用于Redis或Memcached。缓存应按可重建数据设计。</p>
-</div></div>
-</section>
-<section class="am-panel" id="panel-D">
-<header class="am-panel-head"><span class="am-panel-id">D</span><h2>什么时候选Redis</h2></header>
-<div class="am-panel-body"><div class="am-md"><ul>
-<li>需要列表、集合、哈希等结构，且操作应在缓存端完成。</li>
-<li>需要原子计数、过期处理或脚本化的缓存操作。</li>
-<li>需要配置复制、集群，或将部分缓存状态保存到磁盘。</li>
-<li>团队能承担更多配置和运维选项。</li>
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>用需求缩小选择范围</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 348 493" width="348" height="493" role="img" aria-label="流程图：Start、Need data structures, atomic operations, Pub/Sub, or persistence?、Redis、Are simple key-value objects enough?、Memcached" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M215.6,49 L215.6,60.5 Q215.6,72 215.6,83.5 L215.6,95" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge" d="M253.5,210.5 L275.4,237.5 Q297.4,264.6 297.4,301.4 Q297.4,338.2 297.4,375 Q297.4,411.8 292.1,427.8 L286.9,443.8" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="282.7" y="329.2" width="29.3" height="18" rx="3"/><text x="297.4" y="338.2" text-anchor="middle" dominant-baseline="central">yes</text></g></g><g data-step="2"><path class="am-edge" d="M177.8,210.5 L155.8,237.5 Q133.9,264.6 133.9,280.6 L133.9,296.6" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="122.4" y="255.6" width="22.9" height="18" rx="3"/><text x="133.9" y="264.6" text-anchor="middle" dominant-baseline="central">no</text></g></g><g data-step="3"><path class="am-edge" d="M121.7,375.6 L115.7,393.7 Q109.8,411.8 109.8,427.8 L109.8,443.8" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="95.2" y="402.8" width="29.3" height="18" rx="3"/><text x="109.8" y="411.8" text-anchor="middle" dominant-baseline="central">yes</text></g></g><g data-step="4"><path class="am-edge" d="M162.2,370 L180.8,390.9 Q199.4,411.8 225.8,427.8 L252.3,443.8" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="188" y="402.8" width="22.9" height="18" rx="3"/><text x="199.4" y="411.8" text-anchor="middle" dominant-baseline="central">no</text></g></g></g><g><g class="am-node am-node--round" data-key="Start" data-step="0"><rect class="am-node-shape" x="177.6" y="14" width="76" height="35" rx="17.5"/><text x="215.6" y="31.5" text-anchor="middle" dominant-baseline="central" class="am-node-text">Start</text></g><g class="am-node am-node--diamond" data-key="Need data structures, atomic operations, Pub/Sub, or persistence?" data-step="0"><polygon class="am-node-shape" points="215.6,95 333.3,163.8 215.6,232.6 97.9,163.8"/><text x="215.6" y="138.3" text-anchor="middle" dominant-baseline="central" class="am-node-text">Need data structures,</text><text x="215.6" y="155.3" text-anchor="middle" dominant-baseline="central" class="am-node-text">atomic operations,</text><text x="215.6" y="172.3" text-anchor="middle" dominant-baseline="central" class="am-node-text">Pub/Sub, or</text><text x="215.6" y="189.3" text-anchor="middle" dominant-baseline="central" class="am-node-text">persistence?</text></g><g class="am-node am-node--rect" data-key="Redis" data-step="1"><rect class="am-node-shape" x="249.2" y="443.8" width="64" height="35" rx="3"/><text x="281.2" y="461.3" text-anchor="middle" dominant-baseline="central" class="am-node-text">Redis</text></g><g class="am-node am-node--diamond" data-key="Are simple key-value objects enough?" data-step="2"><polygon class="am-node-shape" points="133.9,296.6 253.7,338.2 133.9,379.8 14,338.2"/><text x="133.9" y="329.7" text-anchor="middle" dominant-baseline="central" class="am-node-text">Are simple key-value</text><text x="133.9" y="346.7" text-anchor="middle" dominant-baseline="central" class="am-node-text">objects enough?</text></g><g class="am-node am-node--rect" data-key="Memcached" data-step="3"><rect class="am-node-shape" x="59.2" y="443.8" width="101.3" height="35" rx="3"/><text x="109.8" y="461.3" text-anchor="middle" dominant-baseline="central" class="am-node-text">Memcached</text></g></g></svg></figure>
+<div class="am-md"><ul>
+<li>如果只存可重建的值，优先比较简单键值缓存。</li>
+<li>如果应用要直接操作集合或排行榜，优先评估 Redis。</li>
+<li>如果缓存数据必须恢复，验证 Redis 的持久化配置。</li>
+<li>复制或持久化会增加配置与运维工作。</li>
 </ul>
 </div></div>
 </section>
-<section class="am-panel" id="panel-E">
-<header class="am-panel-head"><span class="am-panel-id">E</span><h2>什么时候选Memcached</h2></header>
+<section class="am-panel am-span-wide" id="panel-D" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>上线前验证这些条件</h2></header>
 <div class="am-panel-body"><div class="am-md"><ul>
-<li>数据可以表示为独立的键值，缓存丢失后可从源系统重建。</li>
-<li>需要简单的读写接口和多线程服务端。</li>
-<li>分片策略由应用客户端掌握，团队接受自行管理。</li>
-<li>不需要Redis的数据结构、持久化或集群功能。</li>
+<li>为每类键设置合理的 TTL，并定义淘汰策略。</li>
+<li>评估大对象、序列化开销和内存占用。</li>
+<li>用真实命令、并发量和数据分布做基准测试。</li>
+<li>比较命中率、尾延迟、故障恢复和扩容方式。</li>
+<li>缓存未命中时，确认源数据仍可恢复。</li>
+<li>不要只看单次读写的吞吐量。</li>
 </ul>
-</div></div>
-</section>
-<section class="am-panel" id="panel-F">
-<header class="am-panel-head"><span class="am-panel-id">F</span><h2>选型前检查这些风险</h2></header>
-<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
-<thead>
-<tr>
-<th>检查项</th>
-<th>做法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>缓存丢失</td>
-<td>确认源数据可恢复，评估冷启动流量</td>
-</tr>
-<tr>
-<td>热键</td>
-<td>观察单个键的请求量，避免热点压垮节点</td>
-</tr>
-<tr>
-<td>内存上限</td>
-<td>设置容量与淘汰策略，监控命中率</td>
-</tr>
-<tr>
-<td>一致性</td>
-<td>明确数据更新后如何失效或刷新缓存</td>
-</tr>
-<tr>
-<td>持久化预期</td>
-<td>Redis磁盘选项也需要配置和恢复验证</td>
-</tr>
-</tbody></table></div>
 </div></div>
 </section>
 </div>
@@ -928,59 +911,50 @@ html[data-theme="paper"] .am-md table { font-family: var(--font-sans); }
 </div>
 </div>
 <textarea id="am-source" hidden readonly aria-hidden="true">---
-template: sheet
-theme: auto
-title: Redis与Memcached缓存选型
-subtitle: 按数据模型、可靠性要求与运维复杂度选择
-source: 缓存选型
+title: Redis 与 Memcached 怎么选
+subtitle: 按数据能力、持久化和扩展方式做选择
+lang: zh
 ---
 
-Lead: 简单、易丢弃的键值缓存可选Memcached。需要丰富数据结构、复制或持久化选项时可选Redis。
+Lead: 简单、易丢的键值缓存可先看 Memcached。需要数据结构、原子操作或持久化时，先看 Redis。
 
-## 先按需求选
-```callout ok 默认选择
-缓存只存短期键值，且不需要恢复数据时，先评估Memcached。若应用需要集合、队列、原子操作或Redis生态能力，选Redis。
-```
+## A 先看缓存要承担什么
+- 两者都能按键读写内存数据，并设置过期时间。
+- Memcached 把值当作字节串，适合简单对象缓存。
+- Redis 提供字符串、哈希、列表、集合和有序集合等类型。
+- Redis 还支持发布订阅、复制和可选持久化。
+- 性能没有脱离工作负载的通用胜者。
 
-## 两者的核心差异
+## B 能力对照
 | 维度 | Redis | Memcached |
 |---|---|---|
-| 数据模型 | 字符串及多种内置结构 | 键和值的字节数据 |
-| 常见操作 | 结构操作、计数、过期与原子命令 | 读取、写入、过期与简单计数 |
-| 持久化 | 可配置快照或追加日志 | 不提供内置持久化 |
-| 复制与集群 | 提供复制和集群能力 | 常由客户端分片和管理节点 |
-| 运行特点 | 能力多，配置项也多 | 目标简单，常见实现支持多线程 |
+| 数据模型 | 多种内置数据结构 | 键值与不透明字节串 |
+| 过期与淘汰 | TTL 与可配置淘汰策略 | TTL 与内存淘汰 |
+| 持久化 | 可选 RDB 快照或 AOF 日志 | 内存缓存，重启后数据会丢失 |
+| 分片 | Redis Cluster 可分片 | 客户端把键分配到多个节点 |
+| 高可用 | 可用复制与 Sentinel 等方案 | 通常由客户端和部署方案处理 |
+| 常见用途 | 计数、集合、排行榜、缓存 | 页面片段、会话等简单缓存 |
 
-## 缓存未命中时的数据路径
+## C 用需求缩小选择范围
 ```flow
-应用 -&gt; 缓存: 查询键
-缓存 -&gt; 应用: 命中时返回值
-缓存 --&gt; 数据库: 未命中时查询
-数据库 -&gt; 缓存: 写入结果并设置TTL
-数据库 -&gt; 应用: 返回结果
+(Start) -&gt; {Need data structures, atomic operations, Pub/Sub, or persistence?}
+{Need data structures, atomic operations, Pub/Sub, or persistence?} -&gt; [Redis]: yes
+{Need data structures, atomic operations, Pub/Sub, or persistence?} -&gt; {Are simple key-value objects enough?}: no
+{Are simple key-value objects enough?} -&gt; [Memcached]: yes
+{Are simple key-value objects enough?} -&gt; [Redis]: no
 ```
-应用可把同一数据路径用于Redis或Memcached。缓存应按可重建数据设计。
+- 如果只存可重建的值，优先比较简单键值缓存。
+- 如果应用要直接操作集合或排行榜，优先评估 Redis。
+- 如果缓存数据必须恢复，验证 Redis 的持久化配置。
+- 复制或持久化会增加配置与运维工作。
 
-## 什么时候选Redis
-- 需要列表、集合、哈希等结构，且操作应在缓存端完成。
-- 需要原子计数、过期处理或脚本化的缓存操作。
-- 需要配置复制、集群，或将部分缓存状态保存到磁盘。
-- 团队能承担更多配置和运维选项。
-
-## 什么时候选Memcached
-- 数据可以表示为独立的键值，缓存丢失后可从源系统重建。
-- 需要简单的读写接口和多线程服务端。
-- 分片策略由应用客户端掌握，团队接受自行管理。
-- 不需要Redis的数据结构、持久化或集群功能。
-
-## 选型前检查这些风险
-| 检查项 | 做法 |
-|---|---|
-| 缓存丢失 | 确认源数据可恢复，评估冷启动流量 |
-| 热键 | 观察单个键的请求量，避免热点压垮节点 |
-| 内存上限 | 设置容量与淘汰策略，监控命中率 |
-| 一致性 | 明确数据更新后如何失效或刷新缓存 |
-| 持久化预期 | Redis磁盘选项也需要配置和恢复验证 |
+## D 上线前验证这些条件
+- 为每类键设置合理的 TTL，并定义淘汰策略。
+- 评估大对象、序列化开销和内存占用。
+- 用真实命令、并发量和数据分布做基准测试。
+- 比较命中率、尾延迟、故障恢复和扩容方式。
+- 缓存未命中时，确认源数据仍可恢复。
+- 不要只看单次读写的吞吐量。
 </textarea>
 <script>
 (() => {
@@ -1276,9 +1250,61 @@ function replyText({ title, decisions, comments, remarks = [], ui, rtl = false }
   return `${out.join('\n')}\n`;
 }
 
+// A letter of a right-to-left script. One definition for the page builder (src/bidi.js) and for the right-to-left page script
+// (src/runtime/reply-view.js), so the two cannot drift apart. A plain ES module; the page script gets this file in front of
+// reply-view.js, with its `export` keyword dropped and reply-view.js's import of it removed (src/runtime/compose.js).
+const RTL_LETTER = /[\p{Script=Hebrew}\p{Script=Arabic}\p{Script=Syriac}\p{Script=Thaana}\p{Script=Nko}\p{Script=Samaritan}\p{Script=Mandaic}]/u;
+
+// The reply as the reader sees it in the Reply sheet (src/runtime/reply.js): the Markdown that Copy copies, drawn as headings, bold answers
+// and quoted comments instead of raw "# Re: ...", "1. [E] ..." and "- **A · ...**" lines. Each line gets its own direction, so a
+// Hebrew reader sees Latin answers and paths in place; a line with no right-to-left letter reads left to right, as on any other page.
+// The raw Markdown stays in the sheet under a fold, so the copied text does not change.
+// A plain ES module for tests; the page gets it with its `export` keyword dropped and rtl-letter.js in front of it in place of the
+// import (src/runtime/compose.js).
+
+const escHtml = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+// A line with a right-to-left letter reads right to left; a line without one (an English comment, a path) reads left to right.
+const dirOf = (s) => (RTL_LETTER.test(s) ? 'rtl' : 'ltr');
+
+// The only inline Markdown src/runtime/reply-text.js writes: **answer**, _(note)_ and the "quote" of a remark. Each piece is isolated in its own direction,
+// so a Latin answer inside a Hebrew line keeps its place, and "A · title" still starts with the panel letter.
+const piece = (tag, text) => `<${tag}><bdi dir="${dirOf(text)}">${text}</bdi></${tag}>`;
+function inline(s) {
+  return escHtml(s)
+    .replace(/\*\*(.+?)\*\*/g, (_, t) => piece('strong', t))
+    .replace(/(^|\s)_(.+?)_(?=\s|$)/g, (_, pre, t) => pre + piece('em', t))
+    // The quoted start of a marked block ("- **A · concern** "text""): isolated, so Latin text in a Hebrew line keeps its place.
+    .replace(/&quot;(.+)&quot;$/, (_, t) => `&quot;<bdi dir="${dirOf(t)}">${t}</bdi>&quot;`);
+}
+
+// The reply text (src/runtime/reply-text.js) as HTML, one block per line.
+function replyViewHtml(text) {
+  return text
+    .replace(/\n$/, '')
+    .split('\n')
+    .map((line) => {
+      const dir = dirOf(line);
+      let m;
+      if (!line.trim()) return '<div class="am-rv-gap"></div>';
+      if ((m = line.match(/^(#{1,2}) (.*)$/))) return `<div class="am-rv-h${m[1].length}" dir="${dir}">${inline(m[2])}</div>`;
+      if ((m = line.match(/^(\d+)\. \[([^\]]*)\] (.*)$/))) {
+        return `<div class="am-rv-q" dir="${dir}"><bdi>${m[1]}.</bdi> <bdi class="am-rv-tag">${escHtml(m[2])}</bdi> ${inline(m[3])}</div>`;
+      }
+      if ((m = line.match(/^ {3}([←→]) (.*)$/))) return `<div class="am-rv-a" dir="${dir}">${m[1]} ${inline(m[2])}</div>`;
+      if ((m = line.match(/^- (.*)$/))) return `<div class="am-rv-c" dir="${dir}">${inline(m[1])}</div>`;
+      // A comment line is shown exactly as the reader typed it.
+      if ((m = line.match(/^ {2}> ?(.*)$/))) return `<div class="am-rv-quote" dir="${dirOf(m[1])}">${escHtml(m[1]) || '&nbsp;'}</div>`;
+      return `<div dir="${dir}">${inline(line)}</div>`;
+    })
+    .join('');
+}
+
 // Answer on the page: every panel gets a Comment box, and the Reply button collects the ask answers, the comments and the remarks
 // into one Markdown reply (replyText) to copy back to the agent. Answers and comments stay in localStorage across reloads.
-// The remark script (remark.js) adds the blocks the reader marked, through window.__amRemarkData.
+// The remark script (remark.js) adds the blocks the reader marked, through window.__amRemarkData, and tells this script about a change
+// with an "am-remark-change" event on the document.
+// The Reply sheet shows the reply drawn (replyViewHtml) with the Markdown that Copy copies under a fold. Once the reader has given any
+// input, a bar at the bottom of the page shows the counts and copies the reply in one click, so there is no trip to the top-right button.
 const replyBtn = document.querySelector('[data-am="reply"]');
 const COMMENT_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>';
 if (replyBtn) {
@@ -1294,6 +1320,10 @@ if (replyBtn) {
   const keyOf = (ask) => textOf(ask.querySelector('legend')) ?? ask.dataset.ask;
   const touched = new Set();
   const boxes = new Map();
+  // The bar is built below with the sheet; the handlers that change the counts only call this.
+  let refreshBar = () => {};
+  // The textarea a failed copy keeps selected, so the reader can still use the keyboard shortcut.
+  let stuck = null;
 
   const load = () => {
     try {
@@ -1332,6 +1362,7 @@ if (replyBtn) {
     const answer = () => {
       touched.add(ask);
       save();
+      refreshBar();
     };
     ask.addEventListener('change', answer);
     ask.addEventListener('click', (e) => { if (e.target.matches('input')) answer(); });
@@ -1358,6 +1389,7 @@ if (replyBtn) {
     box.addEventListener('input', () => {
       btn.classList.toggle('am-comment-btn--on', Boolean(box.value.trim()));
       save();
+      refreshBar();
     });
     btn.classList.toggle('am-comment-btn--on', Boolean(box.value.trim()));
     if (box.value.trim()) show(true);
@@ -1369,9 +1401,12 @@ if (replyBtn) {
   const sheet = document.createElement('dialog');
   sheet.className = 'am-reply';
   sheet.setAttribute('aria-label', ui.title);
-  sheet.innerHTML = '<div class="am-reply-head"><strong></strong><span></span></div><textarea readonly rows="14"></textarea><div class="am-reply-actions"><button type="button" class="am-btn" data-act="copy"></button><button type="button" class="am-btn" data-act="close"></button></div>';
+  sheet.innerHTML = '<div class="am-reply-head"><strong></strong><span></span></div><div class="am-reply-view" tabindex="0"></div><details class="am-reply-raw"><summary></summary><textarea readonly rows="10"></textarea></details><div class="am-reply-actions"><button type="button" class="am-btn" data-act="copy"></button><button type="button" class="am-btn" data-act="close"></button></div>';
   sheet.querySelector('strong').textContent = ui.title;
   sheet.querySelector('span').textContent = ui.hint;
+  sheet.querySelector('summary').textContent = ui.raw;
+  const view = sheet.querySelector('.am-reply-view');
+  const raw = sheet.querySelector('details');
   const text = sheet.querySelector('textarea');
   const copy = sheet.querySelector('[data-act="copy"]');
   const close = sheet.querySelector('[data-act="close"]');
@@ -1394,25 +1429,90 @@ if (replyBtn) {
     return empty ? '' : replyText({ title, decisions, comments, remarks, ui, rtl: document.documentElement.dir === 'rtl' });
   };
 
-  replyBtn.addEventListener('click', () => {
+  // The text goes through the clipboard API; a page the browser treats as insecure (file://) falls back to selecting a temporary
+  // textarea, because the sheet's own textarea can sit inside a closed fold, where it cannot be selected.
+  // That fallback reports whether it worked. When it does not, the text stays selected (so Cmd/Ctrl+C still copies it) and the
+  // button says what to do instead of showing the "Copied ✓" label the reader cannot trust.
+  const copyText = async (str, btn) => {
+    stuck?.remove();
+    stuck = null;
+    try {
+      await navigator.clipboard.writeText(str);
+      // The close_after_reply script (close-after-reply.js) closes the tab once the reply is on the clipboard.
+      document.dispatchEvent(new Event('am-reply-copied'));
+    } catch {
+      const tmp = Object.assign(document.createElement('textarea'), { value: str });
+      tmp.style.cssText = 'position:fixed;top:-100px;opacity:0';
+      // Inside the sheet while it is open: while a modal dialog is open the rest of the document cannot take focus, so a textarea
+      // in the body can be selected but not focused, and the keyboard shortcut the reader is told to press would copy nothing.
+      // The bottom bar copies while the sheet is closed, and a closed dialog is not rendered, so there the textarea goes in the body.
+      (sheet.open ? sheet : document.body).append(tmp);
+      tmp.select();
+      let copied = false;
+      try {
+        copied = document.execCommand('copy');
+      } catch {
+        copied = false;
+      }
+      if (!copied) {
+        stuck = tmp;
+        btn.textContent = ui.copyFailed;
+        setTimeout(() => { btn.textContent = ui.copy; }, 3000);
+        return;
+      }
+      tmp.remove();
+    }
+    btn.textContent = ui.done;
+    setTimeout(() => { btn.textContent = ui.copy; }, 1400);
+  };
+
+  const open = () => {
     const reply = compose();
-    text.value = reply || ui.empty;
+    if (reply) view.innerHTML = replyViewHtml(reply);
+    else view.textContent = ui.empty;
+    view.scrollTop = 0;
+    text.value = reply;
+    raw.open = false;
+    raw.hidden = !reply;
     copy.disabled = !reply;
     if (sheet.showModal) sheet.showModal();
     else sheet.setAttribute('open', '');
     (reply ? copy : close).focus();
-  });
+  };
+  replyBtn.addEventListener('click', open);
   close.addEventListener('click', () => (sheet.close ? sheet.close() : sheet.removeAttribute('open')));
-  copy.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(text.value);
-    } catch {
-      text.select();
-      document.execCommand('copy');
-    }
-    copy.textContent = ui.done;
-    setTimeout(() => { copy.textContent = ui.copy; }, 1400);
-  });
+  // A failed copy leaves the text selected for Cmd/Ctrl+C; closing the sheet drops that textarea.
+  sheet.addEventListener('close', () => { stuck?.remove(); stuck = null; });
+  copy.addEventListener('click', () => copyText(text.value, copy));
+
+  const bar = Object.assign(document.createElement('div'), { className: 'am-reply-bar', hidden: true });
+  bar.setAttribute('role', 'region');
+  bar.setAttribute('aria-label', ui.title);
+  const summary = Object.assign(document.createElement('span'), { className: 'am-reply-bar-count' });
+  summary.setAttribute('aria-live', 'polite');
+  const preview = Object.assign(document.createElement('button'), { type: 'button', className: 'am-btn', textContent: ui.preview });
+  const barCopy = Object.assign(document.createElement('button'), { type: 'button', className: 'am-btn am-btn--reply', textContent: ui.copy });
+  preview.addEventListener('click', open);
+  barCopy.addEventListener('click', () => copyText(compose(), barCopy));
+  bar.append(summary, preview, barCopy);
+  document.body.append(bar);
+
+  // The bar shows only the counts that are above zero, and only once there is any input at all.
+  refreshBar = () => {
+    const counts = {
+      answered: touched.size,
+      comments: [...boxes.values()].filter((box) => box.value.trim()).length,
+      remarks: (window.__amRemarkData?.() ?? []).length,
+    };
+    const parts = Object.entries(counts).filter(([, n]) => n > 0).map(([kind, n]) => ui.count[kind].replace('{n}', n));
+    summary.textContent = parts.join(' · ');
+    bar.hidden = !parts.length;
+    document.body.classList.toggle('am-has-reply-bar', parts.length > 0);
+  };
+  document.addEventListener('am-remark-change', () => refreshBar());
+  // Saved remarks are restored by remark.js, which runs after this script in the same <script> element: its data is not there yet.
+  // A microtask runs when that whole element has finished, so the first count includes them.
+  queueMicrotask(() => refreshBar());
 }
 })();
 (() => {
@@ -1516,6 +1616,8 @@ function occurrenceKeys(bases) {
     } catch {
       // Storage may be off (private window, a sandboxed page); marks then last until the page closes.
     }
+    // The reply bar (reply.js) shows the number of marks.
+    document.dispatchEvent(new Event('am-remark-change'));
   };
 
   const chip = (el, mark) => {
@@ -2077,27 +2179,6 @@ if (panels.length > 1) {
   document.querySelector('[data-am="theme"]')?.addEventListener('click', later);
 }
 })();
-})();
-// Pages with a new-version button only: src/render.js adds this script after the page script.
-// The button shows where the browser has native popovers (they open and close the popover with no script). A page that am serve
-// sends to another device has no button (src/serve.js), so this script does not look at the address.
-(() => {
-  const button = document.querySelector('[data-am="update"]');
-  if (!button || !Object.hasOwn(HTMLElement.prototype, 'popover')) return;
-  button.hidden = false;
-  // Each copy button copies its data-text and reads data-done for a moment.
-  for (const copy of document.querySelectorAll('[data-am="copy-text"]')) {
-    copy.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(copy.dataset.text);
-      } catch {
-        return;
-      }
-      const label = copy.textContent;
-      copy.textContent = copy.dataset.done;
-      setTimeout(() => { copy.textContent = label; }, 1400);
-    });
-  }
 })();
 </script>
 </body>

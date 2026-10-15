@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "engine": {
+    "repository": "https://github.com/TohmaN233/pi-CAW",
+    "qualified_release": "0.5.10",
+    "qualification": "Verified with local source build 0.5.10; that engine build is not yet public. Public main 0.3.1 is not qualified for this package."
+  },
+  "packages": [
+    {
+      "id": "answer-me-with-html-evidence",
+      "name": "answer-me-with-html",
+      "platform": "pi",
+      "package_version": "1.0.0",
+      "path": "pi/answer-me-with-html/answer-me-with-html.pi-caw.json",
+      "source_skill": "https://github.com/QingYunA/answer-me-with-html",
+      "source_release": "v0.5.3",
+      "source_commit": "83bfc9383105e304d90b5f93db848996d5420d84",
+      "workflow_revision_hash": "4df6cf0ab070d10a8e1aa96ab849b21a84f07cad9e2867c7745f7c74633f306f",
+      "package_sha256": "68c6e4f294c521f4431ff5e4f6400798d32fe81f7fb51b22158202b6726eff32",
+      "file_sha256": "520625068be4681cb39a39bad95c7f12f6781ff1e68e6c43b76afc653832eb3e",
+      "node_count": 41,
+      "resource_count": 141,
+      "dependencies": {
+        "providers": [],
+        "tools": [
+          "am_batch_observe",
+          "am_batch_prepare",
+          "am_cleanup",
+          "am_configure",
+          "am_export_mp4",
+          "am_export_webm",
+          "am_finalize",
+          "am_handoff",
+          "am_observe",
+          "am_preview_cleanup",
+          "am_reuse_video",
+          "am_reuse_video_webm",
+          "am_route_check",
+          "am_snapshot",
+          "am_update_installation",
+          "am_video_prepare",
+          "am_worker_render",
+          "read_workflow_resource"
+        ],
+        "mcp_servers": [],
+        "executables": [
+          {
+            "name": "node",
+            "version": ">=20.0.0"
+          }
+        ]
+      }
+    }
+  ]
+}

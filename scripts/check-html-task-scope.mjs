@@ -30,7 +30,11 @@ const plan = {pages:[{request:'Explain one concept',output:'one.html'},{request:
 assert.equal(declaredPageRoute(plan,validateRouteDecision).resolved,true);
 assert.equal(declaredPageRoute({...plan,mp4:true},validateRouteDecision).resolved,false);
 assert.equal(declaredPageRoute({request:'Make two pages'},validateRouteDecision).resolved,false);
-assert.equal(declaredPageRoute({pages:plan.pages},validateRouteDecision).resolved,false);
+assert.equal(declaredPageRoute({pages:plan.pages,request:'COMMON ORIGINAL'},validateRouteDecision).resolved,true,
+  'Complete structured page requests must not require Main to rewrite a common-context summary');
+assert.equal(declaredPageRoute({pages:plan.pages},validateRouteDecision).decision.batch_context,'');
+assert.throws(()=>declaredPageRoute({...plan,batch_context:null},validateRouteDecision));
+assert.equal(declaredPageRoute({...plan,pages:[plan.pages[0],{request:'Export a video',mp4:true}]},validateRouteDecision).resolved,false);
 assert.throws(() => declaredPageRoute({...plan,pages:[]},validateRouteDecision));
 const main = bundle.snapshot.workflow.nodes.find(item => item.id === 'main_acceptance');
 assert(!main.resources.includes(reference),'Semantic acceptance must not replay the producer rendering guide');

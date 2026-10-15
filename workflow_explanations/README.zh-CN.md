@@ -7,6 +7,7 @@
 - [LLM 安装步骤：依赖、导入与验收](install.zh-CN.md)
 - [安装与平台](platforms.zh-CN.md)
 - [Answer me with HTML](answer-me-with-html.zh-CN.md)
+- [Pi 版 Answer me with HTML 与 pi-web 可视化](answer-me-with-html-pi.zh-CN.md)
 - [GitHub README generator](github-readme-generator.zh-CN.md)
 - [最终对照结果](experiments/results.zh-CN.md)
 - [在线对照展示：产物与实验数据](https://tohman233.github.io/workflow-package/)

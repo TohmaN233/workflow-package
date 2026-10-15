@@ -1,6 +1,6 @@
 # Skill 与 Workflow 对照
 
-当前分发版本：HTML 包 1.1.4、上游 0.5.3、CAW 1.2.2。1.1.4 修复需求传递，仅完成离线回归；下列三页 Workflow 计量和成品属于 1.1.3，不代表本版本的新实验或完整内容对等证明。固定 Skill、历史单页和视频样本保持原记录。不同源版本分别标明。
+当前分发：Codex HTML 1.1.5、README 1.0.1、Pi HTML 1.0.0；HTML 上游为 0.5.3，配套 CAW 1.2.2 / pi-CAW 0.5.10。批量部分使用已验收的同版本 Skill / Codex 样本，Pi 仅附成品。历史单页和视频记录保持原测量条件。
 
 [English](results.md) · [Workflow 安装包](../answer-me-with-html.zh-CN.md) · [数据](results.json) · [原 Skill](https://github.com/QingYunA/answer-me-with-html)
 
@@ -48,22 +48,22 @@ Workflow 数据为每种网页三次运行的均值，输入包含缓存 token�
 
 ## 一个对话制作三个网页
 
-两种方法各在一个独立新对话中完成相同的 TCP、Redis／Memcached、Git merge／rebase 三页请求，均使用 `gpt-6-luna/max`。Skill 保留原 **0.5.2** 样本，Workflow 使用内容修订后的 **0.5.3** 包；Skill 未重跑，不能据此归因源版本的影响。每种方法展示一次成功交付，Workflow 包含 Main、一次共同前置、三路并行 worker 和全部修正。新稿件已核对关闭状态、缓存未命中／失效、选择条件及 Git 历史变化；不是盲评质量分数。
+Skill 与 Codex Workflow 各在独立新对话中完成相同的三页请求，均使用 gpt-6-luna/max 和上游 v0.5.3。Workflow 总量计入发起 Main、共同前置、全部 worker、修正与验收。每种方法各一次成功交付；质量复核未发现实质性回归，可选细节和布局存在差异。Pi 为另一次运行提供的三页成品，只比较内容和交互，不加入消耗表。
 
 | 方法 | 输入（含缓存） | 缓存输入／命中率 | 输出 | API 等价成本 | 秒数 |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Skill | 555,547 | 516,096 / 92.90% | 14,123 | $0.016168 | 185.155 |
-| Workflow | 290,972 | 221,696 / 76.19% | 22,258 | $0.020274 | 158.158 |
+| Skill | 786,187 | 721,664 / 91.79% | 18,846 | $0.023092 | 192.278 |
+| Codex Workflow | 302,007 | 197,376 / 65.35% | 21,728 | $0.023301 | 133.712 |
 
-本次 Workflow 输入 token 减少 **47.62%**，耗时降低 **14.58%**；标准 API 等价成本增加 **25.40%**（+$0.004106）。缓存命中率为 **76.19%**，Skill 为 **92.90%**；未缓存输入为 **69,276 / 39,451**，输出为 **22,258 / 14,123**。这解释了本次成本差额，不能只凭输入减少推断成本降低。
+本次 Workflow 输入减少 61.59%，耗时减少 30.46%，API 等价成本增加 0.90%（+$0.000209）。未缓存输入为 104,631 / 64,523，缓存命中差异和输出量抵消了部分输入节省。缓存未命中的平台原因尚未证实，不据此承诺普遍收益。
 
-按 [OpenAI Luna 官方价格](https://developers.openai.com/api/docs/models/gpt-6-luna)，每百万 token：输入 $0.10、缓存输入 $0.01、缓存写入 $0.125、输出 $0.50。本对照单次请求均低于 272K 输入，缓存写入报告为零，推理已计入输出。工程维护与此前失败试验不计入这对成功样本；失败证据单独保留。
+使用原实验冻结的 API 等价费率：每百万 token 输入 $0.10、缓存输入 $0.01、输出 $0.50；推理已计入输出，缓存写入报告为零。这不是当前账单或新价格查询。工程维护与此前试验不计入本对成功交付，也不声称没有发生开销。
 
-| 主题 | Skill | Workflow |
-| --- | --- | --- |
-| TCP | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-workflow.html) |
-| Redis／Memcached | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-workflow.html) |
-| Git merge／rebase | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-workflow.html) |
+| 主题 | Skill | Codex Workflow | Pi Workflow（仅成品） |
+| --- | --- | --- | --- |
+| TCP | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-workflow.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-pi.html) |
+| Redis / Memcached | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-workflow.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-pi.html) |
+| Git merge / rebase | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-workflow.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-pi.html) |
 
 ## 视频资产复用与稿件重写
 

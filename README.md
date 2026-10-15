@@ -13,8 +13,8 @@ New [0.5.2 fresh-conversation single-page comparison](https://tohman233.github.i
 | Platform | Workflow | Download | Explanation |
 | --- | --- | --- | --- |
 | Codex | Answer me with HTML | [Package JSON](codex/answer-me-with-html/answer-me-with-html.workflow-package.json) | [HTML diagrams, batch pages, video and asset reuse](workflow_explanations/answer-me-with-html.md) |
-| Codex | GitHub README generator | [Package JSON](codex/github-readme-generator/github-readme-generator.workflow-package.json) | [README and optional multilingual repository documentation](workflow_explanations/github-readme-generator.md) |
-| Pi | No package yet | — | [Platform status](workflow_explanations/platforms.md) |
+| Codex | GitHub README generator | [Package JSON](codex/github-readme-generator/github-readme-generator.workflow-package.json) | [Write, update and organize repository documentation in the requested languages](workflow_explanations/github-readme-generator.md) |
+| Pi | Answer me with HTML | [Package JSON](pi/answer-me-with-html/answer-me-with-html.pi-caw.json) | [Pi setup, pi-web visualization and three-page outputs](workflow_explanations/answer-me-with-html-pi.md) |
 
 Install [Codex Agents Workflow 1.2.2](https://github.com/TohmaN233/codex-agents-workflow), open its workbench, choose **Install Workflow**, and select a downloaded package JSON. See the [LLM-executable installation and dependency procedure](workflow_explanations/install.md).
 
@@ -24,4 +24,4 @@ The HTML/video package uses Main workers primarily to make comparisons with the 
 
 Original Skills are credited in the explanations; their license notices stay beside the packages and inside the bundles. Repository-authored documentation is [MIT licensed](LICENSE).
 
-The current HTML package inherits upstream 0.5.3; the three-page gallery now shows the same-model Luna/max pair. Measurements retain their actual 0.5.2 source version; see the [package notes](workflow_explanations/answer-me-with-html.md).
+Current packages: Codex HTML 1.1.5, README 1.0.1 and Pi HTML 1.0.0. The batch gallery shows the accepted same-source 0.5.3 Skill/Codex pair and a separate Pi three-page delivery; Pi is compared by output only.

@@ -10,4 +10,4 @@ Codex packages require [Codex Agents Workflow 1.2](https://github.com/TohmaN233/
 
 Before launch, complete dependency setup in the workbench. Answer me with HTML requires Node.js 20+ and the selected media route's dependencies; the README generator requires the enabled `native-luna` Provider. Speech credentials and local Provider configuration belong to the receiving host. Importing a package does not make speech requests. Resolve same-ID conflicts through the installer.
 
-`pi/` is reserved for future Pi packages. No Pi implementation is published yet; Codex packages cannot be imported into Pi as-is.
+The Pi package is verified with **local pi-CAW build 0.5.10**, Node.js 22.19+ and a compatible Pi SDK. That build is not yet published; public [pi-CAW](https://github.com/TohmaN233/pi-CAW) 0.3.1 is not qualified for this package. With a compatible host, import the native Pi JSON using **Install Workflow**. [pi/catalog.json](../pi/catalog.json) records its hashes and dependencies. Main inherits the initiating chat's model/thinking; configure explicit child slots in **Models** when present. See [Pi setup and visualization](answer-me-with-html-pi.md).

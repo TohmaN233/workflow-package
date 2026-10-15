@@ -6,7 +6,9 @@ An LLM can execute this procedure once the user requests installation. Reuse wor
 
 ## 1. Connect the engine
 
-Follow the [Codex Agents Workflow installation procedure](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.md), including its native context profile and live MCP checks. The qualified engine release is **1.2**. These packages target Codex; no Pi package is published yet.
+For Codex, follow the [Codex Agents Workflow installation procedure](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.md), including its native context profile and live MCP checks. The qualified engine release is **1.2.2**.
+
+For Pi, this package is verified with **local pi-CAW build 0.5.10**, Node.js **22.19+** and a compatible Pi SDK. That engine build is not yet public; the public repository's 0.3.1 version is not qualified for this package. Confirm a compatible receiving host first; otherwise report the missing engine without launching a trial. Use [pi/catalog.json](../pi/catalog.json) and pi-CAW's **Install Workflow** operation, following the [Pi-specific setup](answer-me-with-html-pi.md). The Codex MCP calls below apply only to Codex. Browser, FFmpeg and TTS dependencies apply to both editions, subject to Pi's higher Node minimum.
 
 ## 2. Select and import
 

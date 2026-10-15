@@ -30,7 +30,7 @@ class Element {
     next.committedDocument=next.getAttribute('src');
   }
 }
-for(const id of ['skill-preview','workflow-preview']){
+for(const id of ['skill-preview','workflow-preview','pi-preview']){
   const tag=html.match(new RegExp('<iframe\\b[^>]*\\bid="'+id+'"[^>]*>'))?.[0];assert(tag,'Missing preview frame');
   const attributes=Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map(m=>[m[1],m[2]]));
   assert(!attributes.src,'Initial HTML must not load TCP before the selected fragment/data is known');
@@ -43,8 +43,9 @@ const context=createContext({document,window,console,URLSearchParams,structuredC
 runInContext(script,context);
 assert.equal(element('workflow-preview').getAttribute('src'),null,'No speculative preview navigation before measured data');
 runInContext('state.data=fixture;renderAll()',context);
+assert.equal(element('batch-rows').children.length,2,'Pi output-only artifacts must not create a consumption row');
 function expected(topic,arm){const record=data.three_html_one_conversation.artifacts.find(a=>a.topic===topic&&a.arm===arm);return record.path+'?v='+record.sha256;}
-for(const arm of ['skill','workflow']){
+for(const arm of ['skill','workflow','pi']){
   const frame=element(arm+'-preview');assert.equal(frame.getAttribute('src'),expected('git',arm));
   assert.equal(frame.committedDocument,expected('git',arm),'Selected topic must own the actual browsing context');
   assert.equal(element(arm+'-artifact-link').href,frame.getAttribute('src'),'Open link and preview must select identical bytes');
@@ -54,8 +55,13 @@ assert.equal(element('workflow-preview'),prior,'Changing language must not reloa
 runInContext('state.topic="cache";renderAll()',context);
 assert.notEqual(element('workflow-preview'),prior,'Topic changes must not retain the old browsing context');
 assert.equal(element('workflow-preview').committedDocument,expected('cache','workflow'));
+assert.equal(element('pi-preview').committedDocument,expected('cache','pi'));
+assert.equal(element('pi-artifact-link').href,element('pi-preview').getAttribute('src'));
 const cacheFrame=element('workflow-preview');
 runInContext('state.data=structuredClone(fixture);state.data.three_html_one_conversation.artifacts.find(a=>a.topic==="cache"&&a.arm==="workflow").sha256="a".repeat(64);renderAll()',context);
 assert.notEqual(element('workflow-preview'),cacheFrame,'New content at the same filename must refresh its browsing context');
 assert(element('workflow-preview').src.endsWith('?v='+'a'.repeat(64)));
+assert.equal(element('pi-preview').getAttribute('src'),expected('cache','pi'),'Codex refresh must not select another Pi artifact');
+runInContext('state.topic="tcp";state.lang="zh-CN";renderAll()',context);
+for(const arm of ['skill','workflow','pi'])assert.equal(element(arm+'-preview').committedDocument,expected('tcp',arm));
 console.log('PASS gallery artifact lifecycle: deep-link topic, delayed data, source hashes, language stability, topic change and same-path content refresh');

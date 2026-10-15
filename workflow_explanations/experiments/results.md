@@ -1,6 +1,6 @@
 # Skill versus Workflow
 
-Current distribution: HTML package 1.1.4, upstream 0.5.3, CAW 1.2.2. Version 1.1.4 fixes requirement transfer and has offline regression checks only. The three-page Workflow measurements and outputs below belong to 1.1.3; they are not a new experiment on this revision or proof of full content parity. The fixed Skill, historical single-page and video samples retain their original records. Source versions are identified separately.
+Current distribution: Codex HTML 1.1.5, README 1.0.1 and Pi HTML 1.0.0; HTML upstream 0.5.3, with CAW 1.2.2 / pi-CAW 0.5.10. The batch section uses the accepted same-source Skill/Codex pair and adds Pi outputs only. Historical single-page and video records retain their measured conditions.
 
 [中文](results.zh-CN.md) · [Workflow package](../answer-me-with-html.md) · [Data](results.json) · [Original Skill](https://github.com/QingYunA/answer-me-with-html)
 
@@ -48,22 +48,22 @@ Single-page runs show no consistent advantage across token use, cost and time. T
 
 ## Three pages in one conversation
 
-Each method completes the identical TCP, Redis / Memcached and Git merge / rebase three-page request in an independent new conversation using `gpt-6-luna/max`. Skill retains its original **0.5.2** sample; Workflow uses the content-corrected **0.5.3** package. Skill was not rerun, so source-version effects cannot be isolated. One successful delivery is shown per method. Workflow includes Main, common preparation once, three parallel workers and all corrections. Review checked close states, cache-miss/invalidation paths, selection conditions and Git history changes; this is not a blind quality score.
+Skill and Codex Workflow each complete the identical three-page request in an independent fresh conversation, using gpt-6-luna/max and upstream v0.5.3. Workflow totals include initiating Main, common preparation, every worker, correction and acceptance. One successful delivery per method; semantic review found no material regression, while optional detail and layout differ. Pi contributes a separate three-page delivery for content and interaction inspection only and has no consumption row.
 
 | Method | Input (cached included) | Cached input / hit rate | Output | API-equivalent cost | Seconds |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Skill | 555,547 | 516,096 / 92.90% | 14,123 | $0.016168 | 185.155 |
-| Workflow | 290,972 | 221,696 / 76.19% | 22,258 | $0.020274 | 158.158 |
+| Skill | 786,187 | 721,664 / 91.79% | 18,846 | $0.023092 | 192.278 |
+| Codex Workflow | 302,007 | 197,376 / 65.35% | 21,728 | $0.023301 | 133.712 |
 
-Workflow uses **47.62%** less input and finishes **14.58%** faster. Standard API-equivalent cost rises **25.40%** (+$0.004106). Cache-hit rates are **76.19% / 92.90%** for Workflow / Skill; uncached input is **69,276 / 39,451** and output **22,258 / 14,123**. Less total input alone does not establish a cost reduction.
+Workflow uses 61.59% less input and 30.46% less time, with 0.90% higher API-equivalent cost (+$0.000209). Uncached input is 104,631 / 64,523; cache-hit variation and output volume offset some input savings. The platform cause of cache misses is unproven; this sample does not establish a universal advantage.
 
-Using [official OpenAI Luna pricing](https://developers.openai.com/api/docs/models/gpt-6-luna), per million tokens: $0.10 input, $0.01 cached input, $0.125 cache writes and $0.50 output. Requests stay below 272K input; reported cache writes are zero and output includes reasoning. Engineering work and prior failed trials are separate from this successful pair.
+The original experiment's frozen API-equivalent rates are $0.10 fresh input, $0.01 cached input and $0.50 output per million tokens; reasoning is included in output and reported cache writes are zero. This is neither a current bill nor a fresh price lookup. Engineering and prior trials are outside this successful delivery pair and are not claimed free.
 
-| Topic | Skill | Workflow |
-| --- | --- | --- |
-| TCP | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-workflow.html) |
-| Redis / Memcached | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-workflow.html) |
-| Git merge / rebase | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-workflow.html) |
+| Topic | Skill | Codex Workflow | Pi Workflow (outputs only) |
+| --- | --- | --- | --- |
+| TCP | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-workflow.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/tcp-pi.html) |
+| Redis / Memcached | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-workflow.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/cache-pi.html) |
+| Git merge / rebase | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-skill.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-workflow.html) | [HTML](https://tohman233.github.io/workflow-package/workflow_explanations/examples/html/git-pi.html) |
 
 ## Video asset reuse and manuscript rewriting
 

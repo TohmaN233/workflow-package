@@ -183,7 +183,7 @@ function renderBatch() {
   const tbody = document.getElementById("batch-rows");
   tbody.replaceChildren();
   const skillLabel = state.lang === "zh-CN" ? "Skill · 1 次运行" : "Skill · 1 trial";
-  const workflowLabel = state.lang === "zh-CN" ? "Workflow · 1 次运行" : "Workflow · 1 trial";
+  const workflowLabel = state.lang === "zh-CN" ? "Codex Workflow · 1 次运行" : "Codex Workflow · 1 trial";
   appendMethodRow(tbody, skillLabel, batch.skill);
   appendMethodRow(tbody, workflowLabel, batch.workflow);
 
@@ -316,13 +316,13 @@ function renderPricing() {
 
 function renderArtifacts() {
   const topic = state.topic;
-  for (const arm of ["skill", "workflow"]) {
+  for (const arm of ["skill", "workflow", "pi"]) {
     const matches = state.data.three_html_one_conversation.artifacts.filter(record => record.topic === topic && record.arm === arm);
     if (matches.length !== 1) throw new Error("Expected one measured artifact for " + topic + "/" + arm);
     const artifact = matches[0];
     if (typeof artifact.path !== "string" || !/^[a-f0-9]{64}$/.test(artifact.sha256)) throw new Error("Missing artifact path or content version");
     const url = artifact.path + "?v=" + artifact.sha256;
-    const method = arm === "skill" ? "Skill" : "Workflow";
+    const method = {skill:"Skill",workflow:"Codex Workflow",pi:"Pi Workflow"}[arm];
     const title = state.lang === "zh-CN"
       ? "三页批量实验中的 " + method + " " + topicName(topic) + " 讲解页"
       : method + " " + topicName(topic) + " explainer from the three-page batch experiment";

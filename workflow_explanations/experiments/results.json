@@ -3,10 +3,10 @@
   "schema_version": 1,
   "cost_basis": "API-equivalent USD, including Main and all workers; not the subscription bill.",
   "three_html_one_conversation": {
-    "case_id": "three_html_luna_053_coverage_20261014",
+    "case_id": "three_html_luna_053_same_version",
     "model": "gpt-6-luna",
     "reasoning_effort": "max",
-    "renderer_version": "Skill 0.5.2 / Workflow 0.5.3",
+    "renderer_version": "Skill 0.5.3 / Codex Workflow 0.5.3",
     "tested_on": "2026-10-14",
     "pricing_usd_per_million": {
       "input": 0.1,
@@ -21,141 +21,113 @@
       "reasoning_already_in_output": true
     },
     "skill": {
-      "cost_usd": 0.01616756,
-      "wall_ms": 185155,
+      "cost_usd": 0.023091940000000002,
+      "wall_ms": 192278,
       "usage": {
-        "input_tokens": 555547,
-        "cached_input_tokens": 516096,
-        "output_tokens": 14123,
-        "reasoning_output_tokens": 8387,
+        "input_tokens": 786187,
+        "cached_input_tokens": 721664,
         "cache_write_input_tokens": 0,
-        "cache_hit_percent": 92.89871064014386,
-        "uncached_input_tokens": 39451
+        "output_tokens": 18846,
+        "reasoning_output_tokens": 12654,
+        "total_tokens": 805033,
+        "cache_hit_percent": 91.79291949625217,
+        "uncached_input_tokens": 64523
       }
     },
     "workflow": {
-      "cost_usd": 0.020273560000000003,
-      "wall_ms": 158158,
+      "cost_usd": 0.02330086,
+      "wall_ms": 133712,
       "usage": {
-        "input_tokens": 290972,
-        "cached_input_tokens": 221696,
-        "output_tokens": 22258,
+        "input_tokens": 302007,
+        "cached_input_tokens": 197376,
+        "output_tokens": 21728,
         "cache_write_input_tokens": 0,
-        "cache_hit_percent": 76.19152358302517,
-        "uncached_input_tokens": 69276
+        "cache_hit_percent": 65.35477654491451,
+        "uncached_input_tokens": 104631
       }
     },
-    "workflow_components": [
-      {
-        "name": "initiating_main",
-        "cost_usd": 0.0057006,
-        "usage": {
-          "input_tokens": 156911,
-          "cached_input_tokens": 128000,
-          "output_tokens": 3059,
-          "cache_write_input_tokens": 0,
-          "cache_hit_percent": 81.5749055196895
-        }
-      },
-      {
-        "name": "shared_prefix",
-        "cost_usd": 0.0016193000000000002,
-        "usage": {
-          "input_tokens": 15828,
-          "cached_input_tokens": 0,
-          "output_tokens": 73,
-          "cache_write_input_tokens": 0,
-          "cache_hit_percent": 0
-        }
-      },
-      {
-        "name": "page_worker",
-        "cost_usd": 0.0031431400000000004,
-        "usage": {
-          "input_tokens": 39370,
-          "cached_input_tokens": 34304,
-          "output_tokens": 4587,
-          "cache_write_input_tokens": 0,
-          "cache_hit_percent": 87.13233426466853
-        }
-      },
-      {
-        "name": "page_worker",
-        "cost_usd": 0.00502798,
-        "usage": {
-          "input_tokens": 39419,
-          "cached_input_tokens": 25088,
-          "output_tokens": 6688,
-          "cache_write_input_tokens": 0,
-          "cache_hit_percent": 63.64443542454147
-        }
-      },
-      {
-        "name": "page_worker",
-        "cost_usd": 0.00478254,
-        "usage": {
-          "input_tokens": 39444,
-          "cached_input_tokens": 34304,
-          "output_tokens": 7851,
-          "cache_write_input_tokens": 0,
-          "cache_hit_percent": 86.96886725484231
-        }
-      }
-    ],
-    "cost_difference_usd": 0.004106000000000002,
-    "cost_difference_percent": 25.396534789417835,
-    "scope": "Fixed original Skill v0.5.2 sample versus a fresh independent Luna/max conversation on the content-corrected Workflow and renderer v0.5.3. Identical original three-page request; Skill was not rerun. Workflow includes initiating Main, one shared-prefix setup and every worker/correction. The source versions differ, so this is a current-output qualification against a fixed baseline, not a same-version causal benchmark. Cancelled startup trials and engineering are excluded from this successful delivery and are not claimed free.",
-    "cache_scope": "Cached tokens count as input. API-equivalent estimates include reasoning within output; cache-hit variation and output volume affect cost. No claimed cost win.",
+    "cost_difference_usd": 0.00020891999999999786,
+    "cost_difference_percent": 0.9047312612106229,
+    "scope": "Original identical three-page request in independent new conversations, gpt-6-luna/max, both upstream v0.5.3. Workflow includes initiating Main, shared preparation, all workers, corrections and acceptance. One accepted delivery per method; engineering and previous trials are outside these delivery totals. Pi artifacts are a separately supplied output-only comparison, with no cost, token or time comparison.",
+    "cache_scope": "Real platform cache use; cached tokens are included in input and reasoning tokens are included in output. API-equivalent estimates use the recorded common rates. Cache variation is observed, not attributed to an unproven platform cause.",
     "artifacts": [
       {
         "topic": "tcp",
         "arm": "skill",
         "path": "../examples/html/tcp-skill.html",
-        "sha256": "190e07bef49c3ab7e72b98e672c327ce379c49fb7df55ca23687be48da00014c",
-        "bytes": 104907
+        "sha256": "e71341497f9fa2523ec1ae18d4a52972f09b0c4f7ad519273f13197d4cc07af9",
+        "bytes": 118408
       },
       {
         "topic": "tcp",
         "arm": "workflow",
         "path": "../examples/html/tcp-workflow.html",
-        "sha256": "33eef8bd6b7982f824333bfa4e809c3567feca39472b88b7702bada0c0195ad9",
-        "bytes": 119621
+        "sha256": "e9fd5259e4a1f5908cedd985e3392891500b474a72a4d99f3c89389947cdab67",
+        "bytes": 117937
+      },
+      {
+        "topic": "tcp",
+        "arm": "pi",
+        "path": "../examples/html/tcp-pi.html",
+        "sha256": "1c89a0eaea22e0ca56331b4ce487c0a182db8f4fd50ddd8fc91a4a8cc41f719b",
+        "bytes": 132510
       },
       {
         "topic": "cache",
         "arm": "skill",
         "path": "../examples/html/cache-skill.html",
-        "sha256": "4249d7d09f0a31201dda3fb71cdcd64b9ff5b39f676848e4815384db0ea64d60",
-        "bytes": 109309
+        "sha256": "db1b88e337952728724b59db600c6663008a376930b22f426570cd0a09267564",
+        "bytes": 118747
       },
       {
         "topic": "cache",
         "arm": "workflow",
         "path": "../examples/html/cache-workflow.html",
-        "sha256": "0ee933fdabd3a34e0eec3598de2df30e3f4396002f1f1035096c652aa6adc94d",
-        "bytes": 121578
+        "sha256": "ec824b6e76b3da6ec46f3abc437a0a9f3c3347725dea4cdfb7443621b45b9094",
+        "bytes": 122528
+      },
+      {
+        "topic": "cache",
+        "arm": "pi",
+        "path": "../examples/html/cache-pi.html",
+        "sha256": "3cbfbf75dfe80248b3a966a5c5d6888dfb60eb7b5c2cd05246b6184ca3beb3e0",
+        "bytes": 132544
       },
       {
         "topic": "git",
         "arm": "skill",
         "path": "../examples/html/git-skill.html",
-        "sha256": "a5314ed96a2ae0c4dd7f48762681a700b4c3fc0865ad58fc507b9b4be3ae2c23",
-        "bytes": 115077
+        "sha256": "eb09d2b076b0a0e9263f05c640b3c81894661c68130cbfddde90f52857c07500",
+        "bytes": 122168
       },
       {
         "topic": "git",
         "arm": "workflow",
         "path": "../examples/html/git-workflow.html",
-        "sha256": "45306d5083db3f8841859cfae879e838c931533d63a1fd3b1fa675a44bed8303",
-        "bytes": 126740
+        "sha256": "3eb9bbd35bc6bd916e6fa6026c09fa0bdf03a1ad6126ae5c72f16c1097be3957",
+        "bytes": 124272
+      },
+      {
+        "topic": "git",
+        "arm": "pi",
+        "path": "../examples/html/git-pi.html",
+        "sha256": "dfed4b4eaba82a627c769404abc5a62a6351fcdaf2896e011942014774d083df",
+        "bytes": 125392
       }
     ],
     "renderer_versions": {
-      "skill": "0.5.2",
+      "skill": "0.5.3",
       "workflow": "0.5.3"
     },
-    "tested_workflow_revision": "a6ac4ca2f6ab2f09ab43145a31941b5078e77ed22355255083386b583aaf5793",
-    "workflow_run_id": "59d9de9b-9d52-42e3-ba7f-5219cde743ec"
+    "tested_workflow_revision": "3b2f81457b30aaf46e1b635c11fe69722835486b4c496c62905c027c6439ad7d",
+    "pi": {
+      "comparison": "artifacts_only",
+      "engine": "pi-CAW",
+      "engine_version": "0.5.10",
+      "source_release": "v0.5.3",
+      "note": "User-supplied three-page delivery; no consumption measurements or same-condition performance claim.",
+      "package_revision_hash": "4df6cf0ab070d10a8e1aa96ab849b21a84f07cad9e2867c7745f7c74633f306f"
+    }
   },
   "video": {
     "pricing_usd_per_million": {
@@ -455,13 +427,13 @@
     "url": "https://github.com/TohmaN233/workflow-package/blob/727cea7fc22419bc455ed8cff38c0182323dea11/codex/answer-me-with-html/answer-me-with-html.workflow-package.json"
   },
   "distributed_package": {
-    "package_version": "1.1.4",
-    "workflow_revision_hash": "5eba0e5b0d56855e57eb06df7abb0d7b1f1808527c31b92e47882f9c78fc5c9c",
+    "package_version": "1.1.5",
+    "workflow_revision_hash": "3b2f81457b30aaf46e1b635c11fe69722835486b4c496c62905c027c6439ad7d",
     "source_release": "v0.5.3",
     "source_commit": "83bfc9383105e304d90b5f93db848996d5420d84",
     "engine_version": "1.2.2",
     "node_count": 41,
-    "resource_count": 140,
-    "qualification": "Offline lossless requirement-transfer and original-renderer regression checks; no model or paid voice calls. Historical three-page metrics and artifacts remain tied to their original 1.1.3 revision and are not full content-parity proof."
+    "resource_count": 141,
+    "qualification": "Exact local immutable revision used by the accepted same-source Luna/max three-page comparison. Single sample; optional content, layout and cache use may vary."
   }
 }

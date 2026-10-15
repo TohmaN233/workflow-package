@@ -7,6 +7,7 @@ This is the common home for package instructions, comparisons and examples. Impo
 - [Installation procedure for an LLM: dependencies, import and verification](install.md)
 - [Installation and platforms](platforms.md)
 - [Answer me with HTML](answer-me-with-html.md)
+- [Answer me with HTML for Pi, including pi-web visualization](answer-me-with-html-pi.md)
 - [GitHub README generator](github-readme-generator.md)
 - [Final comparison results](experiments/results.md)
 - [Live comparison gallery: outputs and recorded metrics](https://tohman233.github.io/workflow-package/)

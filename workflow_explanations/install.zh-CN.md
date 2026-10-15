@@ -6,7 +6,9 @@
 
 ## 1. 连接接收端引擎
 
-按照 [Codex Agents Workflow 安装说明](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.zh-CN.md)安装引擎、原生上下文配置并检查当前 MCP 连接。验收过的引擎版本是 **1.2**。这些包面向 Codex，目前没有发布 Pi 安装包。
+Codex 端按照 [Codex Agents Workflow 安装说明](https://github.com/TohmaN233/codex-agents-workflow/blob/main/INSTALL.zh-CN.md)安装引擎、原生上下文配置并检查当前 MCP 连接。验收过的引擎版本是 **1.2.2**。
+
+Pi 包在**本地 pi-CAW 构建 0.5.10**、Node.js **22.19+** 和兼容 Pi SDK 上验证。该引擎构建尚未公开；公开仓库目前的 0.3.1 未通过本包验收。先确认接收端具备兼容引擎，缺少时报告，不试跑业务。读取 [pi/catalog.json](../pi/catalog.json)，通过 pi-CAW 自身的 **安装 Workflow** 操作导入，详见 [Pi 专用配置](answer-me-with-html-pi.zh-CN.md)。下文 Codex MCP 调用只适用于 Codex；浏览器、FFmpeg、TTS 等路线依赖两端共用，Pi 仍须满足引擎更高的 Node 下限。
 
 ## 2. 选择并导入
 

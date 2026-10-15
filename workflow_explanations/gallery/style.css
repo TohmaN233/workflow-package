@@ -263,6 +263,12 @@ main { overflow: clip; }
 }
 .preview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line-dark); border: 1px solid var(--line-dark); }
 .preview-card { min-width: 0; background: var(--paper-light); }
+.pi-preview-card { grid-column: 1 / -1; }
+@media (min-width: 1200px) {
+  #previews { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pi-preview-card { grid-column: auto; }
+  #previews .preview-heading { flex-wrap: wrap; gap: .5rem; }
+}
 .preview-heading {
   display: flex;
   align-items: center;
